@@ -1,3 +1,5 @@
+package StockMarket;
+
 import java.util.*;
 
 public class Simulator {

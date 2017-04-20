@@ -1,4 +1,4 @@
-
+package StockMarket;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
