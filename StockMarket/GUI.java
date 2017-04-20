@@ -17,7 +17,7 @@ import sun.plugin.javascript.navig.Anchor;
 
 import java.awt.event.ActionListener;
 
-public class Main extends Application {
+public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
