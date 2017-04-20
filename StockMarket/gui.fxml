@@ -7,20 +7,22 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.effect.Glow?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1044.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <MenuBar layoutX="-7.0" layoutY="-2.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
@@ -38,65 +40,87 @@
                 <Menu mnemonicParsing="false" text="Legal">
                     <items>
                         <MenuItem mnemonicParsing="false" text="License" />
+                        <RadioMenuItem mnemonicParsing="false" text="Copyright" />
                         <MenuItem mnemonicParsing="false" text="Credits" />
-                        <MenuItem mnemonicParsing="false" text="Copyright" />
                     </items>
                 </Menu>
             </menus>
-            <cursor>
-                <Cursor fx:constant="NONE" />
-            </cursor>
-            <effect>
-                <Blend opacity="0.05">
-                    <topInput>
-                        <Shadow />
-                    </topInput>
-                </Blend>
-            </effect>
         </MenuBar>
-        <TableView layoutX="39.0" layoutY="385.0" prefHeight="285.0" prefWidth="433.0" style="-fx-background-color: ;" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="547.0">
-            <columns>
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Company" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-            </columnResizePolicy>
-        </TableView>
-        <Pane layoutX="26.0" layoutY="40.0" prefHeight="65.0" prefWidth="433.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="570.0">
-            <children>
-                <TextField disable="true" layoutY="-1.0" prefHeight="31.0" prefWidth="404.0" style="-fx-background-color: darkgrey;" text="Market Status: //Get string" />
-            </children>
-        </Pane>
-        <LineChart layoutY="82.0" prefHeight="303.0" prefWidth="1016.0" title="Mock Graph" AnchorPane.bottomAnchor="301.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="82.0">
-            <xAxis>
-                <CategoryAxis side="BOTTOM" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis side="LEFT" />
-            </yAxis>
-        </LineChart>
-        <TableView layoutX="557.0" layoutY="385.0" prefHeight="285.0" prefWidth="448.0">
-            <columns>
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Client" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
-            </columns>
-        </TableView>
-        <TextField layoutX="439.0" layoutY="40.0" prefHeight="31.0" prefWidth="564.0" style="-fx-border-color: red;" text="">
-            <effect>
-                <Glow />
-            </effect>
-        </TextField>
+        <TabPane prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Front End">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <VBox layoutX="-2.0" prefHeight="623.0" prefWidth="231.0">
+                                    <children>
+                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Food Commodities &#10;&#10;&#10;                        " />
+                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Hardware Commodities&#10;&#10;&#10;&#10;                         " />
+                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Hi Tech&#10;&#10;&#10;                          " />
+                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Property&#10;" />
+                                    </children>
+                                </VBox>
+                                <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
+                                    <children>
+                                        <LineChart prefHeight="483.0" prefWidth="867.0">
+                                            <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                        </LineChart>
+                                    </children>
+                                </Pane>
+                                <Pane layoutX="229.0" layoutY="483.0" prefHeight="141.0" prefWidth="870.0">
+                                    <children>
+                                        <Text layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="204.6708984375" />
+                                        <Text layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Share Index:" wrappingWidth="105.6708984375" />
+                                        <Text layoutX="14.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event :" wrappingWidth="818.2978515625" />
+                                        <Text layoutX="13.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Day: " wrappingWidth="830.6708984375" />
+                                        <Text layoutX="12.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="259.61669921875" />
+                                    </children>
+                                    <cursor>
+                                        <Cursor fx:constant="NONE" />
+                                    </cursor>
+                                </Pane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="Back End">
+                    <content>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
+                            <children>
+                                <SplitPane dividerPositions="0.5004533091568449" layoutX="-4.0" layoutY="-6.0" prefHeight="628.0" prefWidth="1105.0">
+                                    <items>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="230.0">
+                                            <children>
+                                                <TableView layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
+                                                    <columns>
+                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Company" />
+                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Type" />
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </AnchorPane>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                            <children>
+                                                <TableView layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
+                                                    <columns>
+                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Client" />
+                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="C2" />
+                                                    </columns>
+                                                </TableView>
+                                            </children>
+                                        </AnchorPane>
+                                    </items>
+                                </SplitPane>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
     </children>
-    <effect>
-        <InnerShadow color="WHITE" height="70.76" radius="19.330000000000002" width="8.56" />
-    </effect>
-</AnchorPane>
+</VBox>
