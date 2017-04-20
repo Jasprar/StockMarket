@@ -11,10 +11,6 @@ public class Simulator {
     int stockIndex; // in pence.
     String marketType; // Bull, Bear, Stable.
 
-    public static void main(String[] args) {
-        // TODO: Create main method to start the simulation.
-    }
-
     public void initialiseData() {
         // TODO: import data from initialData.xls and setup fields.
     }
