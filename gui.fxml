@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1044.0" style="-fx-background-color: darkgrey;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <MenuBar layoutX="-7.0" layoutY="-2.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Import File" />
+                        <MenuItem mnemonicParsing="false" text="Run Simulation" />
+                        <MenuItem mnemonicParsing="false" text="Quit" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="How to use" />
+                        <MenuItem mnemonicParsing="false" text="About Us" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Legal">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="License" />
+                        <MenuItem mnemonicParsing="false" text="Credits" />
+                        <MenuItem mnemonicParsing="false" text="Copyright" />
+                    </items>
+                </Menu>
+            </menus>
+            <cursor>
+                <Cursor fx:constant="NONE" />
+            </cursor>
+            <effect>
+                <Blend opacity="0.05">
+                    <topInput>
+                        <Shadow />
+                    </topInput>
+                </Blend>
+            </effect>
+        </MenuBar>
+        <TableView layoutX="39.0" layoutY="385.0" prefHeight="285.0" prefWidth="433.0" style="-fx-background-color: ;" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="547.0">
+            <columns>
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Company" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+        <Pane layoutX="26.0" layoutY="40.0" prefHeight="65.0" prefWidth="433.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="570.0">
+            <children>
+                <TextField disable="true" layoutY="-1.0" prefHeight="31.0" prefWidth="404.0" style="-fx-background-color: darkgrey;" text="Market Status: //Get string" />
+            </children>
+        </Pane>
+        <LineChart layoutY="82.0" prefHeight="303.0" prefWidth="1016.0" title="Mock Graph" AnchorPane.bottomAnchor="301.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="82.0">
+            <xAxis>
+                <CategoryAxis side="BOTTOM" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis side="LEFT" />
+            </yAxis>
+        </LineChart>
+        <TableView layoutX="557.0" layoutY="385.0" prefHeight="285.0" prefWidth="448.0">
+            <columns>
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Client" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+                <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Column X" />
+            </columns>
+        </TableView>
+        <TextField layoutX="439.0" layoutY="40.0" prefHeight="31.0" prefWidth="564.0" style="-fx-border-color: red;" text="">
+            <effect>
+                <Glow />
+            </effect>
+        </TextField>
+    </children>
+    <effect>
+        <InnerShadow color="WHITE" height="70.76" radius="19.330000000000002" width="8.56" />
+    </effect>
+</AnchorPane>
