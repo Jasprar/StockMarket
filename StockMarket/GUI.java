@@ -21,7 +21,7 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Stock simulator");
+        primaryStage.setTitle("Stock simulator 2");
         AnchorPane anchorpane = new AnchorPane();
 
         MenuBar menuBar = new MenuBar(); //Initialize Menubar
