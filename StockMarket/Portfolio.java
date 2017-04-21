@@ -12,4 +12,7 @@ public class Portfolio {
     }
 
 
+    public String getClientName() {
+        return clientName;
+    }
 }

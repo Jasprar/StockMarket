@@ -34,15 +34,15 @@ public class Simulator {
                 if(row.length == SIZE_DATA && row[0].length() == 0) { // Contains the names of the Clients.
                     for(int i = 0; i < SIZE_DATA - 1; i++) { // Final column is Total Shares Issued.
                         if(row[i].length() != 0) {
-                            porfolios.add(new Portfolio(row[i]));
+                            portfolios.add(new Portfolio(row[i]));
                         }
                     }
                 } else if(row.length == SIZE_DATA) { // This is a column of data.
 
                 }
             }
-            for(Portfolio portfolio : porfolios) {
-
+            for(Portfolio portfolio : portfolios) {
+                System.out.println(portfolio.getClientName());
             }
         } catch(IOException e) {
             e.printStackTrace();
