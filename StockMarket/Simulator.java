@@ -46,7 +46,7 @@ public class Simulator {
                         if(row[i].length() != 0) {
                             ArrayList<Share> shares = new ArrayList<>();
                             for(int k = 0; k < Integer.parseInt(row[i]); k++) {
-                                shares.add(new Share(row[0]));
+                                shares.add(new Share(row[0], row[1], Integer.parseInt(row[2])));
                             }
                             portfolios.get(j).addShares(shares);
                             j++;

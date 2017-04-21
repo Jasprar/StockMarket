@@ -10,4 +10,8 @@ public class Share {
         this.commodity = commodity;
         this.sharePrice = sharePrice;
     }
+
+    public int getSharePrice() {
+        return sharePrice;
+    }
 }
