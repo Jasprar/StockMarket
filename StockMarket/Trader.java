@@ -8,4 +8,8 @@ public abstract class Trader {
     public Trader(ArrayList<Portfolio> portfolios) {
         this.portfolios = portfolios;
     }
+
+    public ArrayList<Portfolio> getPortfolios() {
+        return portfolios;
+    }
 }
