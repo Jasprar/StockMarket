@@ -26,38 +26,38 @@
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Import File" />
-                        <MenuItem mnemonicParsing="false" text="Run Simulation" />
-                        <MenuItem mnemonicParsing="false" text="Quit" />
+                        <MenuItem id="Import" mnemonicParsing="false" text="Import File" />
+                        <MenuItem id="RunSim" mnemonicParsing="false" text="Run Simulation" />
+                        <MenuItem id="Quit" mnemonicParsing="false" text="Quit" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="How to use" />
-                        <MenuItem mnemonicParsing="false" text="About Us" />
+                        <MenuItem id="HowToUse" mnemonicParsing="false" text="How to use" />
+                        <MenuItem id="aboutUs" mnemonicParsing="false" text="About Us" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Legal">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="License" />
-                        <RadioMenuItem mnemonicParsing="false" text="Copyright" />
-                        <MenuItem mnemonicParsing="false" text="Credits" />
+                        <MenuItem id="License" mnemonicParsing="false" text="License" />
+                        <RadioMenuItem id="copyRight" mnemonicParsing="false" text="Copyright" />
+                        <MenuItem id="credits" mnemonicParsing="false" text="Credits" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
         <TabPane prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab text="Front End">
+                <Tab id="frontEnd" text="Front End">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <VBox layoutX="-2.0" prefHeight="623.0" prefWidth="231.0">
                                     <children>
-                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Food Commodities &#10;&#10;&#10;                        " />
-                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Hardware Commodities&#10;&#10;&#10;&#10;                         " />
-                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Hi Tech&#10;&#10;&#10;                          " />
-                                        <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" text="Property&#10;" />
+                                        <TextArea id="Food" editable="false" prefHeight="200.0" prefWidth="200.0" text="Food Commodities &#10;&#10;&#10;                        " />
+                                        <TextArea id="Hardware" editable="false" prefHeight="200.0" prefWidth="200.0" text="Hardware Commodities&#10;&#10;&#10;&#10;                         " />
+                                        <TextArea id="HiTech" editable="false" prefHeight="200.0" prefWidth="200.0" text="Hi Tech&#10;&#10;&#10;                          " />
+                                        <TextArea id="Property" prefHeight="200.0" prefWidth="200.0" text="Property&#10;" />
                                     </children>
                                 </VBox>
                                 <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
@@ -74,11 +74,11 @@
                                 </Pane>
                                 <Pane layoutX="229.0" layoutY="483.0" prefHeight="141.0" prefWidth="870.0">
                                     <children>
-                                        <Text layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="204.6708984375" />
-                                        <Text layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Share Index:" wrappingWidth="105.6708984375" />
-                                        <Text layoutX="14.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event :" wrappingWidth="818.2978515625" />
-                                        <Text layoutX="13.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Day: " wrappingWidth="830.6708984375" />
-                                        <Text layoutX="12.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="259.61669921875" />
+                                        <Text id="MarketType" layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="204.6708984375" />
+                                        <Text id="ShareIndex" layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Share Index:" wrappingWidth="105.6708984375" />
+                                        <Text id="Event" layoutX="14.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event :" wrappingWidth="818.2978515625" />
+                                        <Text id="day" layoutX="13.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Day: " wrappingWidth="830.6708984375" />
+                                        <Text id="time" layoutX="12.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="259.61669921875" />
                                     </children>
                                     <cursor>
                                         <Cursor fx:constant="NONE" />
@@ -98,8 +98,8 @@
                                             <children>
                                                 <TableView layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
                                                     <columns>
-                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Company" />
-                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Type" />
+                                                        <TableColumn id="Company" prefWidth="75.0" text="Company" />
+                                                        <TableColumn id="Type" prefWidth="75.0" text="Type" />
                                                     </columns>
                                                 </TableView>
                                             </children>
@@ -108,8 +108,8 @@
                                             <children>
                                                 <TableView layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
                                                     <columns>
-                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Client" />
-                                                        <TableColumn editable="false" prefWidth="75.0" sortable="false" text="C2" />
+                                                        <TableColumn id="Client" prefWidth="75.0" text="Client" />
+                                                        <TableColumn id="wealth" prefWidth="75.0" text="C2" />
                                                     </columns>
                                                 </TableView>
                                             </children>
