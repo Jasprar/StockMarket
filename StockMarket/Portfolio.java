@@ -2,12 +2,12 @@ package StockMarket;
 
 import java.util.ArrayList;
 
-public class Porfolio {
+public class Portfolio {
     private String clientName;
     private int totalWorth;
     ArrayList<Share> shares;
 
-    public Porfolio(String clientName) {
+    public Portfolio(String clientName) {
         this.clientName = clientName;
     }
 

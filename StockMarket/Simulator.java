@@ -11,7 +11,7 @@ public class Simulator {
     HashMap<Trader, HashMap<String, Integer>> toBeBought; // Inner HashMap maps Company Name to number of shares sought for purchase.
     ArrayList<Trader> traders;
     ArrayList<Event> events;
-    ArrayList<Porfolio> porfolios;
+    ArrayList<Portfolio> portfolios;
     int stockIndex; // in pence.
     String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
@@ -21,7 +21,7 @@ public class Simulator {
         calendar = new GregorianCalendar(2017, 0, 1);
         traders = new ArrayList<>();
         events = new ArrayList<>();
-        porfolios = new ArrayList<>();
+        portfolios = new ArrayList<>();
         marketType = "Stable";
 
         BufferedReader br = null;
@@ -34,12 +34,15 @@ public class Simulator {
                 if(row.length == SIZE_DATA && row[0].length() == 0) { // Contains the names of the Clients.
                     for(int i = 0; i < SIZE_DATA - 1; i++) { // Final column is Total Shares Issued.
                         if(row[i].length() != 0) {
-
+                            porfolios.add(new Portfolio(row[i]));
                         }
                     }
                 } else if(row.length == SIZE_DATA) { // This is a column of data.
 
                 }
+            }
+            for(Portfolio portfolio : porfolios) {
+
             }
         } catch(IOException e) {
             e.printStackTrace();
