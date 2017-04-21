@@ -42,17 +42,29 @@ public class Simulator {
                     }
                 } else if(row.length == SIZE_DATA) { // This is a column of data.
                     int j = 0;
-                    for(int i = 0; i < SIZE_DATA - 1; i++) {
+                    for(int i = 4; i < SIZE_DATA - 1; i++) {
                         if(row[i].length() != 0) {
                             ArrayList<Share> shares = new ArrayList<>();
                             for(int k = 0; k < Integer.parseInt(row[i]); k++) {
-                                shares.add(new Share(row[0], row[1], Integer.parseInt(row[2])));
+                                shares.add(new Share(row[0], row[2], Integer.parseInt(row[3])));
                             }
                             portfolios.get(j).addShares(shares);
                             j++;
                         }
                     }
+                } else if(row.length > 0 && row[0].equals("CASH HOLDING (Pounds)")) { // I know, really ugly hard-coded way of doing this, I'm sorry.
+                    int j = 0;
+                    for(int i = 4; i < SIZE_DATA - 2; i++) {
+                        if(row[i].length() != 0) {
+                            portfolios.get(j).setCashHolding(Integer.parseInt(row[i]));
+                            j++;
+                        }
+                    }
                 }
+            }
+            for(Portfolio p : portfolios) {
+                System.out.println(p.getClientName());
+                System.out.println(p.getTotalWorth());
             }
         } catch(IOException e) {
             e.printStackTrace();
