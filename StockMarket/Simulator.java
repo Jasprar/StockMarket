@@ -1,9 +1,10 @@
 package StockMarket;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Simulator {
@@ -75,6 +76,9 @@ public class Simulator {
             String line = "";
             while((line = br.readLine()) != null) {
                 String[] row = line.split(",");
+                if(row.length == SIZE_EVENTS && !row[0].equals("Date")) { // i.e. not the header.
+                    events.add(new Event(new SimpleDateFormat("MMM dd yyyy HH:mm").parse(row[0] + " " + row[2], new ParsePosition(0)), row[4], row[15]));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -10,7 +10,7 @@ public class Portfolio {
 
     public Portfolio(String clientName) {
         this.clientName = clientName;
-        totalWorth = 0; // cashHolding is updated later (due to processing the spreadsheet row-by-row).
+        totalWorth = 0; // cashHolding is added later (due to processing the spreadsheet row-by-row).
         shares = new ArrayList<>();
     }
 
