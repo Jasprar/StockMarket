@@ -2,8 +2,12 @@ package StockMarket;
 
 public class Share {
     private String companyName;
-    
-    public Share(String companyName) {
+    public String commodity;
+    private int sharePrice;
+
+    public Share(String companyName, String commodity, int sharePrice) {
         this.companyName = companyName;
+        this.commodity = commodity;
+        this.sharePrice = sharePrice;
     }
 }
