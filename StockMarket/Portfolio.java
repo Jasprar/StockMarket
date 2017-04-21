@@ -15,4 +15,8 @@ public class Portfolio {
     public String getClientName() {
         return clientName;
     }
+
+    public void addShares(ArrayList<Share> shares) {
+        shares.addAll(shares);
+    }
 }

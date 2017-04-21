@@ -16,14 +16,17 @@ public class Simulator {
     String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
 
-    // In place of initialiseData and runSimulation.
+    // In place of runSimulation.
     public Simulator(int duration) {
         calendar = new GregorianCalendar(2017, 0, 1);
         traders = new ArrayList<>();
         events = new ArrayList<>();
         portfolios = new ArrayList<>();
         marketType = "Stable";
+        initialiseData();
+    }
 
+    private void initialiseData() {
         BufferedReader br = null;
         String line = "";
         try {
@@ -38,14 +41,22 @@ public class Simulator {
                         }
                     }
                 } else if(row.length == SIZE_DATA) { // This is a column of data.
-
+                    int j = 0;
+                    for(int i = 0; i < SIZE_DATA - 1; i++) {
+                        if(row[i].length() != 0) {
+                            ArrayList<Share> shares = new ArrayList<>();
+                            for(int k = 0; k < Integer.parseInt(row[i]); k++) {
+                                shares.add(new Share(row[0]));
+                            }
+                            portfolios.get(j).addShares(shares);
+                            j++;
+                        }
+                    }
                 }
-            }
-            for(Portfolio portfolio : portfolios) {
-                System.out.println(portfolio.getClientName());
             }
         } catch(IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
     }
 
