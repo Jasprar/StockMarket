@@ -22,6 +22,8 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+
+        <!--- creating the menu bar  -->
         <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="File">
@@ -46,10 +48,14 @@
                 </Menu>
             </menus>
         </MenuBar>
+
+        <!--- creating tab pane  -->
         <TabPane prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab id="frontEnd" text="Front End">
                     <content>
+
+                        <!--- Left section - displays the commodities   -->
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <VBox layoutX="-2.0" prefHeight="623.0" prefWidth="231.0">
@@ -62,6 +68,7 @@
                                 </VBox>
                                 <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
                                     <children>
+                                        <!-- graph - NEED TO ADDD THE GRAPH HERE !!! -->
                                         <LineChart prefHeight="483.0" prefWidth="867.0">
                                             <xAxis>
                                                 <CategoryAxis side="BOTTOM" />
@@ -72,6 +79,7 @@
                                         </LineChart>
                                     </children>
                                 </Pane>
+                                <!--- Bottom section of panel market type, shareindex, event, day time --->
                                 <Pane layoutX="229.0" layoutY="483.0" prefHeight="141.0" prefWidth="870.0">
                                     <children>
                                         <Text id="MarketType" layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="204.6708984375" />
@@ -88,6 +96,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+                <!-- back end tab - left hand side company table, right hand side client table -->
                 <Tab text="Back End">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
