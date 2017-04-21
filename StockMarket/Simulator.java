@@ -64,6 +64,24 @@ public class Simulator {
                     }
                 }
             }
+            // Initialise Traders.
+            ArrayList<Portfolio> port = new ArrayList<>();
+            port.add(portfolios.get(0)); // Norbert DaVinci.
+            portfolios.remove(0);
+            port.add(portfolios.get(7)); // Justine Thyme.
+            portfolios.remove(7);
+            traders.add(new IntelligentTrader(port));
+            while(portfolios.size() >= 2) {
+                port = new ArrayList<>();
+                port.add(portfolios.get(0));
+                portfolios.remove(0);
+                port.add(portfolios.get(1));
+                portfolios.remove(1);
+                traders.add(new RandomTrader(port));
+            }
+            if(portfolios.size() != 0) { // Must be one left over portfolio.
+                traders.add(new RandomTrader(portfolios));
+            }
         } catch(IOException e) {
             e.printStackTrace();
             System.exit(-1);
