@@ -1,6 +1,7 @@
 package StockMarket;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -15,6 +16,7 @@ public class Simulator {
     int stockIndex; // in pence.
     String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
+    private static final int SIZE_EVENTS = 16;
 
     // In place of runSimulation.
     public Simulator(int duration) {
@@ -24,14 +26,13 @@ public class Simulator {
         portfolios = new ArrayList<>();
         marketType = "Stable";
         initialiseData();
+        initialiseEvents();
     }
 
     private void initialiseData() {
-        BufferedReader br = null;
-        String line = "";
         try {
-            br = new BufferedReader(new FileReader("InitialDataV2.csv"));
-            int count = 0;
+            BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
+            String line = "";
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 if(row.length == SIZE_DATA && row[0].length() == 0) { // Contains the names of the Clients.
@@ -62,14 +63,23 @@ public class Simulator {
                     }
                 }
             }
-            for(Portfolio p : portfolios) {
-                System.out.println(p.getClientName());
-                System.out.println(p.getTotalWorth());
-            }
         } catch(IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
+    }
+
+    private void initialiseEvents() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("ExternalEventsData.csv"));
+            String line = "";
+            while((line = br.readLine()) != null) {
+                String[] row = line.split(",");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void run15Mins() {

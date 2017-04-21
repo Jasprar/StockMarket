@@ -1,4 +1,4 @@
 package StockMarket;
 
-public class Trader {
+public abstract class Trader {
 }
