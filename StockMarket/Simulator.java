@@ -1,7 +1,6 @@
 package StockMarket;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -28,10 +27,11 @@ public class Simulator {
         String line = "";
         try {
             br = new BufferedReader(new FileReader("InitialDataV2.csv"));
+            int count = 0;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 if(row.length == SIZE_DATA && !row[0].equals("")) { // This is a column of data.
-                    // TODO
+                    count++;
                 }
             }
         } catch(IOException e) {
