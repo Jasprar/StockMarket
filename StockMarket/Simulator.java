@@ -100,6 +100,7 @@ public class Simulator {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.exit(-1);
         }
 
     }

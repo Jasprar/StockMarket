@@ -34,4 +34,24 @@ public class Event {
         gc.add(gc.DATE, days);
         this.endDateTime = gc.getTime();
     }
+
+    public Date getStartDateTime() {
+        return startDateTime;
+    }
+
+    public Date getEndDateTime() {
+        return endDateTime;
+    }
+
+    public boolean isBuy() {
+        return isBuy;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 }

@@ -8,4 +8,13 @@ public class RandomTrader extends Trader {
         super(portfolios);
     }
 
+    @Override
+    public void setMode(int mode) {
+        // TODO
+    }
+
+    @Override
+    public void switchMode() {
+        // TODO
+    }
 }

@@ -12,4 +12,12 @@ public abstract class Trader {
     public ArrayList<Portfolio> getPortfolios() {
         return portfolios;
     }
+
+    public void setMode(int mode) {
+        // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader.
+    }
+
+    public void switchMode() {
+        // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader.
+    }
 }
