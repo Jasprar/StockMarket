@@ -9,12 +9,10 @@ import java.util.*;
 
 public class Simulator {
     private GregorianCalendar calendar;
-    private HashMap<Trader, ArrayList<Share>> toBeSold;
-    private HashMap<Trader, HashMap<String, Integer>> toBeBought; // Inner HashMap maps Company Name to number of shares sought for purchase.
-    private HashMap<String, Integer> numberOfShares;
     private ArrayList<Trader> traders;
     private ArrayList<Event> events;
     private ArrayList<Portfolio> portfolios;
+    private HashMap<String, Integer> numberOfShares;
     private int stockIndex; // in pence.
     private String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
@@ -113,17 +111,99 @@ public class Simulator {
 
     }
 
+    //TODO: TEST THIS METHOD.
     private void run15Mins() {
-
+        HashMap<Trader, ArrayList<Share>> toBeSold = new HashMap<>();
+        HashMap<Trader, HashMap<String, Integer>> toBeBought = new HashMap<>(); // Inner HashMap maps Company Name to number of shares sought for purchase.
+        HashMap<String, Integer> buyTotals = new HashMap<>();
+        HashMap<String, Integer> sellTotals = new HashMap<>();
+        for(String companyName : numberOfShares.keySet()) {
+            buyTotals.put(companyName, 0);
+            sellTotals.put(companyName, 0);
+        }
+        // Get what everyone wants to buy & sell.
         for(Trader t : traders) {
             HashMap<String, Integer> traderBuys = t.buy();
             toBeBought.put(t, traderBuys);
-            toBeSold.put(t, t.sell());
+            for(String companyName : traderBuys.keySet()) {
+                buyTotals.put(companyName, (buyTotals.get(companyName) + traderBuys.get(companyName)));
+            }
+            ArrayList<Share> shares = t.sell();
+            toBeSold.put(t, shares);
+            for(Share s : shares) {
+                sellTotals.put(s.getCompanyName(), (sellTotals.get(s.getCompanyName()) + 1));
+            }
+        }
+        // Work out how many shares are being sold/bought.
+        for(String companyName : numberOfShares.keySet()) {
+            ArrayList<Share> sharesForSale = new ArrayList<>();
+            ArrayList<Share> sharesBought;
+            int buyTotal = buyTotals.get(companyName);
+            int sellTotal = sellTotals.get(companyName);
+            if(buyTotal < sellTotal) { // Supply > Demand.
+                for(Trader t : traders) {
+                    ArrayList<Share> sharesOfCompany = new ArrayList<>();
+                    for(Share s : toBeSold.get(t)) {
+                        if(s.getCompanyName().equals(companyName)) {
+                            sharesOfCompany.add(s);
+                        }
+                    }
+                    int sharesSold = buyTotal * (sharesOfCompany.size() / sellTotal);
+                    sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
+                    t.returnShares(new ArrayList<Share>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())));
+                }
+                // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
+                for(Trader t : traders) {
+                    sharesBought = new ArrayList<>();
+                    for(int i = 0; i < toBeBought.get(t).get(companyName); i++) {
+                        if(i < sharesForSale.size()) { // Could occur that there are a couple more in toBeBought than in sharesRemoved due to rounding down for sharesSold.
+                            sharesBought.add(sharesForSale.get(i));
+                        }
+                    }
+                    t.addNewShares(sharesBought);
+                    sharesForSale.remove(sharesBought);
+                }
+                changeSharePrice(companyName, buyTotal - sellTotal);
+            } else if(buyTotal > sellTotal) { // Supply < Demand.
+                for(Trader t : traders) {
+                    for(Share s : toBeSold.get(t)) {
+                        if(s.getCompanyName().equals(companyName)) {
+                            sharesForSale.add(s);
+                        }
+                    }
+                }
+                for(Trader t : traders) {
+                    int sharesPurchased = sellTotal * (toBeBought.get(t).get(companyName) / buyTotal);
+                    if(sharesPurchased < sharesForSale.size()) { // Stops an error if there was rounding in sharesPurchased calculation.
+                        sharesBought = new ArrayList<>(sharesForSale.subList(0, sharesPurchased));
+                    } else {
+                        sharesBought = sharesForSale;
+                    }
+                    t.addNewShares(sharesBought);
+                    sharesForSale.remove(sharesBought);
+                }
+                changeSharePrice(companyName, buyTotal - sellTotal);
+            } else { // Supply = Demand.
+                // Calculate the shares that are up for sale for this company.
+                for(Trader t : traders) {
+                    for(Share s : toBeSold.get(t)) {
+                        if(s.getCompanyName().equals(companyName)) {
+                            sharesForSale.add(s);
+                        }
+                    }
+                }
+                // Give the trader the number of shares (from sharesForSale) that they asked for - there are exactly enough.
+                for(Trader t : traders) {
+                    sharesBought = new ArrayList<>(sharesForSale.subList(0, toBeBought.get(t).get(companyName)));
+                    t.addNewShares(sharesBought);
+                    sharesForSale.remove(sharesBought);
+                }
+            }
         }
         calendar.add(calendar.MINUTE, 15);
     }
 
-    // excess will be negative when Supply > Demand, zero when Supply = Demand.
+    // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
