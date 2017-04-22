@@ -1,6 +1,7 @@
 package StockMarket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RandomTrader extends Trader {
 
@@ -16,5 +17,15 @@ public class RandomTrader extends Trader {
     @Override
     public void switchMode() {
         // TODO
+    }
+
+    @Override
+    public HashMap<String, Integer> buy() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Share> sell() {
+        return null;
     }
 }

@@ -17,6 +17,7 @@ public class Simulator {
     private String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
+    private static final Date END_DATE = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2018", new ParsePosition(0)); // 1st Jan 2018 at midnight.
 
     public Simulator() {
         calendar = new GregorianCalendar(2017, 0, 1);
@@ -30,13 +31,15 @@ public class Simulator {
     }
 
     public void runSimulation(int duration) {
-        // TODO
+        while(calendar.getTime().before(END_DATE)) {
+            // TODO: call run15mins whenever open, move through weekends, check events etc.
+        }
     }
 
     private void initialiseData() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
-            String line = "";
+            String line;
             while ((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 if(row.length == SIZE_DATA && row[0].length() == 0) { // Contains the names of the Clients.
@@ -97,7 +100,7 @@ public class Simulator {
     private void initialiseEvents() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("ExternalEventsData.csv"));
-            String line = "";
+            String line;
             while((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 if(row.length == SIZE_EVENTS && !row[0].equals("Date")) { // i.e. not the header.
@@ -150,7 +153,7 @@ public class Simulator {
                     }
                     int sharesSold = buyTotal * (sharesOfCompany.size() / sellTotal);
                     sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
-                    t.returnShares(new ArrayList<Share>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())));
+                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())));
                 }
                 // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
                 for(Trader t : traders) {
@@ -238,7 +241,7 @@ public class Simulator {
         }
     }
 
-    private int getSharePrice(int companyName) {
+    private int getSharePrice(String companyName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s: p.getShares()) {
