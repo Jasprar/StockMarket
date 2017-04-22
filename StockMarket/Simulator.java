@@ -11,6 +11,7 @@ public class Simulator {
     private GregorianCalendar calendar;
     HashMap<Trader, ArrayList<Share>> toBeSold;
     HashMap<Trader, HashMap<String, Integer>> toBeBought; // Inner HashMap maps Company Name to number of shares sought for purchase.
+    HashMap<String, Integer> numberOfShares;
     ArrayList<Trader> traders;
     ArrayList<Event> events;
     ArrayList<Portfolio> portfolios;
@@ -19,15 +20,19 @@ public class Simulator {
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
 
-    // In place of runSimulation.
-    public Simulator(int duration) {
+    public Simulator() {
         calendar = new GregorianCalendar(2017, 0, 1);
+        numberOfShares = new HashMap<>();
         traders = new ArrayList<>();
         events = new ArrayList<>();
         portfolios = new ArrayList<>();
         marketType = "Stable";
         initialiseData();
         initialiseEvents();
+    }
+
+    public void runSimulation(int duration) {
+
     }
 
     private void initialiseData() {
@@ -44,6 +49,7 @@ public class Simulator {
                     }
                 } else if(row.length == SIZE_DATA) { // This is a column of data.
                     int j = 0;
+                    int totalShares = 0;
                     for(int i = 4; i < SIZE_DATA - 1; i++) {
                         if(row[i].length() != 0) {
                             ArrayList<Share> shares = new ArrayList<>();
@@ -51,9 +57,11 @@ public class Simulator {
                                 shares.add(new Share(row[0], row[2], Integer.parseInt(row[3])));
                             }
                             portfolios.get(j).addShares(shares);
+                            totalShares += Integer.parseInt(row[i]);
                             j++;
                         }
                     }
+                    numberOfShares.put(row[0], totalShares);
                 } else if(row.length > 0 && row[0].equals("CASH HOLDING (Pounds)")) { // I know, really ugly hard-coded way of doing this, I'm sorry.
                     int j = 0;
                     for(int i = 4; i < SIZE_DATA - 2; i++) {
@@ -111,16 +119,28 @@ public class Simulator {
 
     // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
-        // TODO: increase if Demand > Supply, and vice versa.
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()) {
+                for(Share s : p.getShares()) {
+                    if(s.getCompanyName().equals(companyName)) {
+                        s.setSharePrice((excess / numberOfShares.get(companyName)) * s.getSharePrice());
+                    }
+                }
+            }
+        }
     }
 
     private Event checkEvent() {
-        // TODO: return event if event is NOW, else null.
+        for(Event e : events) {
+            if(e.getStartDateTime() == calendar.getTime()) {
+                return e;
+            }
+        }
         return null;
     }
 
     private void removeAllShares(String companyName) {
-        // TODO: removes shares from all portfolios with name matching companyName.
+        
     }
 
     private int getSharePrice(int companyName) {

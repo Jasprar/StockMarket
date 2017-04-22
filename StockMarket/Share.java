@@ -14,4 +14,12 @@ public class Share {
     public int getSharePrice() {
         return sharePrice;
     }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setSharePrice(int sharePrice) {
+        this.sharePrice = sharePrice;
+    }
 }

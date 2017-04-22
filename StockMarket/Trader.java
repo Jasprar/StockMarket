@@ -18,6 +18,6 @@ public abstract class Trader {
     }
 
     public void switchMode() {
-        // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader.
+        // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader
     }
 }
