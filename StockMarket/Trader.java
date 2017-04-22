@@ -1,6 +1,7 @@
 package StockMarket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Trader {
     private ArrayList<Portfolio> portfolios;
@@ -20,4 +21,8 @@ public abstract class Trader {
     public void switchMode() {
         // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader
     }
+
+    public abstract HashMap<String,Integer> buy();
+
+    public abstract ArrayList<Share> sell();
 }

@@ -115,6 +115,11 @@ public class Simulator {
 
     private void run15Mins() {
 
+        for(Trader t : traders) {
+            HashMap<String, Integer> traderBuys = t.buy();
+            toBeBought.put(t, traderBuys);
+            toBeSold.put(t, t.sell());
+        }
         calendar.add(calendar.MINUTE, 15);
     }
 
