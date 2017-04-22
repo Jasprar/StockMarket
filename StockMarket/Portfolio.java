@@ -7,11 +7,13 @@ public class Portfolio {
     private int totalWorth;
     private int cashHolding;
     private ArrayList<Share> shares;
+    private boolean sellAll;
 
     public Portfolio(String clientName) {
         this.clientName = clientName;
         totalWorth = 0; // cashHolding is added later (due to processing the spreadsheet row-by-row).
         shares = new ArrayList<>();
+        sellAll = false;
     }
 
     public String getClientName() {
@@ -42,5 +44,9 @@ public class Portfolio {
 
     public int getCashHolding() {
         return cashHolding;
+    }
+
+    public void setSellAll() {
+        this.sellAll = true;
     }
 }

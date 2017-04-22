@@ -2,7 +2,7 @@ package StockMarket;
 
 public class Share {
     private String companyName;
-    public String commodity;
+    private String commodity;
     private int sharePrice;
 
     public Share(String companyName, String commodity, int sharePrice) {

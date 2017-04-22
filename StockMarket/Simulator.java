@@ -9,14 +9,14 @@ import java.util.*;
 
 public class Simulator {
     private GregorianCalendar calendar;
-    HashMap<Trader, ArrayList<Share>> toBeSold;
-    HashMap<Trader, HashMap<String, Integer>> toBeBought; // Inner HashMap maps Company Name to number of shares sought for purchase.
-    HashMap<String, Integer> numberOfShares;
-    ArrayList<Trader> traders;
-    ArrayList<Event> events;
-    ArrayList<Portfolio> portfolios;
-    int stockIndex; // in pence.
-    String marketType; // Bull, Bear, Stable.
+    private HashMap<Trader, ArrayList<Share>> toBeSold;
+    private HashMap<Trader, HashMap<String, Integer>> toBeBought; // Inner HashMap maps Company Name to number of shares sought for purchase.
+    private HashMap<String, Integer> numberOfShares;
+    private ArrayList<Trader> traders;
+    private ArrayList<Event> events;
+    private ArrayList<Portfolio> portfolios;
+    private int stockIndex; // in pence.
+    private String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
 
@@ -32,7 +32,7 @@ public class Simulator {
     }
 
     public void runSimulation(int duration) {
-
+        // TODO
     }
 
     private void initialiseData() {
@@ -114,10 +114,11 @@ public class Simulator {
     }
 
     private void run15Mins() {
-        // TODO: runs 1 15 minute period, i.e. traders trade, clock is updated, etc.
+
+        calendar.add(calendar.MINUTE, 15);
     }
 
-    // excess will be negative when Supply > Demand.
+    // excess will be negative when Supply > Demand, zero when Supply = Demand.
     private void changeSharePrice(String companyName, int excess) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
@@ -139,13 +140,30 @@ public class Simulator {
         return null;
     }
 
-    private void removeAllShares(String companyName) {
-        
+    /* Does not actually remove all shares for a client, but sets the boolean sellAll in their portfolio to true, alerting
+     * their trader that they must attempt to sell all those shares every cycle. */
+    private void removeAllShares(String clientName) {
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()) {
+                if(p.getClientName().equals(clientName)) {
+                    p.setSellAll();
+                    return;
+                }
+            }
+        }
     }
 
     private int getSharePrice(int companyName) {
-        // TODO: returns share price of companyName.
-        return -1;
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()) {
+                for(Share s: p.getShares()) {
+                    if(s.getCompanyName().equals(companyName)) {
+                        return s.getSharePrice();
+                    }
+                }
+            }
+        }
+        return -1; // An error has occurred if this step is reached - no share matched companyName.
     }
 
 }
