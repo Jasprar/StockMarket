@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -19,43 +18,38 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
     <children>
-
-        <!--- creating the menu bar  -->
-        <MenuBar>
+        <MenuBar id="MenuBar">
             <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu id="File" mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem id="Import" mnemonicParsing="false" text="Import File" />
-                        <MenuItem id="RunSim" mnemonicParsing="false" text="Run Simulation" />
-                        <MenuItem id="Quit" mnemonicParsing="false" text="Quit" />
+                        <MenuItem id="Import" mnemonicParsing="false" text="Import File" onAction="#getFile" />
+                        <MenuItem id="RunSim" mnemonicParsing="false" text="Run Simulation" onAction="#runSimulation"/>
+                        <MenuItem id="Quit" mnemonicParsing="false" text="Quit" onAction="#quit" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Help">
+                <Menu id="Help" mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem id="HowToUse" mnemonicParsing="false" text="How to use" />
-                        <MenuItem id="aboutUs" mnemonicParsing="false" text="About Us" />
+                        <MenuItem id="HowToUse" mnemonicParsing="false" text="How to use" onAction="#howToUse" />
+                        <MenuItem id="aboutUs" mnemonicParsing="false" text="About Us" onAction="#aboutUs"/>
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Legal">
+                <Menu id="Legal" mnemonicParsing="false" text="Legal">
                     <items>
-                        <MenuItem id="License" mnemonicParsing="false" text="License" />
-                        <RadioMenuItem id="copyRight" mnemonicParsing="false" text="Copyright" />
-                        <MenuItem id="credits" mnemonicParsing="false" text="Credits" />
+                        <MenuItem id="License" mnemonicParsing="false" text="License" onAction="#License"/>
+                        <MenuItem id="copyRight" mnemonicParsing="false" text="Copyright" onAction="#copyRight"/>
+                        <MenuItem id="credits" mnemonicParsing="false" text="Credits" onAction="#credits"/>
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
-
-        <!--- creating tab pane  -->
-        <TabPane prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane id="Tab" prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
                 <Tab id="frontEnd" text="Front End">
                     <content>
-
-                        <!--- Left section - displays the commodities   -->
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
                                 <VBox layoutX="-2.0" prefHeight="623.0" prefWidth="231.0">
@@ -68,7 +62,6 @@
                                 </VBox>
                                 <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
                                     <children>
-                                        <!-- graph - NEED TO ADDD THE GRAPH HERE !!! -->
                                         <LineChart prefHeight="483.0" prefWidth="867.0">
                                             <xAxis>
                                                 <CategoryAxis side="BOTTOM" />
@@ -79,25 +72,25 @@
                                         </LineChart>
                                     </children>
                                 </Pane>
-                                <!--- Bottom section of panel market type, shareindex, event, day time --->
                                 <Pane layoutX="229.0" layoutY="483.0" prefHeight="141.0" prefWidth="870.0">
                                     <children>
-                                        <Text id="MarketType" layoutX="14.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="204.6708984375" />
-                                        <Text id="ShareIndex" layoutX="14.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Share Index:" wrappingWidth="105.6708984375" />
-                                        <Text id="Event" layoutX="14.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event :" wrappingWidth="818.2978515625" />
-                                        <Text id="day" layoutX="13.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Day: " wrappingWidth="830.6708984375" />
-                                        <Text id="time" layoutX="12.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="259.61669921875" />
+                                        <Text id="MarketType" layoutX="446.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="99.6708984375" />
+                                        <Text id="ShareIndex" layoutX="446.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Share Index:" wrappingWidth="105.6708984375" />
+                                        <Text id="Event" layoutX="12.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event :" wrappingWidth="90.2978515625" />
+                                        <Text id="day" layoutX="446.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Day: " wrappingWidth="86.6708984375" />
+                                        <Text id="time" layoutX="9.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="96.61669921875" />
+                                        <Label id="timeEntry" layoutX="64.0" layoutY="96.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label id="dayEntry" layoutX="557.0" layoutY="97.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label id="eventEntry" layoutX="64.0" layoutY="8.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label id="marketEntry" layoutX="557.0" layoutY="8.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label id="shareEntry" layoutX="557.0" layoutY="51.0" prefHeight="15.0" prefWidth="186.0" />
                                     </children>
-                                    <cursor>
-                                        <Cursor fx:constant="NONE" />
-                                    </cursor>
                                 </Pane>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <!-- back end tab - left hand side company table, right hand side client table -->
-                <Tab text="Back End">
+                <Tab id="backEnd" text="Back End">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
