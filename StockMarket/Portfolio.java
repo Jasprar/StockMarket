@@ -49,4 +49,13 @@ public class Portfolio {
     public void setSellAll() {
         this.sellAll = true;
     }
+
+    // Called when a company's share price reaches 0.
+    public void removeAllShares(String companyName) {
+        for(Share s : shares) {
+            if(s.getCompanyName().equals(companyName)) {
+                shares.remove(s);
+            }
+        }
+    }
 }

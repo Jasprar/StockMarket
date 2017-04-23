@@ -1,5 +1,7 @@
 package StockMarket;
 
+import sun.security.provider.SHA;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,20 +13,22 @@ public class Simulator {
     private GregorianCalendar calendar;
     private ArrayList<Trader> traders;
     private ArrayList<Event> events;
-    private ArrayList<Portfolio> portfolios;
     private HashMap<String, Integer> numberOfShares;
     private int shareIndex; // in pence.
     private String marketType; // Bull, Bear, Stable.
+    private Event eventInProgress;
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
     private static final Date END_DATE = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2018", new ParsePosition(0)); // 1st Jan 2018 at midnight.
+    private static final Date GOOD_FRIDAY = new SimpleDateFormat("dd/MM/yyyy kk:mm").parse("14/04/2017 09:00", new ParsePosition(0));
+    private static final Date CHRISTMAS_DAY = new SimpleDateFormat("dd/MM/yyyy kk:mm").parse("25/12/2017 09:00", new ParsePosition(0));
+    // No need for Boxing Day or Easter Monday, as we will just skip over those days when we reach Christmas Day/Good Friday.
 
     public Simulator() {
-        calendar = new GregorianCalendar(2017, 0, 1);
+        calendar = new GregorianCalendar(2017, calendar.JANUARY, 1);
         numberOfShares = new HashMap<>();
         traders = new ArrayList<>();
         events = new ArrayList<>();
-        portfolios = new ArrayList<>();
         marketType = "Stable";
         initialiseData();
         calculateShareIndex();
@@ -33,31 +37,55 @@ public class Simulator {
 
     public void runSimulation(int duration) {
         while(calendar.getTime().before(END_DATE)) {
+            for(Trader t : traders) {
+                t.switchMode();
+            }
             Date endOfDay = getEndOfDay();
             while(calendar.getTime().before(endOfDay)) {
-                Event e;
-                if((e = checkEvent()) != null)  {
-                    for(Trader t : traders) {
-                        if(e.isBuy()) {
-                            t.setMode(RandomTrader.BUYER);
-                        } else {
-                            t.setMode(RandomTrader.SELLER);
+                if(eventInProgress == null) {
+                    if ((eventInProgress = checkEvent()) != null) { // checkEvent returns an Event when it is the starting time of that event.
+                        for (Trader t : traders) {
+                            t.setEvent(eventInProgress.getName());
+                            if (eventInProgress.isBuy()) {
+                                t.setMode(RandomTrader.BUYER);
+                            } else {
+                                t.setMode(RandomTrader.SELLER);
+                            }
                         }
+                    }
+                } else if(calendar.getTime().equals(eventInProgress.getEndDateTime())) { // There is already an event in progress.
+                    eventInProgress = null;
+                    for(Trader t : traders) {
+                       t.setEvent(null);
+                       t.switchMode();
                     }
                 }
                 run15Mins();
+                // Handles making the simulation run for a duration (in minutes).
+                try {
+                    Thread.sleep((duration * 60000) / (365 * 7 * 4)); // 365 days in the year * 7 hours open a day * 4 times an hour.
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt(); // Shouldn't occur.
+                }
             }
-            // Handles making the simulation run for a duration (in minutes).
-            try {
-                Thread.sleep((duration * 1000) / 365);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt(); // Shouldn't occur.
+            // End of trading day has been reached, the date must now be changed to the 9:00AM on the next working day.
+            GregorianCalendar nextDayCal = new GregorianCalendar();
+            nextDayCal.setTime(calendar.getTime());
+            nextDayCal.add(nextDayCal.HOUR_OF_DAY, 17);
+            if(nextDayCal.get(nextDayCal.DAY_OF_WEEK) == nextDayCal.SATURDAY) {
+                nextDayCal.add(nextDayCal.DATE, 2); // Skips over Sunday.
+            } else if(nextDayCal.getTime().equals(GOOD_FRIDAY)) {
+                nextDayCal.add(nextDayCal.DATE, 4);
+            } else if(nextDayCal.getTime().equals(CHRISTMAS_DAY)) {
+                nextDayCal.add(nextDayCal.DATE, 2);
             }
+            calendar.setTime(nextDayCal.getTime());
         }
     }
 
     private void initialiseData() {
         try {
+            ArrayList<Portfolio> portfolios = new ArrayList<>();
             BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
             String line;
             while ((line = br.readLine()) != null) {
@@ -256,20 +284,25 @@ public class Simulator {
 
     // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
+        int newSharePrice = 0;
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s : p.getShares()) {
                     if(s.getCompanyName().equals(companyName)) {
-                        s.setSharePrice((excess / numberOfShares.get(companyName)) * s.getSharePrice());
+                        newSharePrice = (excess / numberOfShares.get(companyName)) * s.getSharePrice();
+                        s.setSharePrice(newSharePrice);
                     }
                 }
             }
+        }
+        if(newSharePrice <= 0) { // Company is worthless. They must be removed from the simulation.
+            removeAllShares(companyName);
         }
     }
 
     private Event checkEvent() {
         for(Event e : events) {
-            if(e.getStartDateTime() == calendar.getTime()) {
+            if(e.getStartDateTime().equals(calendar.getTime())) {
                 return e;
             }
         }
@@ -278,7 +311,7 @@ public class Simulator {
 
     /* Does not actually remove all shares for a client, but sets the boolean sellAll in their portfolio to true, alerting
      * their trader that they must attempt to sell all those shares every cycle. */
-    private void removeAllShares(String clientName) {
+    private void leaveSimulation(String clientName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 if(p.getClientName().equals(clientName)) {
@@ -289,7 +322,22 @@ public class Simulator {
         }
     }
 
-    private int getSharePrice(String companyName) {
+    private Date getEndOfDay() {
+        GregorianCalendar dayCal = new GregorianCalendar();
+        dayCal.setTime(calendar.getTime());
+        dayCal.add(dayCal.HOUR_OF_DAY, 7);
+        return dayCal.getTime();
+    }
+
+    private void removeAllShares(String companyName) {
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()) {
+                p.removeAllShares(companyName);
+            }
+        }
+    }
+
+    public int getSharePrice(String companyName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s: p.getShares()) {
@@ -302,10 +350,26 @@ public class Simulator {
         return -1; // An error has occurred if this step is reached - no share matched companyName.
     }
 
-    public Date getEndOfDay() {
-        GregorianCalendar dayCal = new GregorianCalendar();
-        dayCal.setTime(calendar.getTime());
-        dayCal.add(dayCal.HOUR_OF_DAY, 7);
-        return dayCal.getTime();
+    public int getNetWorth(String companyName) {
+        int netWorth = 0;
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()) {
+                for(Share s: p.getShares()) {
+                    if(s.getCompanyName().equals(companyName)) {
+                        netWorth += s.getSharePrice();
+                    }
+                }
+            }
+        }
+        return netWorth;
     }
+
+    public int getShareIndex() {
+        return shareIndex;
+    }
+
+    public String getMarketType() {
+        return marketType;
+    }
+
 }
