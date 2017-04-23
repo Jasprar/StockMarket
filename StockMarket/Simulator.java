@@ -13,7 +13,7 @@ public class Simulator {
     private ArrayList<Event> events;
     private ArrayList<Portfolio> portfolios;
     private HashMap<String, Integer> numberOfShares;
-    private int stockIndex; // in pence.
+    private int shareIndex; // in pence.
     private String marketType; // Bull, Bear, Stable.
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
@@ -27,12 +27,32 @@ public class Simulator {
         portfolios = new ArrayList<>();
         marketType = "Stable";
         initialiseData();
+        calculateShareIndex();
         initialiseEvents();
     }
 
     public void runSimulation(int duration) {
         while(calendar.getTime().before(END_DATE)) {
-            // TODO: call run15mins whenever open, move through weekends, check events etc.
+            Date endOfDay = getEndOfDay();
+            while(calendar.getTime().before(endOfDay)) {
+                Event e;
+                if((e = checkEvent()) != null)  {
+                    for(Trader t : traders) {
+                        if(e.isBuy()) {
+                            t.setMode(RandomTrader.BUYER);
+                        } else {
+                            t.setMode(RandomTrader.SELLER);
+                        }
+                    }
+                }
+                run15Mins();
+            }
+            // Handles making the simulation run for a duration (in minutes).
+            try {
+                Thread.sleep((duration * 1000) / 365);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Shouldn't occur.
+            }
         }
     }
 
@@ -203,7 +223,35 @@ public class Simulator {
                 }
             }
         }
+        calculateShareIndex();
         calendar.add(calendar.MINUTE, 15);
+    }
+
+    private void calculateShareIndex() {
+        int newShareIndex = 0;
+        for(String companyName : numberOfShares.keySet()) {
+            boolean found = false;
+            int i = 0;
+            while(!found && i < traders.size()) {
+                Trader t = traders.get(i);
+                int j = 0;
+                while(!found && j < t.getPortfolios().size()) {
+                    Portfolio p = t.getPortfolios().get(j);
+                    int k = 0;
+                    while(!found && k < p.getShares().size()) {
+                        Share s = p.getShares().get(k);
+                        if(s.getCompanyName().equals(companyName)) {
+                            newShareIndex += s.getSharePrice();
+                            found = true;
+                        }
+                        k++;
+                    }
+                    j++;
+                }
+                i++;
+            }
+        }
+        shareIndex = newShareIndex / numberOfShares.size();
     }
 
     // excess will be negative when Supply > Demand.
@@ -254,4 +302,10 @@ public class Simulator {
         return -1; // An error has occurred if this step is reached - no share matched companyName.
     }
 
+    public Date getEndOfDay() {
+        GregorianCalendar dayCal = new GregorianCalendar();
+        dayCal.setTime(calendar.getTime());
+        dayCal.add(dayCal.HOUR_OF_DAY, 7);
+        return dayCal.getTime();
+    }
 }
