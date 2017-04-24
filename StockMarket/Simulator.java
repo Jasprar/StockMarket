@@ -5,6 +5,7 @@ import sun.security.provider.SHA;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.Format;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -364,6 +365,17 @@ public class Simulator {
         return netWorth;
     }
 
+    //Getter methods for the GUI
+    public String getTime() {
+        Format formatter = new SimpleDateFormat("HH:mm:ss");
+        String s = formatter.format( calendar.getTime());
+    return s;
+    }
+    public String getDate(){
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String s = formatter.format(calendar.getTime());
+        return s;
+    }
     public Event getEvent(){ return eventInProgress; }
     public int getShareIndex() {
         return shareIndex;
@@ -371,5 +383,6 @@ public class Simulator {
     public String getMarketType() {
         return marketType;
     }
+
 
 }
