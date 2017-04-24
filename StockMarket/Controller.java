@@ -4,6 +4,7 @@ package StockMarket;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,7 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import javax.xml.soap.Text;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller {
@@ -24,7 +27,7 @@ public class Controller {
     @FXML
     MenuItem runSim;
     @FXML
-    Label dayEntry;
+    Label dateEntry;
     ;
     @FXML
     Label eventEntry;
@@ -34,6 +37,14 @@ public class Controller {
     Label shareEntry;
     @FXML
     Label marketEntry;
+    @FXML
+    TextArea Hardware;
+    @FXML
+    TextArea Food;
+    @FXML
+    TextArea HiTech;
+    @FXML
+    TextArea Property;
     int duration;
 
     /**
@@ -58,14 +69,16 @@ public class Controller {
         dialog.setHeaderText("Enter duration (Minutes)");
         dialog.setContentText("Duration: ");
         dialog.show();
-         /* Currently doesnt work
-         duration = Integer.parseInt("3");
-         if(duration != 0) sim.runSimulation(duration);
-          */
+
+        //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
+        // Currently doesnt work
+        // duration = Integer.parseInt("3");
+        // if(duration != 0) sim.runSimulation(duration);
+
         callMethod();
     }
 
-    ;
+
 
     @FXML
     public void callMethod() {
@@ -75,21 +88,19 @@ public class Controller {
         Property();
         time();
         share();
-        day();
+        date();
         MarketType();
         event();
 
 
     }
 
-    ;
 
     @FXML
     public void quit() {
         System.exit(0);
     }
 
-    ;
 
     /**
      * Help menubar --> menu item methods
@@ -107,7 +118,6 @@ public class Controller {
 
     }
 
-    ;
 
     @FXML
     public void aboutUs() {
@@ -124,7 +134,6 @@ public class Controller {
 
     }
 
-    ;
 
     /**
      * Legal menuBar --> Menu item methods
@@ -139,7 +148,6 @@ public class Controller {
         alert.showAndWait();
     }
 
-    ;
 
     @FXML
     public void copyRight() {
@@ -151,7 +159,6 @@ public class Controller {
         alert.showAndWait();
     }
 
-    ;
 
     @FXML
     public void credits() {
@@ -163,35 +170,42 @@ public class Controller {
         alert.showAndWait();
     }
 
-    ;
+
 
     /**
      * Left panel --> Commodities methods
      */
     @FXML
     public void Food() {
+        Food.appendText("Get Food data");
     }
 
-    ; // Needs to be changed to labels
+     // Needs to be changed to labels
 
     // TODO: Change textfields to labels and create new labels for the data to get added to there // - learn how to bind.
     @FXML
     public void Hardware() {
+
+        Hardware.appendText("Get Hardware data");
     }
 
-    ;
+
+
 
     @FXML
     public void HiTech() {
+
+        HiTech.appendText("Get HiTech data");
     }
 
-    ;
+
 
     @FXML
     public void Property() {
+        Property.appendText("Get Property data");
     }
 
-    ;
+
 
     /**
      * Bottom panel (Below graph) --> Information panel
@@ -200,39 +214,41 @@ public class Controller {
 
     @FXML
     public void time() {
-
+    timeEntry.setText(sim.getTime());
     }
 
-    ; // Textfield for timeEntry
+     // Textfield for timeEntry
 
-    public void day() {
+    public void date() {
+        dateEntry.setText(sim.getDate());
     }
 
-    ; // Textfield for dayEntry
+     // Textfield for dayEntry
 
     public void MarketType() {
         marketEntry.setText(sim.getMarketType());
     }
 
-    ; // Text field marketEntry
+     // Text field marketEntry
 
     public void event() {
-        if (sim.getEvent() == null) eventEntry.setText("");
-        else eventEntry.setText(String.valueOf(sim.getEvent()));
+      //  if (sim.getEvent() == null) eventEntry.setText("");
+        /*else*/ eventEntry.setText(String.valueOf(sim.getEvent()));
+
     }
 
-    ; //TODO test this using timer
+     //TODO test this using timer
 
 
     public void share() {
 
-        String share = Integer.toString(sim.getShareIndex());
-        shareEntry.setText(share);
+            String share = Integer.toString(sim.getShareIndex());
+            shareEntry.setText(share);
 
 
     }
 
-    ;
+
 
 
 }
