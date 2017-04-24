@@ -364,10 +364,10 @@ public class Simulator {
         return netWorth;
     }
 
+    public Event getEvent(){ return eventInProgress; }
     public int getShareIndex() {
         return shareIndex;
     }
-
     public String getMarketType() {
         return marketType;
     }
