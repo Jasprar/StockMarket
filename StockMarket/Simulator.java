@@ -8,11 +8,16 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Represents the Stock Market & Stock Exchange, and therefore handles the buying and selling of all Shares between Traders.
+ * Reads initial data about clients, companies and events and instantiates all required classes based on this data, ready
+ * for the simulation to begin. Keeps track of the date, time and events that occur, and responds to these events when
+ * the time is right.
+ */
 public class Simulator {
     private GregorianCalendar calendar;
     private ArrayList<Trader> traders;
     private ArrayList<Event> events;
-    private ArrayList<Portfolio> port;
     private HashMap<String, Integer> numberOfShares;
     private int shareIndex; // in pence.
     private String marketType; // Bull, Bear, Stable.
@@ -24,6 +29,11 @@ public class Simulator {
     private static final Date CHRISTMAS_DAY = new SimpleDateFormat("dd/MM/yyyy kk:mm").parse("25/12/2017 09:00", new ParsePosition(0));
     // No need for Boxing Day or Easter Monday, as we will just skip over those days when we reach Christmas Day/Good Friday.
 
+    /**
+     * Instatiates the Simulation, setting the date to 01/01/2017, reads data about clients and companies from
+     * InitialDataV2.csv, and imports data about events from ExternalEventsData.csv. After instantiation, the simulation
+     * is completely ready to be run.
+     */
     public Simulator() {
         calendar = new GregorianCalendar(2017, calendar.JANUARY, 1);
         numberOfShares = new HashMap<>();
@@ -35,6 +45,10 @@ public class Simulator {
         initialiseEvents();
     }
 
+    /**
+     *
+     * @param duration
+     */
     public void runSimulation(int duration) {
         while(calendar.getTime().before(END_DATE)) {
             for(Trader t : traders) {
@@ -122,7 +136,7 @@ public class Simulator {
                 }
             }
             // Initialise Traders.
-            port = new ArrayList<>(); //Made port a field
+            ArrayList<Portfolio> port = new ArrayList<>(); //Made port a field
             port.add(portfolios.get(0)); // Norbert DaVinci.
             port.add(portfolios.get(7)); // Justine Thyme.
             portfolios.remove(7);
@@ -382,11 +396,18 @@ public class Simulator {
     public String getMarketType() {
         return marketType;
     }
-    public List<Portfolio> getPortFolio(){ return port;}
-    //Part 1 -> pass accross company name
-    public Set<String> getCompanyName(){
-        Set<String> keys = numberOfShares.keySet();
-        return keys;}
+    public List<Portfolio> getPortfolios(){
+        ArrayList<Portfolio> portfolios = new ArrayList<>();
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()){
+                portfolios.add(p);
+            }
+        }
+        return portfolios;
+    }
+
+    //Part 1 -> pass across company name
+    public Set<String> getCompanyName(){ return numberOfShares.keySet(); }
 
 
 }
