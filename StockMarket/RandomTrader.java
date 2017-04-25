@@ -28,7 +28,8 @@ public class RandomTrader extends Trader {
     }
 
     // Remember that with these methods, if an event is in progress (String event != null), then the RandomTraders should
-    // only be trading in shares of that name (and presumably if it is a buy event, they shouldn't sell at all, etc (?)).
+    // only be trading in shares of that name (and I talked to Bradley - If it is a buy event, selling should happen
+    // AS IT USUALLY WOULD and vice-versa).
     @Override
     public HashMap<String, Integer> buy() {
         return null;

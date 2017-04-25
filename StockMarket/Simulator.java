@@ -443,9 +443,9 @@ public class Simulator {
      * @return The current market type.
      */
     public String getMarketType() {
-        if(marketType >= 3) {
+        if(marketType >= 3) { // Rising for 3+ days.
             return "Bull";
-        } else if(marketType <= -3) {
+        } else if(marketType <= -3) { // Falling for 3+ days.
             return "Bear";
         } else {
             return "Stable";

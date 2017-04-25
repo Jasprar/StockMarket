@@ -3,6 +3,12 @@ package StockMarket;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/**
+ * Represents an event that will occur in the simulation at some date & time, including all the information required
+ * to know when this event should begin/end (and what the event actually does, e.g. makes traders BUY/SELL a particular stock).
+ * @Author 146803
+ * @Version 22/04/2017
+ */
 public class Event {
     private Date startDateTime;
     private Date endDateTime;
