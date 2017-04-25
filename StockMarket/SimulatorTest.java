@@ -1,50 +1,65 @@
 package StockMarket;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import java.util.Iterator;
+import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Created by Jasper on 25/04/2017.
- */
-@RunWith(Arquillian.class)
-public class SimulatorTest {
+class SimulatorTest {
     Simulator simulator;
-    @org.junit.Test
-    public void runSimulation() throws Exception {
+
+    @org.junit.jupiter.api.BeforeEach
+    void setUp() {
+        simulator = new Simulator();
     }
 
-    @org.junit.Test
-    public void getSharePrice() throws Exception {
-        for(String companyName : simulator.getCompanyNames()) {
-            
+    @org.junit.jupiter.api.Test
+    void runSimulation() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getSharePrice() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getNetWorth() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getTime() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getDate() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getEvent() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getShareIndex() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getMarketType() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getPortfolios() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void getCompanyNames() {
+    }
+
+    @org.junit.jupiter.api.Test
+    void initialiseData() {
+        Iterator<String> companyNames = simulator.getCompanyNames().iterator();
+        int i = 0;
+        int[] sharePrices = {650,126,82,24,130,18045,100,19,570,12,540,345,268,637,340,99,368,45,210};
+        while(companyNames.hasNext()) {
+            assertEquals(simulator.getSharePrice(companyNames.next()), sharePrices[i]);
+            i++;
         }
     }
 
-    @org.junit.Test
-    public void getNetWorth() throws Exception {
-    }
-
-    @org.junit.Test
-    public void getShareIndex() throws Exception {
-    }
-
-    @org.junit.Test
-    public void getMarketType() throws Exception {
-    }
-
-    @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClass(Simulator.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        simulator = new Simulator();    }
 }
