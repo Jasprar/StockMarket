@@ -372,7 +372,7 @@ public class Simulator {
     return s;
     }
     public String getDate(){
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         String s = formatter.format(calendar.getTime());
         return s;
     }
