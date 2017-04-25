@@ -1,7 +1,5 @@
 package StockMarket;
 
-import sun.security.provider.SHA;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,6 +12,7 @@ public class Simulator {
     private GregorianCalendar calendar;
     private ArrayList<Trader> traders;
     private ArrayList<Event> events;
+    private ArrayList<Portfolio> port;
     private HashMap<String, Integer> numberOfShares;
     private int shareIndex; // in pence.
     private String marketType; // Bull, Bear, Stable.
@@ -123,7 +122,7 @@ public class Simulator {
                 }
             }
             // Initialise Traders.
-            ArrayList<Portfolio> port = new ArrayList<>();
+            port = new ArrayList<>(); //Made port a field
             port.add(portfolios.get(0)); // Norbert DaVinci.
             port.add(portfolios.get(7)); // Justine Thyme.
             portfolios.remove(7);
@@ -383,6 +382,11 @@ public class Simulator {
     public String getMarketType() {
         return marketType;
     }
+    public List<Portfolio> getPortFolio(){ return port;}
+    //Part 1 -> pass accross company name
+    public Set<String> getCompanyName(){
+        Set<String> keys = numberOfShares.keySet();
+        return keys;}
 
 
 }
