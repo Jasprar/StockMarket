@@ -23,7 +23,8 @@ public class Simulator {
     private ArrayList<Event> events;
     private HashMap<String, Integer> numberOfShares;
     private int shareIndex; // in pence.
-    private int marketType; // Bull, Bear, Stable.
+    private int marketType;
+    private int yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
@@ -45,20 +46,30 @@ public class Simulator {
         marketType = 0;
         initialiseData();
         calculateShareIndex();
+        yesterdayShareIndex = shareIndex;
         initialiseEvents();
     }
 
     /**
      * Runs the simulation for 1 year (until 31/01/2017, 17:00) - Every 15 minutes, traders buy & sell shares & the share index is adjusted (along with
      * share prices & net worths for companies). Skips over hours & days where the Stock Market is closed
-     * (17:00 - 09:00 Monday - Friday, all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
+     * (17:00 - 09:00 Monday - Friday & all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
      * @param duration The number of minutes you wish the simulation to take (how fast you wish data to be updated).
      */
     public void runSimulation(int duration) {
         while(calendar.getTime().before(END_DATE)) {
+            // Update the marketType counter.
+            if(yesterdayShareIndex < shareIndex) {
+                marketType++;
+            } else if(yesterdayShareIndex > shareIndex) {
+                marketType--;
+            }
+            yesterdayShareIndex = shareIndex;
+            // Switch trader modes.
             for(Trader t : traders) {
                 t.switchMode();
             }
+            // Perform run15Mins until trading closes for the day.
             Date endOfDay = getEndOfDay();
             while(calendar.getTime().before(endOfDay)) {
                 if(eventInProgress == null) {
