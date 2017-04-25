@@ -406,8 +406,6 @@ public class Simulator {
         return portfolios;
     }
 
-    //Part 1 -> pass across company name
     public Set<String> getCompanyName(){ return numberOfShares.keySet(); }
-
 
 }
