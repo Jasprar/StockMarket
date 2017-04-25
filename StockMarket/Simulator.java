@@ -30,7 +30,7 @@ public class Simulator {
     // No need for Boxing Day or Easter Monday, as we will just skip over those days when we reach Christmas Day/Good Friday.
 
     /**
-     * Instatiates the Simulation, setting the date to 01/01/2017, reads data about clients and companies from
+     * Instantiates the Simulation, setting the date to 01/01/2017, reads data about clients and companies from
      * InitialDataV2.csv, and imports data about events from ExternalEventsData.csv. After instantiation, the simulation
      * is completely ready to be run.
      */
@@ -46,8 +46,10 @@ public class Simulator {
     }
 
     /**
-     *
-     * @param duration
+     * Runs the simulation for 1 year (until 31/01/2017, 17:00) - Every 15 minutes, traders buy & sell shares & the share index is adjusted (along with
+     * share prices & net worths for companies). Skips over hours & days where the Stock Market is closed
+     * (17:00 - 09:00 Monday - Friday, all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
+     * @param duration The number of minutes you wish the simulation to take (how fast you wish data to be updated).
      */
     public void runSimulation(int duration) {
         while(calendar.getTime().before(END_DATE)) {
@@ -351,6 +353,11 @@ public class Simulator {
         }
     }
 
+    /**
+     * Given the name of a company, returns its share price.
+     * @param companyName An (exact) string representation of a company's name.
+     * @return The share price of the company, or -1 if the company does not exist.
+     */
     public int getSharePrice(String companyName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
@@ -364,6 +371,11 @@ public class Simulator {
         return -1; // An error has occurred if this step is reached - no share matched companyName.
     }
 
+    /**
+     * Given the name of a company, returns its net worth.
+     * @param companyName An (exact) string representation of the company's name.
+     * @return The net worth (share price * number of shares) for the company.
+     */
     public int getNetWorth(String companyName) {
         int netWorth = 0;
         for(Trader t : traders) {
@@ -378,24 +390,52 @@ public class Simulator {
         return netWorth;
     }
 
-    //Getter methods for the GUI
+    /**
+     * Returns the time portion of the current date & time in the simulation.
+     * @return A string representation of the current time (HH:MM:SS).
+     */
     public String getTime() {
         Format formatter = new SimpleDateFormat("HH:mm:ss");
         String s = formatter.format( calendar.getTime());
     return s;
     }
+
+    /**
+     * Returns the date portion of the current date & time in the simulation.
+     * @return A string representation of the current date (DD-MM-YYYY).
+     */
     public String getDate(){
         Format formatter = new SimpleDateFormat("dd-MM-yyyy");
         String s = formatter.format(calendar.getTime());
         return s;
     }
+
+    /**
+     * Returns the event currently in progress (if exists).
+     * @return The event in progress at this date & time, or null if no such event exists.
+     */
     public Event getEvent(){ return eventInProgress; }
+
+    /**
+     * Returns the share index of the stock market at this time.
+     * @return The share index (sum of all share prices / number of companies).
+     */
     public int getShareIndex() {
         return shareIndex;
     }
+
+    /**
+     * Returns the current market type (bear/bull/stable).
+     * @return The current market type.
+     */
     public String getMarketType() {
         return marketType;
     }
+
+    /**
+     * Provides a list of all portfolios (clients & information relating to them) within the simulation.
+     * @return A list of all Portfolio instances in the simulation.
+     */
     public List<Portfolio> getPortfolios(){
         ArrayList<Portfolio> portfolios = new ArrayList<>();
         for(Trader t : traders) {
@@ -406,6 +446,10 @@ public class Simulator {
         return portfolios;
     }
 
+    /**
+     * Returns the names of all companies in the simulation.
+     * @return A set of the names of all companies in the simulation.
+     */
     public Set<String> getCompanyName(){ return numberOfShares.keySet(); }
 
 }
