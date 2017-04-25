@@ -1,6 +1,7 @@
 package StockMarket;
 
 
+import javafx.application.Platform;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,17 +19,16 @@ import javax.xml.soap.Text;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Controller {
-    Simulator sim = new Simulator();
-    // dummy test need to get duration then instantiate(?) // need to overrride it
     //Views
 
     @FXML
     MenuItem runSim;
     @FXML
     Label dateEntry;
-    ;
     @FXML
     Label eventEntry;
     @FXML
@@ -45,7 +45,12 @@ public class Controller {
     TextArea HiTech;
     @FXML
     TextArea Property;
+
+    //Java fields
     int duration;
+    Timer timer = new Timer();
+    Simulator sim = new Simulator();
+
 
     /**
      * File menubar -> menu items methods
@@ -91,6 +96,7 @@ public class Controller {
         date();
         MarketType();
         event();
+        graph();
 
 
     }
@@ -166,7 +172,6 @@ public class Controller {
         alert.setTitle("Credits");
         alert.setHeaderText(null);
         alert.setContentText("Jasper Weymouth,Feroze Saeed,Sheel Shah,Steven Shum");
-
         alert.showAndWait();
     }
 
@@ -214,41 +219,90 @@ public class Controller {
 
     @FXML
     public void time() {
-    timeEntry.setText(sim.getTime());
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                timeEntry.setText(sim.getTime());
+                });
+            }
+        },0,1000);
+
+ ;
     }
 
      // Textfield for timeEntry
 
     public void date() {
-        dateEntry.setText(sim.getDate());
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    dateEntry.setText(sim.getDate());
+                });
+            }
+        },0,1000);
     }
 
      // Textfield for dayEntry
 
     public void MarketType() {
-        marketEntry.setText(sim.getMarketType());
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    marketEntry.setText(sim.getMarketType());
+                });
+            }
+        },0,1000);
+
+
     }
 
      // Text field marketEntry
 
     public void event() {
-      //  if (sim.getEvent() == null) eventEntry.setText("");
-        /*else*/ eventEntry.setText(String.valueOf(sim.getEvent()));
-
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if (sim.getEvent() == null) eventEntry.setText("");
+                    else eventEntry.setText(String.valueOf(sim.getEvent()));
+                });
+            }
+        },0,1000);
     }
 
      //TODO test this using timer
 
 
     public void share() {
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    String share = Integer.toString(sim.getShareIndex()); //TODO convert every type of interger to decimal, eg 1000 -> .0001, 100 --> 0.001
+                    shareEntry.setText("£" + share);
+                });
+            }
+        },0,1000);
+    }
 
-            String share = Integer.toString(sim.getShareIndex());
-            shareEntry.setText(share);
-
+    public void graph(){
 
     }
 
+    /**
+     * Back end tab --> 2 tables
+     */
 
+    public void companyTable(){
+
+    };
+
+    public void clientTable(){
+
+    };
 
 
 }
