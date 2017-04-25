@@ -13,6 +13,9 @@ import java.util.*;
  * Reads initial data about clients, companies and events and instantiates all required classes based on this data, ready
  * for the simulation to begin. Keeps track of the date, time and events that occur, and responds to these events when
  * the time is right.
+ *
+ * @Author 146803
+ * @Version 25/04/2017
  */
 public class Simulator {
     private GregorianCalendar calendar;
