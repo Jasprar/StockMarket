@@ -23,7 +23,7 @@ public class Simulator {
     private ArrayList<Event> events;
     private HashMap<String, Integer> numberOfShares;
     private int shareIndex; // in pence.
-    private String marketType; // Bull, Bear, Stable.
+    private int marketType; // Bull, Bear, Stable.
     private Event eventInProgress;
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
@@ -42,7 +42,7 @@ public class Simulator {
         numberOfShares = new HashMap<>();
         traders = new ArrayList<>();
         events = new ArrayList<>();
-        marketType = "Stable";
+        marketType = 0;
         initialiseData();
         calculateShareIndex();
         initialiseEvents();
@@ -432,7 +432,13 @@ public class Simulator {
      * @return The current market type.
      */
     public String getMarketType() {
-        return marketType;
+        if(marketType >= 3) {
+            return "Bull";
+        } else if(marketType <= -3) {
+            return "Bear";
+        } else {
+            return "Stable";
+        }
     }
 
     /**
