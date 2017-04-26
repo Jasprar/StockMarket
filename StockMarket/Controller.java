@@ -27,7 +27,7 @@ import java.util.*;
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
  *
  * @Author 132224
- * @Version 24/04/2017
+ * @Version 26/04/2017
  */
 
 
