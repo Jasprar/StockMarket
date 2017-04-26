@@ -466,6 +466,6 @@ public class Simulator {
      * Returns the names of all companies in the simulation.
      * @return A set of the names of all companies in the simulation.
      */
-    public Set<String> getCompanyName(){ return numberOfShares.keySet(); }
+    public Set<String> getCompanyNames(){ return numberOfShares.keySet(); }
 
 }
