@@ -82,8 +82,8 @@ public class Simulator {
                 } else if(calendar.getTime().equals(eventInProgress.getEndDateTime())) { // There is already an event in progress.
                     eventInProgress = null;
                     for(Trader t : traders) {
-                       t.setEvent(null);
-                       t.switchMode();
+                        t.setEvent(null);
+                        t.switchMode();
                     }
                 }
                 run15Mins();
@@ -407,7 +407,7 @@ public class Simulator {
     public String getTime() {
         Format formatter = new SimpleDateFormat("HH:mm:ss");
         String s = formatter.format( calendar.getTime());
-    return s;
+        return s;
     }
 
     /**

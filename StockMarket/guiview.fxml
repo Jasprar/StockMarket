@@ -62,12 +62,12 @@
                                 </VBox>
                                 <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
                                     <children>
-                                        <LineChart prefHeight="483.0" prefWidth="867.0">
+                                        <LineChart fx:id="linechart" prefHeight="483.0" prefWidth="867.0">
                                             <xAxis>
-                                                <CategoryAxis side="BOTTOM" />
+                                                <NumberAxis  fx:id="x" side="BOTTOM" />
                                             </xAxis>
                                             <yAxis>
-                                                <NumberAxis side="LEFT" />
+                                                <NumberAxis fx:id="y" side="LEFT" />
                                             </yAxis>
                                         </LineChart>
                                     </children>
@@ -98,10 +98,10 @@
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="230.0">
                                             <children>
-                                                <TableView layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
+                                                <TableView fx:id="tableview" layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
                                                     <columns>
-                                                        <TableColumn id="Company" prefWidth="75.0" text="Company" />
-                                                        <TableColumn id="Type" prefWidth="75.0" text="Type" />
+                                                        <TableColumn fx:id="Company" prefWidth="75.0" text="Company" />
+                                                        <TableColumn fx:id="TotalShares" prefWidth="75.0" text="Total shares" />
                                                     </columns>
                                                 </TableView>
                                             </children>

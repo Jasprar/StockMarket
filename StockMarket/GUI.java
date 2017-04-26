@@ -7,6 +7,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ *
+ * Creates Graphical user inferface of the stock market simulation.
+ * Loads guiview.fxml which represents the view.
+ * Guiview takes in Controller.java which lets the user interact with it by using Event listeners.
+ *
+ * @author 132224
+ * @version 25/04/2017
+ */
 public class GUI extends Application {
 
     @Override

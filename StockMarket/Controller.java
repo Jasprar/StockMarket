@@ -1,26 +1,37 @@
 package StockMarket;
 
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+import javafx.util.Duration;
 
-import javax.xml.soap.Text;
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.awt.event.ActionEvent;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+/**
+ * Controller class. Handles the the users input and updates the gui every second using Timer Task.
+ *
+ * @Author 132224
+ * @Version 24/04/2017
+ */
+
+
+//TODO Put all code that needs timers in 1 method - stops repeating the data after testing (Easier to test when its in seperate methods
 
 public class Controller {
     //Views
@@ -45,11 +56,22 @@ public class Controller {
     TextArea HiTech;
     @FXML
     TextArea Property;
+    @FXML
+    TableColumn Company;
+    @FXML
+    TableView tableview;
+    @FXML
+    LineChart linechart;
+    @FXML
+    NumberAxis x;
+    @FXML
+    NumberAxis y;
 
     //Java fields
     int duration;
     Timer timer = new Timer();
     Simulator sim = new Simulator();
+    int count;
 
 
     /**
@@ -84,7 +106,6 @@ public class Controller {
     }
 
 
-
     @FXML
     public void callMethod() {
         Food();
@@ -97,6 +118,8 @@ public class Controller {
         MarketType();
         event();
         graph();
+        clientTable();
+        companyTable();
 
 
     }
@@ -176,7 +199,6 @@ public class Controller {
     }
 
 
-
     /**
      * Left panel --> Commodities methods
      */
@@ -185,7 +207,7 @@ public class Controller {
         Food.appendText("Get Food data");
     }
 
-     // Needs to be changed to labels
+    // Needs to be changed to labels
 
     // TODO: Change textfields to labels and create new labels for the data to get added to there // - learn how to bind.
     @FXML
@@ -195,8 +217,6 @@ public class Controller {
     }
 
 
-
-
     @FXML
     public void HiTech() {
 
@@ -204,12 +224,10 @@ public class Controller {
     }
 
 
-
     @FXML
     public void Property() {
         Property.appendText("Get Property data");
     }
-
 
 
     /**
@@ -223,15 +241,15 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                timeEntry.setText(sim.getTime());
+                    timeEntry.setText(sim.getTime());
                 });
             }
-        },0,1000);
+        }, 0, 1000);
 
- ;
+        ;
     }
 
-     // Textfield for timeEntry
+    // Textfield for timeEntry
 
     public void date() {
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -241,10 +259,10 @@ public class Controller {
                     dateEntry.setText(sim.getDate());
                 });
             }
-        },0,1000);
+        }, 0, 1000);
     }
 
-     // Textfield for dayEntry
+    // Textfield for dayEntry
 
     public void MarketType() {
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -254,12 +272,12 @@ public class Controller {
                     marketEntry.setText(sim.getMarketType());
                 });
             }
-        },0,1000);
+        }, 0, 1000);
 
 
     }
 
-     // Text field marketEntry
+    // Text field marketEntry
 
     public void event() {
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -267,13 +285,13 @@ public class Controller {
             public void run() {
                 Platform.runLater(() -> {
                     if (sim.getEvent() == null) eventEntry.setText("");
-                    else eventEntry.setText(String.valueOf(sim.getEvent()));
+                    else eventEntry.setText(String.valueOf(sim.getEvent().getMessage()));
                 });
             }
-        },0,1000);
+        }, 0, 1000);
     }
 
-     //TODO test this using timer
+    //TODO test this using timer
 
 
     public void share() {
@@ -282,27 +300,55 @@ public class Controller {
             public void run() {
                 Platform.runLater(() -> {
                     String share = Integer.toString(sim.getShareIndex()); //TODO convert every type of interger to decimal, eg 1000 -> .0001, 100 --> 0.001
-                    shareEntry.setText("£" + share);
+                    shareEntry.setText(share + "p");
                 });
             }
-        },0,1000);
+        }, 0, 1000);
     }
 
-    public void graph(){
+    public void graph() {
+        XYChart.Series series = new XYChart.Series();
+        series.setName("Share Index");
+        x.setLabel("Month");
+        y.setLabel("Share Index / Event ");
 
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    series.getData().add(new XYChart.Data<>(counter(), sim.getShareIndex()));
+                });
+
+            }
+        }, 0, 1000);
+
+        linechart.getData().add(series);
     }
 
     /**
      * Back end tab --> 2 tables
      */
 
-    public void companyTable(){
+    public void companyTable() {
+        // Passes company names to an obserablelist. Used to display the column data
+        //ObservableList<String> companies = FXCollections.observableArrayList(sim.getCompanyName());
 
-    };
+        //Company.setCellValueFactory(new PropertyValueFactory<>("WhatDoesThisDo"));
+//        tableview.getColumns().addAll(Company); //Not needed
 
-    public void clientTable(){
+        //tableview.setItems(companies);
 
-    };
+
+    }
+
+    public void clientTable() {
+        //System.out.println(sim.getPortfolios());
+    }
+
+    private int counter() {
+        if(count < 12){ count++;}
+        return count;
+    }
 
 
 }
