@@ -1,5 +1,10 @@
 package StockMarket;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,12 +57,21 @@ class SimulatorTest {
     }
 
     @org.junit.jupiter.api.Test
-    void initialiseData() {
+    void initialiseData() throws IOException {
         Iterator<String> companyNames = simulator.getCompanyNames().iterator();
         int i = 0;
-        int[] sharePrices = {650,126,82,24,130,18045,100,19,570,12,540,345,268,637,340,99,368,45,210};
+        HashMap<String, Integer> sharePrices = new HashMap<>();
+        BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
+        String line;
+        while((line = br.readLine()) != null) {
+            String[] row = line.split(",");
+            if(row.length == Simulator.SIZE_DATA && row[0].length() != 0) {
+                sharePrices.put(row[0], Integer.parseInt(row[3]));
+            }
+        }
         while(companyNames.hasNext()) {
-            assertEquals(simulator.getSharePrice(companyNames.next()), sharePrices[i]);
+            String companyName = companyNames.next();
+            assertEquals((int)simulator.getSharePrice(companyName), (int)sharePrices.get(companyName));
             i++;
         }
     }

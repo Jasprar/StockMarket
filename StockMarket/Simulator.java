@@ -22,7 +22,7 @@ public class Simulator {
     private int marketType;
     private int yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
-    private static final int SIZE_DATA = 19;
+    static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
     private static final Date END_DATE = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2018", new ParsePosition(0)); // 1st Jan 2018 at midnight.
     private static final Date GOOD_FRIDAY = new SimpleDateFormat("dd/MM/yyyy kk:mm").parse("14/04/2017 09:00", new ParsePosition(0));
