@@ -13,14 +13,14 @@ public class ClientData {
     private final StringProperty PFClient;
     private final IntegerProperty PFWealth;
     private final IntegerProperty PFCashHolding;
-    private final IntegerProperty Shares;
+    private final IntegerProperty PFShares;
 
 
-    public ClientData(String pfClient, int pfWealth, int pfCashHolding, int shares) {
+    public ClientData(String pfClient, int pfWealth, int pfCashHolding, int PFShares) {
         this.PFClient = new SimpleStringProperty(pfClient);
         this.PFWealth = new SimpleIntegerProperty(pfWealth);
         this.PFCashHolding = new SimpleIntegerProperty(pfCashHolding);
-        this.Shares = new SimpleIntegerProperty(shares);
+        this.PFShares = new SimpleIntegerProperty(PFShares);
     }
 
     public String getPFClient() {
@@ -59,15 +59,15 @@ public class ClientData {
         this.PFCashHolding.set(PFCashHolding);
     }
 
-    public int getShares() {
-        return Shares.get();
+    public int getPFShares() {
+        return PFShares.get();
     }
 
-    public IntegerProperty sharesProperty() {
-        return Shares;
+    public IntegerProperty PFSharesProperty() {
+        return PFShares;
     }
 
-    public void setShares(int shares) {
-        this.Shares.set(shares);
+    public void setPFShares(int PFShares) {
+        this.PFShares.set(PFShares);
     }
 }

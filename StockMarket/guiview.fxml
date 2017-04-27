@@ -20,6 +20,7 @@
 
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
     <children>
         <MenuBar id="MenuBar">
@@ -98,11 +99,20 @@
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="230.0">
                                             <children>
-                                                <TableView fx:id="tableview" layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
+                                                <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
                                                     <columns>
-                                                        <TableColumn fx:id="Company" prefWidth="75.0" text="Company" />
-                                                        <TableColumn fx:id="TotalShares" prefWidth="75.0" text="Total shares" />
-                                                        <TableColumn fx:id="closingPence" prefWidth="75.0" text="Closing pence" />
+
+                                                        <TableColumn fx:id="companyName" prefWidth="75.0" text="Company">
+                                                            <cellValueFactory>
+                                                                <PropertyValueFactory property= "PFCompanyName" />
+                                                            </cellValueFactory>
+                                                        </TableColumn>
+                                                        <TableColumn fx:id="companyShares" prefWidth="75.0" text="Total shares">
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFShareValues"/> </cellValueFactory>
+                                                        </TableColumn>
+                                                        <TableColumn fx:id="closingPence" prefWidth="75.0" text="Closing pence">
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFclosingPence"/></cellValueFactory>
+                                                        </TableColumn>
 
                                                     </columns>
                                                 </TableView>
@@ -112,11 +122,18 @@
                                             <children>
                                                 <TableView layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
                                                     <columns>
-                                                        <TableColumn id="Client" prefWidth="200.0" text="Client" />
-                                                        <TableColumn id="Wealth" prefWidth="75.0" text="Wealth" />
-                                                        <TableColumn id="cashHolding" prefWidth="100.0" text="CashHolding" />
-                                                        <TableColumn id="Shares" prefWidth="75.0" text="Shares" />
-
+                                                        <TableColumn fx:id="Client" prefWidth="200.0" text="Client" >
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFClient"/></cellValueFactory>
+                                                        </TableColumn>
+                                                        <TableColumn fx:id="Wealth" prefWidth="75.0" text="Wealth" >
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFWealth"/></cellValueFactory>
+                                                        </TableColumn>
+                                                        <TableColumn fx:id="cashHolding" prefWidth="100.0" text="CashHolding" >
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFCashHolding"/></cellValueFactory>
+                                                        </TableColumn>
+                                                        <TableColumn fx:id="Shares" prefWidth="75.0" text="Shares" >
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFShares"/></cellValueFactory>
+                                                        </TableColumn>
                                                     </columns>
                                                 </TableView>
                                             </children>
