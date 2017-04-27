@@ -2,6 +2,7 @@ package StockMarket;
 
 
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
@@ -48,7 +50,9 @@ public class Controller {
     @FXML
     TextArea Property;
     @FXML
-    TableColumn Company;
+    TableColumn<String,String> companyName;
+    @FXML
+    TableColumn<Integer,Integer> companyShares;
     @FXML
     TableView tableview;
     @FXML
@@ -361,25 +365,81 @@ public class Controller {
 
     public void companyTable() {
 
-        List<Collection<Integer>> companies = new ArrayList<>();
+       /* List<Collection<String>> shares = new ArrayList<>();
+        shares.add(sim.getCompanyNames());
+        ObservableList<Collection<Integer>> observableList = FXCollections.observableList(shares);
+
+        for (Collection<Integer> test: observableList) {
+            companyName.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+            tableview.getItems().setAll(test);
+            System.out.println(test);
+        }
+
+
+    */
+
+      /*  List companies = new ArrayList<>();
+        List companyValues = new ArrayList<>();
+        companies.add(sim.getCompanyNames());
+        companyValues.add(sim.getCompanyValues());
+        ObservableList<Set<String>> companyList = FXCollections.observableList(companies);
+        ObservableList<Set<String>> companyValues1 = FXCollections.observableList(companyValues);
+
+
+
+
+        for (Collection<String> j: companyValues1) {
+            companyShares.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+
+            for (Collection<String> i: companyList) {
+                companyName.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+
+            }
+
+        }
+
+
+
+
+        /*List<Collection<Integer>> companiesShare = new ArrayList<>();
         companies.add(sim.getCompanyValues());
+        ObservableList<Collection<String>> companyShareList = FXCollections.observableList(companiesShare);
 
+        for (Collection<String> i: companyList) {
+            companyName.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+            tableview.getItems().setAll(i);
+            System.out.println(i);
 
-        ObservableList<Collection<Integer>> observableList = FXCollections.observableList(companies);
+        }
+
+        */
+
+        //Shares
+      /*  List<Collection<Integer>> companyShare = new ArrayList<>();
+        companies.add(sim.getCompanyValues());
+        ObservableList<Collection<Integer>> companyShareList = FXCollections.observableList(companyShare);
+
+        for (Collection<Integer> i: companyShareList) {
+            companyShares.setCellValueFactory(param -> new ReadOnlyObjectWrapper<Integer>(param.getValue()));
+            tableview.getItems().setAll(i);
+            System.out.println(i);
+
+        }
+        */
 
 
        // Company.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
 
 
         //Company.setCellValueFactory(new PropertyValueFactory<Collection<Integer>,String>("companies"));
-        tableview.setItems(observableList);
 
 
 
 
 
-        System.out.println(sim.getCompanyNames());
-        System.out.println(sim.getCompanyValues());
+
+       // System.out.println(sim.getCompanyNames());
+       // System.out.println(sim.getCompanyValues());
         // System.out.println(formattedList);
 
     }
