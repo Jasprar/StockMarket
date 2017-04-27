@@ -5,6 +5,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+
 /**
  * Created by shahs on 27/04/2017.
  */
@@ -14,13 +16,16 @@ public class ClientData {
     private final IntegerProperty PFWealth;
     private final IntegerProperty PFCashHolding;
     private final IntegerProperty PFShares;
+    private final StringProperty PFManagedBy;
 
+    private ArrayList<String> clientNames;
 
-    public ClientData(String pfClient, int pfWealth, int pfCashHolding, int PFShares) {
-        this.PFClient = new SimpleStringProperty(pfClient);
-        this.PFWealth = new SimpleIntegerProperty(pfWealth);
-        this.PFCashHolding = new SimpleIntegerProperty(pfCashHolding);
-        this.PFShares = new SimpleIntegerProperty(PFShares);
+    public ClientData(String ClientName, int Wealth, int CashHolding, int Shares, String ManagedBy) {
+        this.PFClient = new SimpleStringProperty(ClientName);
+        this.PFWealth = new SimpleIntegerProperty(Wealth);
+        this.PFCashHolding = new SimpleIntegerProperty(CashHolding);
+        this.PFShares = new SimpleIntegerProperty(Shares);
+        this.PFManagedBy = new SimpleStringProperty(ManagedBy);
     }
 
     public String getPFClient() {
@@ -29,6 +34,14 @@ public class ClientData {
 
     public StringProperty PFClientProperty() {
         return PFClient;
+    }
+
+    public ArrayList<String> getClientNames() {
+        return clientNames;
+    }
+
+    public void setClientNames(ArrayList<String> clientNames) {
+        this.clientNames = clientNames;
     }
 
     public void setPFClient(String PFClient) {
@@ -69,5 +82,16 @@ public class ClientData {
 
     public void setPFShares(int PFShares) {
         this.PFShares.set(PFShares);
+    }
+    public String getPFManagedBy() {
+        return PFManagedBy.get();
+    }
+
+    public StringProperty PFManagedByProperty() {
+        return PFManagedBy;
+    }
+
+    public void setPFManagedBy(String PFManagedBy) {
+        this.PFManagedBy.set(PFManagedBy);
     }
 }

@@ -49,7 +49,7 @@
         </MenuBar>
         <TabPane id="Tab" prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab id="frontEnd" text="Front End">
+                <Tab fx:id="frontEnd" text="Front End">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
@@ -91,7 +91,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab id="backEnd" text="Back End">
+                <Tab fx:id="backEnd" text="Back End">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
@@ -102,15 +102,15 @@
                                                 <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
                                                     <columns>
 
-                                                        <TableColumn fx:id="companyName" prefWidth="75.0" text="Company">
+                                                        <TableColumn fx:id="companyName" prefWidth="200.0" text="Company">
                                                             <cellValueFactory>
                                                                 <PropertyValueFactory property= "PFCompanyName" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="companyShares" prefWidth="75.0" text="Total shares">
+                                                        <TableColumn fx:id="companyShares" prefWidth="100.0" text="Total shares">
                                                             <cellValueFactory> <PropertyValueFactory property= "PFShareValues"/> </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="closingPence" prefWidth="75.0" text="Closing pence">
+                                                        <TableColumn fx:id="closingPence" prefWidth="300.0" text="Closing pence">
                                                             <cellValueFactory> <PropertyValueFactory property= "PFclosingPence"/></cellValueFactory>
                                                         </TableColumn>
 
@@ -120,19 +120,22 @@
                                         </AnchorPane>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                             <children>
-                                                <TableView layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
+                                                <TableView fx:id ="clientDataTableView" layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
                                                     <columns>
-                                                        <TableColumn fx:id="Client" prefWidth="200.0" text="Client" >
+                                                        <TableColumn fx:id="client" prefWidth="160.0" text="Client" >
                                                             <cellValueFactory> <PropertyValueFactory property= "PFClient"/></cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="Wealth" prefWidth="75.0" text="Wealth" >
+                                                        <TableColumn fx:id="clientWealth" prefWidth="75.0" text="Wealth" >
                                                             <cellValueFactory> <PropertyValueFactory property= "PFWealth"/></cellValueFactory>
                                                         </TableColumn>
                                                         <TableColumn fx:id="cashHolding" prefWidth="100.0" text="CashHolding" >
                                                             <cellValueFactory> <PropertyValueFactory property= "PFCashHolding"/></cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="Shares" prefWidth="75.0" text="Shares" >
+                                                        <TableColumn fx:id="clientShares" prefWidth="75.0" text="Shares" >
                                                             <cellValueFactory> <PropertyValueFactory property= "PFShares"/></cellValueFactory>
+                                                        </TableColumn>
+                                                        <TableColumn fx:id="managedBy" prefWidth="100.0" text="Managed By" >
+                                                            <cellValueFactory> <PropertyValueFactory property= "PFManagedBy"/></cellValueFactory>
                                                         </TableColumn>
                                                     </columns>
                                                 </TableView>

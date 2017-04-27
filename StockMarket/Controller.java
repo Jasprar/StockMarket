@@ -6,12 +6,16 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.*;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,48 +36,48 @@ public class Controller {
     @FXML
     MenuItem runSim;
     @FXML
-    Label dateEntry;
+    Label dateEntry, eventEntry,timeEntry,shareEntry,marketEntry;
     @FXML
-    Label eventEntry;
+    TextArea Hardware, Food, HiTech,Property;
+
     @FXML
-    Label timeEntry;
-    @FXML
-    Label shareEntry;
-    @FXML
-    Label marketEntry;
-    @FXML
-    TextArea Hardware;
-    @FXML
-    TextArea Food;
-    @FXML
-    TextArea HiTech;
-    @FXML
-    TextArea Property;
+    TableView<CompanyData> companyDataTableView;
     @FXML
     TableColumn<CompanyData,String> companyName;
     @FXML
     TableColumn<CompanyData,Number> companyShares;
+
     @FXML
-    TableView<CompanyData> companyDataTableView;
+    TableView<ClientData> clientDataTableView;
+    @FXML
+    TableColumn<ClientData,String> client;
+    @FXML
+    TableColumn<ClientData,Number> clientWealth,cashHolding,clientShares,managedBy;
     @FXML
     LineChart linechart;
     @FXML
-    NumberAxis x;
+    NumberAxis x,y;
     @FXML
-    NumberAxis y;
+    Tab backEnd;
 
-    private GUI guiApp;
 
     //Java fields
     int duration;
     Timer timer = new Timer();
     Simulator sim = new Simulator();
     int count;
+    int clicked;
 
 
+    /**
+     * Initialize table when run.
+     * PF = PropertyValueFactory.
+     * Calls the data and appends it to the table. Any changes from the data will change the table accordingly.
+     * No need to re-update table every interval.
+     */
     @FXML
     public void initialize(){
-        companyName.setCellValueFactory(cellData -> cellData.getValue().PFCompanyNameProperty());
+        companyName.setCellValueFactory(new PropertyValueFactory<CompanyData, String>("PFCompanyName"));
         companyShares.setCellValueFactory(cellData -> cellData.getValue().PFShareValuesProperty());
     }
     /**
@@ -88,8 +92,11 @@ public class Controller {
 
     }
 
-    ; //needed??? Seems to be hardcoded in
 
+    /**
+     * Runs the simulation.
+     * Pop up for the user to enter duration which gets passed in to Sim.runsim(duration).
+     */
     @FXML
     public void runSimulation() {
 
@@ -108,6 +115,9 @@ public class Controller {
     }
 
 
+    /***
+     * Once run simulation duration as been entered, call these methods
+     */
     @FXML
     public void callMethod() {
         Food();
@@ -122,11 +132,14 @@ public class Controller {
         graph();
         clientTable();
         companyTable();
+        backEnd();
 
 
     }
 
-
+    /**
+     * Quit the program
+     */
     @FXML
     public void quit() {
         System.exit(0);
@@ -135,6 +148,8 @@ public class Controller {
 
     /**
      * Help menubar --> menu item methods
+     *
+     * This following message displays a popup showing how to use.
      */
 
     public void howToUse() {
@@ -149,7 +164,9 @@ public class Controller {
 
     }
 
-
+    /**
+     * popup message when clicked upon displaying about us.
+     */
     @FXML
     public void aboutUs() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -168,6 +185,8 @@ public class Controller {
 
     /**
      * Legal menuBar --> Menu item methods
+     *
+     * This method displays the current license agreement
      */
     @FXML
     public void License() {
@@ -179,7 +198,9 @@ public class Controller {
         alert.showAndWait();
     }
 
-
+    /**
+     * popup message when clicked upon displaying the copyright agreement
+     */
     @FXML
     public void copyRight() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -222,7 +243,6 @@ public class Controller {
 
     // Needs to be changed to labels
 
-    // TODO: Change textfields to labels and create new labels for the data to get added to there // - learn how to bind.
     @FXML
     public void Hardware() {
         //Hardware.appendText("Get Hardware data");
@@ -364,6 +384,9 @@ public class Controller {
             }
         }, 0, 3000); //Calculation needed to display every month
         linechart.getData().addAll(series);
+
+
+
     }
 
     /**
@@ -372,12 +395,40 @@ public class Controller {
 
     public  void companyTable() {
         ObservableList<CompanyData> companydata = FXCollections.observableArrayList();
-        companydata.add(new CompanyData("Test",1,1));
+        companydata.add(new CompanyData("test",1,1));
         companyDataTableView.setItems(companydata);
+
+
+        //Tooltip - Hover message
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("\nDouble click to sell stock\n");
+        clientDataTableView.setTooltip(tooltip);
+
 
     }
 
     public void clientTable() {
+        List doubles = new ArrayList<String>();
+        doubles.add(sim.getCompanyNames());
+        ObservableList<ClientData> clientData = FXCollections.observableArrayList();
+        clientData.add(new ClientData("Test2",1,1,1,"Random"));
+        clientData.add(new ClientData("Test3",1,1,1,"Random"));
+
+        clientDataTableView.setItems(clientData);
+
+        clientDataTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                    System.out.println(clientDataTableView.getSelectionModel().getSelectedItem());
+                    //Deal with when passing the arraylist accross to the table.
+                    // Simply get the index of all the arraylists and pass them across
+                    //sellAll();
+
+                }
+            }
+        });
+        //Currently not working
 
 
     }
@@ -385,6 +436,28 @@ public class Controller {
     private int counter() {
     if(count < 12 ) count++;
         return count;
+    }
+
+    private void backEnd(){
+
+        backEnd.setOnSelectionChanged(new EventHandler<javafx.event.Event>() {
+            @Override
+            public void handle(Event event) {
+                if(backEnd.isSelected() && clicked < 1 ){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Tip");
+                    alert.setHeaderText("Tip!");
+                    alert.setContentText("Double click any client row to sell all their stock!");
+                    alert.showAndWait();
+                    clicked++;
+                }
+
+            }
+        });
+    }
+
+    private void sellAll(){
+        System.out.println("Sell all stock belonging to that client");
     }
 
 
