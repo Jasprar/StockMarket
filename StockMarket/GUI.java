@@ -23,6 +23,7 @@ public class GUI extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("guiview.fxml"));
         primaryStage.setTitle("Stockmarket simulation");
         primaryStage.setScene(new Scene(root, 1110, 695));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

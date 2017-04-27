@@ -102,6 +102,8 @@
                                                     <columns>
                                                         <TableColumn fx:id="Company" prefWidth="75.0" text="Company" />
                                                         <TableColumn fx:id="TotalShares" prefWidth="75.0" text="Total shares" />
+                                                        <TableColumn fx:id="closingPence" prefWidth="75.0" text="Closing pence" />
+
                                                     </columns>
                                                 </TableView>
                                             </children>
@@ -110,8 +112,11 @@
                                             <children>
                                                 <TableView layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
                                                     <columns>
-                                                        <TableColumn id="Client" prefWidth="75.0" text="Client" />
-                                                        <TableColumn id="wealth" prefWidth="75.0" text="C2" />
+                                                        <TableColumn id="Client" prefWidth="200.0" text="Client" />
+                                                        <TableColumn id="Wealth" prefWidth="75.0" text="Wealth" />
+                                                        <TableColumn id="cashHolding" prefWidth="100.0" text="CashHolding" />
+                                                        <TableColumn id="Shares" prefWidth="75.0" text="Shares" />
+
                                                     </columns>
                                                 </TableView>
                                             </children>

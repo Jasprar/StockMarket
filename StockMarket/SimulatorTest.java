@@ -1,3 +1,4 @@
+/*
 package StockMarket;
 
 import java.util.Iterator;
@@ -63,3 +64,4 @@ class SimulatorTest {
     }
 
 }
+*/
