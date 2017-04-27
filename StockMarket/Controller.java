@@ -1,33 +1,24 @@
 package StockMarket;
 
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
-import javafx.util.Duration;
 
-import java.awt.event.ActionEvent;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
  *
  * @Author 132224
- * @Version 26/04/2017
+ * @Version 24/04/2017
  */
 
 
@@ -212,8 +203,16 @@ public class Controller {
     // TODO: Change textfields to labels and create new labels for the data to get added to there // - learn how to bind.
     @FXML
     public void Hardware() {
-
         Hardware.appendText("Get Hardware data");
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    timeEntry.setText(sim.getTime());
+                });
+            }
+        }, 0, 1000);
     }
 
 
@@ -221,12 +220,32 @@ public class Controller {
     public void HiTech() {
 
         HiTech.appendText("Get HiTech data");
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    timeEntry.setText(sim.getTime());
+                });
+            }
+        }, 0, 1000);
+
     }
 
 
     @FXML
     public void Property() {
+
         Property.appendText("Get Property data");
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    timeEntry.setText(sim.getTime());
+                });
+            }
+        }, 0, 1000);
     }
 
 
@@ -245,8 +264,6 @@ public class Controller {
                 });
             }
         }, 0, 1000);
-
-        ;
     }
 
     // Textfield for timeEntry
@@ -307,10 +324,13 @@ public class Controller {
     }
 
     public void graph() {
+        //linechart.setTitle("Stock market");
+
         XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
         x.setLabel("Month");
         y.setLabel("Share Index / Event ");
+
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -320,9 +340,8 @@ public class Controller {
                 });
 
             }
-        }, 0, 1000);
-
-        linechart.getData().add(series);
+        }, 0, 3000); //Calculation needed to display every month
+        linechart.getData().addAll(series);
     }
 
     /**
@@ -330,14 +349,27 @@ public class Controller {
      */
 
     public void companyTable() {
-        // Passes company names to an obserablelist. Used to display the column data
-        //ObservableList<String> companies = FXCollections.observableArrayList(sim.getCompanyName());
 
-        //Company.setCellValueFactory(new PropertyValueFactory<>("WhatDoesThisDo"));
-//        tableview.getColumns().addAll(Company); //Not needed
+        List<Collection<Integer>> companies = new ArrayList<>();
+        companies.add(sim.getCompanyValues());
 
-        //tableview.setItems(companies);
 
+        ObservableList<Collection<Integer>> observableList = FXCollections.observableList(companies);
+
+
+       // Company.setCellValueFactory(param -> new ReadOnlyStringWrapper(param.getValue()));
+
+
+        //Company.setCellValueFactory(new PropertyValueFactory<Collection<Integer>,String>("companies"));
+        tableview.setItems(observableList);
+
+
+
+
+
+        System.out.println(sim.getCompanyNames());
+        System.out.println(sim.getCompanyValues());
+        // System.out.println(formattedList);
 
     }
 
@@ -346,7 +378,7 @@ public class Controller {
     }
 
     private int counter() {
-        if(count < 12){ count++;}
+    if(count < 12 ) count++;
         return count;
     }
 
