@@ -195,21 +195,32 @@ public class Controller {
      */
     @FXML
     public void Food() {
-        Food.appendText("Get Food data");
+       // Food.appendText("Get Food data");
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    Food.setText("Food: " + "\n" + "50%");
+                });
+            }
+        }, 0, 1000);
     }
+
+
 
     // Needs to be changed to labels
 
     // TODO: Change textfields to labels and create new labels for the data to get added to there // - learn how to bind.
     @FXML
     public void Hardware() {
-        Hardware.appendText("Get Hardware data");
+        //Hardware.appendText("Get Hardware data");
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    timeEntry.setText(sim.getTime());
+                    Hardware.setText("Hardware: " + "\n" + "50%");
                 });
             }
         }, 0, 1000);
@@ -219,13 +230,13 @@ public class Controller {
     @FXML
     public void HiTech() {
 
-        HiTech.appendText("Get HiTech data");
+       // HiTech.appendText("Get HiTech data");
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    timeEntry.setText(sim.getTime());
+                    HiTech.setText("HiTech: " + "\n" + "50%");
                 });
             }
         }, 0, 1000);
@@ -236,13 +247,13 @@ public class Controller {
     @FXML
     public void Property() {
 
-        Property.appendText("Get Property data");
+      //  Property.appendText("Get Property data");
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    timeEntry.setText(sim.getTime());
+                    Property.setText("Property: " + "\n" + "50%");
                 });
             }
         }, 0, 1000);
