@@ -1,4 +1,4 @@
-package StockMarket;
+/*package StockMarket;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -77,3 +77,4 @@ class SimulatorTest {
     }
 
 }
+*/

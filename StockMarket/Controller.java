@@ -2,14 +2,12 @@ package StockMarket;
 
 
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -18,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
@@ -43,10 +40,11 @@ public class Controller {
     @FXML
     TableView<CompanyData> companyDataTableView;
     @FXML
-    TableColumn<CompanyData,String> companyName;
+    TableColumn<CompanyData, String> companyName;
     @FXML
     TableColumn<CompanyData,Number> companyShares;
-
+    @FXML
+    TableColumn<CompanyData,Number> companyPence;
     @FXML
     TableView<ClientData> clientDataTableView;
     @FXML
@@ -77,8 +75,10 @@ public class Controller {
      */
     @FXML
     public void initialize(){
-        companyName.setCellValueFactory(new PropertyValueFactory<CompanyData, String>("PFCompanyName"));
-        companyShares.setCellValueFactory(cellData -> cellData.getValue().PFShareValuesProperty());
+          //companyName.setCellValueFactory(new Sim);
+   //       companyShares.setCellValueFactory(cellData -> cellData.getValue().PFShareValuesProperty());
+        // companyName.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
+        //companyShares.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
     }
     /**
      * File menubar -> menu items methods
@@ -394,25 +394,43 @@ public class Controller {
      */
 
     public  void companyTable() {
-        ObservableList<CompanyData> companydata = FXCollections.observableArrayList();
-        companydata.add(new CompanyData("test",1,1));
-        companyDataTableView.setItems(companydata);
 
+
+        companyDataTableView.getItems().setAll(companydataList());
 
         //Tooltip - Hover message
         Tooltip tooltip = new Tooltip();
         tooltip.setText("\nDouble click to sell stock\n");
-        clientDataTableView.setTooltip(tooltip);
+        companyDataTableView.setTooltip(tooltip);
 
 
+    }
+
+    private List<CompanyData> companydataList(){
+        CompanyData company = new CompanyData();
+
+     //   company.setPFclosingPence();
+       for(String i : sim.getCompanyNames()) {
+           company.getPFCompanyName().add(i);
+       }
+
+       for(int j : sim.getCompanyValues()) {
+           company.getPFShareValues().add(j);
+       }
+        List<CompanyData> companydata = new ArrayList<>();
+        companydata.add(company);
+        return companydata;
     }
 
     public void clientTable() {
         List doubles = new ArrayList<String>();
         doubles.add(sim.getCompanyNames());
         ObservableList<ClientData> clientData = FXCollections.observableArrayList();
-        clientData.add(new ClientData("Test2",1,1,1,"Random"));
-        clientData.add(new ClientData("Test3",1,1,1,"Random"));
+
+
+            clientData.add(new ClientData("test",1,1,1,"Random"));
+
+
 
         clientDataTableView.setItems(clientData);
 
