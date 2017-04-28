@@ -20,7 +20,7 @@ public class Simulator {
     private HashMap<String, Integer> numberOfShares;
     private double shareIndex; // in pence.
     private int marketType;
-    private int yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
+    private double yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
     private static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;

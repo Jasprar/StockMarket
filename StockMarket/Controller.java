@@ -358,7 +358,7 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    String share = Integer.toString(sim.getShareIndex()); //TODO convert every type of interger to decimal, eg 1000 -> .0001, 100 --> 0.001
+                    String share = Double.toString(sim.getShareIndex()); //TODO convert every type of interger to decimal, eg 1000 -> .0001, 100 --> 0.001
                     shareEntry.setText(share + "p");
                 });
             }
