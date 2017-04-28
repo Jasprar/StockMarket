@@ -21,44 +21,45 @@ class SimulatorTest {
     }
 
     @org.junit.jupiter.api.Test
-    void getSharePrice() {
-    }
-
-    @org.junit.jupiter.api.Test
     void getNetWorth() {
+        // At initialisation:
+        assertEquals(simulator.getNetWorth("Pear Computing"), 32500000);
     }
 
     @org.junit.jupiter.api.Test
     void getTime() {
+        // At initialisation:
+        assertEquals(simulator.getTime(), "00:00:00");
     }
 
     @org.junit.jupiter.api.Test
     void getDate() {
+        // At initialisation:
+        assertEquals(simulator.getDate(), "01-01-2017")
     }
 
     @org.junit.jupiter.api.Test
     void getEvent() {
+        // At initialisation:
+        assertNull(simulator.getEvent());
     }
 
     @org.junit.jupiter.api.Test
     void getShareIndex() {
+        // At initialisation:
+        assertEquals(simulator.getShareIndex(), 239.5)
     }
 
     @org.junit.jupiter.api.Test
     void getMarketType() {
+        // At initialisation:
+        assertEquals(simulator.getMarketType(), "Stable");
     }
 
     @org.junit.jupiter.api.Test
-    void getPortfolios() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void getCompanyNames() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void initialiseData() throws IOException {
-        Iterator<String> companyNames = simulator.getCompanyNames().iterator();
+    void getSharePrice() {
+        // At initialisation:
+        Iterator<String> companyNames = simulator.getCompanyNames().iterator(); // Tests getCompanyNames.
         int i = 0;
         HashMap<String, Integer> sharePrices = new HashMap<>();
         BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
