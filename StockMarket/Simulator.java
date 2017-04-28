@@ -18,7 +18,7 @@ public class Simulator {
     private ArrayList<Trader> traders;
     private ArrayList<Event> events;
     private HashMap<String, Integer> numberOfShares;
-    private int shareIndex; // in pence.
+    private double shareIndex; // in pence.
     private int marketType;
     private int yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
@@ -430,7 +430,7 @@ public class Simulator {
      * Returns the share index of the stock market at this time.
      * @return The share index (sum of all share prices / number of companies).
      */
-    public int getShareIndex() {
+    public double getShareIndex() {
         return shareIndex;
     }
 
