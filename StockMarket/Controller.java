@@ -394,32 +394,33 @@ public class Controller {
      */
 
     public  void companyTable() {
-
-
-        companyDataTableView.getItems().setAll(companydataList());
-
-        //Tooltip - Hover message
-        Tooltip tooltip = new Tooltip();
-        tooltip.setText("\nDouble click to sell stock\n");
-        companyDataTableView.setTooltip(tooltip);
-
-
+    //   for(CompanyData s: companydataList()){
+        for(CompanyData s: companydataList()){
+            companyDataTableView.getItems().add(s);
+        }
     }
 
     private List<CompanyData> companydataList(){
-        CompanyData company = new CompanyData();
+        List<String> companyNames = new ArrayList<>();
+        Set<String> companyNames1 =  sim.getCompanyNames();
+        companyNames.addAll(companyNames1);
 
-     //   company.setPFclosingPence();
-       for(String i : sim.getCompanyNames()) {
-           company.getPFCompanyName().add(i);
-       }
+        List<Integer> companyValues = new ArrayList<>();
+        Collection<Integer> companyValues1 = sim.getCompanyValues();
+        companyValues.addAll(companyValues1);
 
-       for(int j : sim.getCompanyValues()) {
-           company.getPFShareValues().add(j);
-       }
-        List<CompanyData> companydata = new ArrayList<>();
-        companydata.add(company);
-        return companydata;
+        List<CompanyData> companyData = new ArrayList<>();
+
+        for(int i = 0; i < companyNames.size(); i++){
+            String name = companyNames.get(i);
+            int value = companyValues.get(i);
+            CompanyData company = new CompanyData("Test",1,1);
+            company.setPFCompanyName(name);
+            company.setPFShareValues(value);
+            companyData.add(company);
+        }
+return companyData;
+
     }
 
     public void clientTable() {
@@ -430,6 +431,10 @@ public class Controller {
 
             clientData.add(new ClientData("test",1,1,1,"Random"));
 
+        //Tooltip - Hover message
+        Tooltip tooltip = new Tooltip();
+        tooltip.setText("\nDouble click to sell stock\n");
+        clientDataTableView.setTooltip(tooltip);
 
 
         clientDataTableView.setItems(clientData);
