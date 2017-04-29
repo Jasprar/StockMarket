@@ -409,14 +409,21 @@ public class Controller {
         Collection<Integer> companyValues1 = sim.getCompanyValues();
         companyValues.addAll(companyValues1);
 
+        List<Integer> sharePrice = new ArrayList<>();
+        for(String s: companyNames) {
+            sharePrice.add(sim.getSharePrice(s));
+        }
+
         List<CompanyData> companyData = new ArrayList<>();
 
         for(int i = 0; i < companyNames.size(); i++){
             String name = companyNames.get(i);
+            int sharePrices = sharePrice.get(i);
             int value = companyValues.get(i);
-            CompanyData company = new CompanyData("Test",1,1);
+            CompanyData company = new CompanyData("Test",1,1);//Creating a object  per row
             company.setPFCompanyName(name);
-            company.setPFShareValues(value);
+            company.setPFShareValues(sharePrices);
+            company.setPFclosingPence(value);
             companyData.add(company);
         }
 return companyData;
@@ -424,20 +431,12 @@ return companyData;
     }
 
     public void clientTable() {
-        List doubles = new ArrayList<String>();
-        doubles.add(sim.getCompanyNames());
-        ObservableList<ClientData> clientData = FXCollections.observableArrayList();
-
-
-            clientData.add(new ClientData("test",1,1,1,"Random"));
-
-        //Tooltip - Hover message
+       // for (CompanyData s : clientdataList()) {
+        //    companyDataTableView.getItems().add(s);
+        //}
         Tooltip tooltip = new Tooltip();
         tooltip.setText("\nDouble click to sell stock\n");
         clientDataTableView.setTooltip(tooltip);
-
-
-        clientDataTableView.setItems(clientData);
 
         clientDataTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -452,8 +451,33 @@ return companyData;
             }
         });
         //Currently not working
+    }
 
+    private List<ClientData> clientdataList() {
+/*
+        List<String> companyNames = new ArrayList<>();
+        Set<String> companyNames1 =  sim.getCompanyNames();
+        companyNames.addAll(companyNames1);
 
+        List<Integer> companyValues = new ArrayList<>();
+        Collection<Integer> companyValues1 = sim.getCompanyValues();
+        companyValues.addAll(companyValues1);
+
+        List<ClientData> clientdata = new ArrayList<>();
+
+        for(int i = 0; i < companyNames.size(); i++){
+            String name = companyNames.get(i);
+            int value = companyValues.get(i);
+            ClientData client = new ClientData("Test",1,1,1,"test");
+           // client.(name);
+           // client.setPFShareValues(value);
+           //    clientdata.add(client);
+        }
+        return clientdata;
+
+    }
+*/
+return null;
     }
 
     private int counter() {
