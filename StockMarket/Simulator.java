@@ -337,7 +337,7 @@ public class Simulator {
 
     /* Does not actually remove all shares for a client, but sets the boolean sellAll in their portfolio to true, alerting
      * their trader that they must attempt to sell all those shares every cycle. */
-    private void leaveSimulation(String clientName) {
+    public void leaveSimulation(String clientName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 if(p.getClientName().equals(clientName)) {

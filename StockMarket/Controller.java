@@ -439,10 +439,8 @@ return companyData;
             @Override
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    System.out.println(clientDataTableView.getSelectionModel().getSelectedItem());
-                    //Deal with when passing the arraylist accross to the table.
-                    // Simply get the index of all the arraylists and pass them across
-                    //sellAll();
+                    ClientData clientData = clientDataTableView.getSelectionModel().getSelectedItem();
+                    sim.leaveSimulation(clientData.getPFClient());
 
                 }
             }
