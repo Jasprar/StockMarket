@@ -511,10 +511,19 @@ public class Simulator {
      * @return A set of the names of all companies in the simulation.
      */
     public Set<String> getCompanyNames(){ return numberOfShares.keySet(); }
+
+    /**
+     * Returns the number of shares that each company has.
+     * @return A list of integers representing each the number of shares that there are for each company.
+     */
     public Collection<Integer> getCompanyValues(){
         return numberOfShares.values();
     }
 
+    /**
+     * Returns the dictionary from company name (String) to number of shares (int).
+     * @return a HashMap from String (companyName) to int (numberOfShares).
+     */
     public HashMap<String, Integer> getCompanyDetails() { return numberOfShares;}
 
 
