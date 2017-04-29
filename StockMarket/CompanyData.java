@@ -12,12 +12,12 @@ public class CompanyData {
 
     private final StringProperty PFCompanyName;
     private final IntegerProperty PFShareValues;
-    private final IntegerProperty PFclosingPence;
+    private final IntegerProperty PFTotalShares;
 
-    public CompanyData(String CompanyName, int ShareValue, int ClosingPence) {
+    public CompanyData(String CompanyName, int ShareValue, int TotalShares) {
         this.PFCompanyName = new SimpleStringProperty(CompanyName);
         this.PFShareValues = new SimpleIntegerProperty(ShareValue);
-        this.PFclosingPence = new SimpleIntegerProperty(ClosingPence);
+        this.PFTotalShares = new SimpleIntegerProperty(TotalShares);
     }
 
     public String getPFCompanyName() {
@@ -44,16 +44,16 @@ public class CompanyData {
         this.PFShareValues.set(PFShareValues);
     }
 
-    public int getPFclosingPence() {
-        return PFclosingPence.get();
+    public int getPFTotalShares() {
+        return PFTotalShares.get();
     }
 
-    public IntegerProperty PFclosingPenceProperty() {
-        return PFclosingPence;
+    public IntegerProperty PFTotalSharesProperty() {
+        return PFTotalShares;
     }
 
-    public void setPFclosingPence(int PFclosingPence) {
-        this.PFclosingPence.set(PFclosingPence);
+    public void setPFTotalShares(int PFTotalShares) {
+        this.PFTotalShares.set(PFTotalShares);
     }
 
 

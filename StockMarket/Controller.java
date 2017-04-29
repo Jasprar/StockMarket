@@ -1,6 +1,7 @@
 package StockMarket;
 
 
+import com.sun.deploy.util.SessionState;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -15,7 +16,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+import javax.sound.midi.SysexMessage;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
@@ -44,7 +47,7 @@ public class Controller {
     @FXML
     TableColumn<CompanyData,Number> companyShares;
     @FXML
-    TableColumn<CompanyData,Number> companyPence;
+    TableColumn<CompanyData,Number> totalShares;
     @FXML
     TableView<ClientData> clientDataTableView;
     @FXML
@@ -423,7 +426,7 @@ public class Controller {
             CompanyData company = new CompanyData("Test",1,1);//Creating a object  per row
             company.setPFCompanyName(name);
             company.setPFShareValues(sharePrices);
-            company.setPFclosingPence(value);
+            company.setPFTotalShares(value);
             companyData.add(company);
         }
 return companyData;
@@ -431,9 +434,9 @@ return companyData;
     }
 
     public void clientTable() {
-       // for (CompanyData s : clientdataList()) {
-        //    companyDataTableView.getItems().add(s);
-        //}
+        for (ClientData s : clientdataList()) {
+            clientDataTableView.getItems().add(s);
+        }
         Tooltip tooltip = new Tooltip();
         tooltip.setText("\nDouble click to sell stock\n");
         clientDataTableView.setTooltip(tooltip);
@@ -454,31 +457,35 @@ return companyData;
     }
 
     private List<ClientData> clientdataList() {
-/*
-        List<String> companyNames = new ArrayList<>();
-        Set<String> companyNames1 =  sim.getCompanyNames();
-        companyNames.addAll(companyNames1);
 
-        List<Integer> companyValues = new ArrayList<>();
-        Collection<Integer> companyValues1 = sim.getCompanyValues();
-        companyValues.addAll(companyValues1);
+        List<String> ClientNames = new ArrayList<>();
+        ClientNames.addAll(sim.getClientNames());
 
-        List<ClientData> clientdata = new ArrayList<>();
+        List<Integer> CashHolding = new ArrayList<>();
+        CashHolding.addAll(sim.getCashHolding());
 
-        for(int i = 0; i < companyNames.size(); i++){
-            String name = companyNames.get(i);
-            int value = companyValues.get(i);
-            ClientData client = new ClientData("Test",1,1,1,"test");
-           // client.(name);
-           // client.setPFShareValues(value);
-           //    clientdata.add(client);
+        List<Integer> TotalWorth = new ArrayList<>(); //Wealth
+        TotalWorth.addAll(sim.getTotalWorth());
+
+        List<ClientData> clientData = new ArrayList<>();
+
+
+        for(int i = 0; i < ClientNames.size(); i++) {
+            String clientNames = ClientNames.get(i);
+            int cashHolding = CashHolding.get(i);
+            int totalWorth = TotalWorth.get(i);
+            ClientData client = new ClientData("Test", 1, 1,1,"Random");//Creating a object  per row
+            client.setPFClient(clientNames);
+            client.setPFCashHolding(cashHolding);
+            client.setPFWealth(totalWorth);
+            clientData.add(client);
         }
-        return clientdata;
+
+
+        return clientData;
 
     }
-*/
-return null;
-    }
+
 
     private int counter() {
     if(count < 12 ) count++;

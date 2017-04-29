@@ -459,11 +459,52 @@ public class Simulator {
                 portfolios.add(p);
             }
         }
-       for(Portfolio portfolio: portfolios){
-            System.out.println(portfolio);
-       }
         return portfolios;
     }
+
+
+    /**
+     * Provides a list of client names within the simulation.
+     * @return A list of client names from all Portfolio instances in the simulation.
+     */
+    public List<String> getClientNames(){
+        ArrayList<String> portfolios = new ArrayList<>();
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()){
+                portfolios.add(p.getClientName());
+            }
+        }
+        return portfolios;
+    }
+
+    /**
+     * Provides a list of Cash holdings correlating to client names within the simulation.
+     * @return A list of Cash holdings from all Portfolio instances in the simulation.
+     */
+    public List<Integer> getCashHolding(){
+        ArrayList<Integer> portfolios = new ArrayList<>();
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()){
+                portfolios.add(p.getCashHolding());
+            }
+        }
+        return portfolios;
+    }
+
+    /**
+     * Provides a list of Total Worth correlating to client names within the simulation.
+     * @return A list of Total Worth from all Portfolio instances in the simulation.
+     */
+    public List<Integer> getTotalWorth(){
+        ArrayList<Integer> portfolios = new ArrayList<>();
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()){
+                portfolios.add(p.getTotalWorth());
+            }
+        }
+        return portfolios;
+    }
+
 
     /**
      * Returns the names of all companies in the simulation.

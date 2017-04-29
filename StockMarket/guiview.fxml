@@ -92,13 +92,13 @@
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
-                                <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1099.0">
+                                <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1199.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="230.0">
                                             <children>
-                                                <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="400.0">
+                                                <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="600.0">
                                                     <columns>
-                                                             <TableColumn fx:id="companyName" prefWidth="200.0" text="Company">
+                                                             <TableColumn fx:id="companyName" prefWidth="180.0" text="Company">
                                                             <cellValueFactory>
                                                                 <PropertyValueFactory property="PFCompanyName" />
                                                             </cellValueFactory>
@@ -106,12 +106,15 @@
                                                         <TableColumn fx:id="companyShares" prefWidth="100.0" text="Share Price">
                                                             <cellValueFactory> <PropertyValueFactory property="PFShareValues" /> </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="closingPence" prefWidth="100.0" text="Total Shares">
-                                                            <cellValueFactory> <PropertyValueFactory property="PFclosingPence" />
-                                             </cellValueFactory>
+                                                        <TableColumn fx:id="networth" prefWidth="100.0" text="NetWorth">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFNetWorth" />
+                                                            </cellValueFactory>
                                                         </TableColumn>
-                              
-                                                                                  </columns>
+                                                        <TableColumn fx:id="totalShares" prefWidth="100.0" text="Total Shares">
+                                                        <cellValueFactory> <PropertyValueFactory property="PFTotalShares" />
+                                                        </cellValueFactory>
+                                                        </TableColumn>
+                                                    </columns>
                                                 </TableView>
                                             </children>
                                         </AnchorPane>
@@ -119,17 +122,11 @@
                                  <children>
                                                 <TableView fx:id="clientDataTableView" layoutX="6.0" layoutY="5.0" prefHeight="616.0" prefWidth="1000.0">
                                                     <columns>
-                                                        <TableColumn fx:id="client" prefWidth="130.0" text="Client">
-                                                            <columns>
-                                                                <TableColumn fx:id="firstName" prefWidth="130.0" text="First Name"> </TableColumn>
-                              
-                                                                                                                                                                      <TableColumn fx:id="lastName" prefWidth="130.0" text="Last Name"> </TableColumn>
-                              
-                                                                                                                                                                  </columns>
+                                                        <TableColumn fx:id="client" prefWidth="200.0" text="Client">
                                                             <cellValueFactory> <PropertyValueFactory property="PFClient" />
                                              </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="clientWealth" prefWidth="75.0" text="Wealth">
+                                                        <TableColumn fx:id="clientWealth" prefWidth="100.0" text="Wealth">
                                                             <cellValueFactory> <PropertyValueFactory property="PFWealth" />
                                              </cellValueFactory>
                                                         </TableColumn>
@@ -137,7 +134,7 @@
                                                             <cellValueFactory> <PropertyValueFactory property="PFCashHolding" />
                                              </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="clientShares" prefWidth="75.0" text="Shares">
+                                                        <TableColumn fx:id="clientShares" prefWidth="100.0" text="Shares">
                                                             <cellValueFactory> <PropertyValueFactory property="PFShares" />
                                              </cellValueFactory>
                                                         </TableColumn>
