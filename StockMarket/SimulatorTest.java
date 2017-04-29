@@ -35,7 +35,7 @@ class SimulatorTest {
     @org.junit.jupiter.api.Test
     void getDate() {
         // At initialisation:
-        assertEquals(simulator.getDate(), "01-01-2017")
+        assertEquals(simulator.getDate(), "01-01-2017");
     }
 
     @org.junit.jupiter.api.Test
@@ -47,7 +47,7 @@ class SimulatorTest {
     @org.junit.jupiter.api.Test
     void getShareIndex() {
         // At initialisation:
-        assertEquals(simulator.getShareIndex(), 239.5)
+        assertEquals(simulator.getShareIndex(), 239.5);
     }
 
     @org.junit.jupiter.api.Test
@@ -57,7 +57,7 @@ class SimulatorTest {
     }
 
     @org.junit.jupiter.api.Test
-    void getSharePrice() {
+    void getSharePrice() throws IOException {
         // At initialisation:
         Iterator<String> companyNames = simulator.getCompanyNames().iterator(); // Tests getCompanyNames.
         int i = 0;

@@ -451,19 +451,23 @@ return companyData;
     }
 
     private List<ClientData> clientdataList() {
-
+        //Getting client Names and appending to list
         List<String> ClientNames = new ArrayList<>();
         ClientNames.addAll(sim.getClientNames());
 
+        //Getting Cash holding and appending to list
         List<Integer> CashHolding = new ArrayList<>();
         CashHolding.addAll(sim.getCashHolding());
 
+        //Getting total worth and appending to list
         List<Integer> TotalWorth = new ArrayList<>(); //Wealth
         TotalWorth.addAll(sim.getTotalWorth());
 
+        //Getting Shares and appending it to a arraylist of an arraylist
         List<ArrayList<Share>> getShares = new ArrayList<>();
         getShares.addAll(sim.getShares());
 
+        //Populating arraylist<share> from the arraylist of arraylist
         ArrayList<Share> toSingleArrayShares = new ArrayList<Share>();
         for(int i = 0; i < getShares.size(); ++i){
             toSingleArrayShares.addAll(getShares.get(i));
