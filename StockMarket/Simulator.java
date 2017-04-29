@@ -22,7 +22,7 @@ public class Simulator {
     private int marketType;
     private double yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
-    private static final int SIZE_DATA = 19;
+    protected static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
     private static final Date END_DATE = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2018", new ParsePosition(0)); // 1st Jan 2018 at midnight.
     private static final Date GOOD_FRIDAY = new SimpleDateFormat("dd/MM/yyyy kk:mm").parse("14/04/2017 09:00", new ParsePosition(0));
@@ -504,6 +504,22 @@ public class Simulator {
         }
         return portfolios;
     }
+
+    /**
+     * Provides a list of Total Worth correlating to client names within the simulation.
+     * @return A list of Total Worth from all Portfolio instances in the simulation.
+     */
+    public ArrayList<ArrayList<Share>> getShares(){
+        ArrayList<ArrayList<Share>> portfolios = new ArrayList<>();
+        for(Trader t : traders) {
+            for(Portfolio p : t.getPortfolios()){
+                portfolios.add(p.getShares());
+            }
+        }
+        System.out.println(portfolios);
+        return portfolios;
+    }
+
 
 
     /**

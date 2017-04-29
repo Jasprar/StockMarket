@@ -1,11 +1,7 @@
 package StockMarket;
 
 
-import com.sun.deploy.util.SessionState;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.*;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -13,10 +9,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-import javax.sound.midi.SysexMessage;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -467,17 +461,32 @@ return companyData;
         List<Integer> TotalWorth = new ArrayList<>(); //Wealth
         TotalWorth.addAll(sim.getTotalWorth());
 
-        List<ClientData> clientData = new ArrayList<>();
+        List<ArrayList<Share>> getShares = new ArrayList<>();
+        getShares.addAll(sim.getShares());
 
+        ArrayList<Share> toSingleArrayShares = new ArrayList<Share>();
+        for(int i = 0; i < getShares.size(); ++i){
+            toSingleArrayShares.addAll(getShares.get(i));
+        }
+
+        //Converting Shares List to String for the table
+
+        List<String> Shares = toSingleArrayShares.stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
+
+        List<ClientData> clientData = new ArrayList<>();
 
         for(int i = 0; i < ClientNames.size(); i++) {
             String clientNames = ClientNames.get(i);
             int cashHolding = CashHolding.get(i);
             int totalWorth = TotalWorth.get(i);
-            ClientData client = new ClientData("Test", 1, 1,1,"Random");//Creating a object  per row
+            String clientShares = Shares.get(i);
+            ClientData client = new ClientData("Test", 1, 1,"3","Random");//Creating a object  per row
             client.setPFClient(clientNames);
             client.setPFCashHolding(cashHolding);
             client.setPFWealth(totalWorth);
+            client.setPFShares(clientShares);
             clientData.add(client);
         }
 
