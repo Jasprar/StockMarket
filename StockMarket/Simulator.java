@@ -200,7 +200,7 @@ public class Simulator {
         }
         // Get what everyone wants to buy & sell.
         for(Trader t : traders) {
-            HashMap<String, Integer> traderBuys = t.buy();
+            HashMap<String, Integer> traderBuys = t.buy(new ArrayList<String>(numberOfShares.keySet()));
             toBeBought.put(t, traderBuys);
             for(String companyName : traderBuys.keySet()) {
                 buyTotals.put(companyName, (buyTotals.get(companyName) + traderBuys.get(companyName)));
@@ -541,8 +541,5 @@ public class Simulator {
      * @return a HashMap from String (companyName) to int (numberOfShares).
      */
     public HashMap<String, Integer> getCompanyDetails() { return numberOfShares;}
-
-
-
 
 }

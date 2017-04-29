@@ -2,6 +2,7 @@ package StockMarket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public abstract class Trader {
     private ArrayList<Portfolio> portfolios;
@@ -25,7 +26,7 @@ public abstract class Trader {
     }
 
     // HashMap is company name : # sought for purchase.
-    public abstract HashMap<String,Integer> buy();
+    public abstract HashMap<String,Integer> buy(ArrayList<String> availableCompanies);
 
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
     public abstract ArrayList<Share> sell();

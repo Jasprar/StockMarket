@@ -1,5 +1,6 @@
 package StockMarket;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,7 +32,7 @@ public class RandomTrader extends Trader {
     // only be trading in shares of that name (and I talked to Bradley - If it is a buy event, selling should happen
     // AS IT USUALLY WOULD and vice-versa).
     @Override
-    public HashMap<String, Integer> buy() {
+    public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
         return null;
     }
 

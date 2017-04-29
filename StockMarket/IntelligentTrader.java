@@ -11,7 +11,7 @@ public class IntelligentTrader extends Trader {
     }
 
     @Override
-    public HashMap<String, Integer> buy() {
+    public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
         return null;
     }
 
