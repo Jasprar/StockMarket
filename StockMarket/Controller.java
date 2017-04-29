@@ -58,36 +58,15 @@ public class Controller {
 
     //Java fields
     int duration;
-    Timer timer = new Timer();
-    Simulator sim = new Simulator();
+
     int count;
     int clicked;
+    final int COMMODOTIES_TIME = 1000;
+
+    Timer timer = new Timer();
+    Simulator sim = new Simulator();
 
 
-    /**
-     * Initialize table when run.
-     * PF = PropertyValueFactory.
-     * Calls the data and appends it to the table. Any changes from the data will change the table accordingly.
-     * No need to re-update table every interval.
-     */
-    @FXML
-    public void initialize(){
-          //companyName.setCellValueFactory(new Sim);
-   //       companyShares.setCellValueFactory(cellData -> cellData.getValue().PFShareValuesProperty());
-        // companyName.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
-        //companyShares.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
-    }
-    /**
-     * File menubar -> menu items methods
-     */
-    @FXML
-    public void getFile() {
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle("Success!");
-        dialog.setHeaderText("Files have been added");
-        dialog.show();
-
-    }
 
 
     /**
@@ -96,42 +75,33 @@ public class Controller {
      */
     @FXML
     public void runSimulation() {
-
         TextInputDialog dialog = new TextInputDialog("");
         dialog.setTitle("Duration Needed");
         dialog.setHeaderText("Enter duration (Minutes)");
         dialog.setContentText("Duration: ");
         dialog.show();
-
         //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
         // Currently doesnt work
         // duration = Integer.parseInt("3");
         // if(duration != 0) sim.runSimulation(duration);
-
         callMethod();
     }
-
 
     /***
      * Once run simulation duration as been entered, call these methods
      */
     @FXML
     public void callMethod() {
-        Food();
-        Hardware();
-        HiTech();
-        Property();
-        time();
+        commodities();
+        currentTime();
         share();
-        date();
+        currentDate();
         MarketType();
         event();
         graph();
         clientTable();
         companyTable();
         backEnd();
-
-
     }
 
     /**
@@ -148,7 +118,6 @@ public class Controller {
      *
      * This following message displays a popup showing how to use.
      */
-
     public void howToUse() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
@@ -156,9 +125,7 @@ public class Controller {
         alert.setContentText("This application is intended as a game and to help people learn abotu stock marketing." +
                 "Select File - Duration and enter how long you want the application to run for, in minutes." +
                 "Start clicking around and watch stock prices rising and falling per client. If you understand ");
-
         alert.showAndWait();
-
     }
 
     /**
@@ -174,15 +141,12 @@ public class Controller {
                 "a scandal in the frozen orange juice commodities market). W&G provide investment management\n" +
                 "for their clients, helping them to get the best returns of their investment through buying and selling\n" +
                 "of stock on the London stock exchange");
-
         alert.showAndWait();
-
     }
 
 
     /**
      * Legal menuBar --> Menu item methods
-     *
      * This method displays the current license agreement
      */
     @FXML
@@ -191,7 +155,6 @@ public class Controller {
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
         alert.setContentText("I have a great message for you!");
-
         alert.showAndWait();
     }
 
@@ -204,11 +167,12 @@ public class Controller {
         alert.setTitle("Copyright");
         alert.setHeaderText(null);
         alert.setContentText("This belong to the University of Sussex");
-
         alert.showAndWait();
     }
 
-
+    /**
+     * Popup message displaying the developers names
+     */
     @FXML
     public void credits() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -218,14 +182,10 @@ public class Controller {
         alert.showAndWait();
     }
 
-
     /**
-     * Left panel --> Commodities methods
+     * Displays the commodoties values . Updates accordingly to COMMODOTIES_TIME
      */
-    @FXML
-    public void Food() {
-       // Food.appendText("Get Food data");
-
+    public void commodities(){
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -233,16 +193,7 @@ public class Controller {
                     Food.setText("Food: " + "\n" + "50%");
                 });
             }
-        }, 0, 1000);
-    }
-
-
-
-    // Needs to be changed to labels
-
-    @FXML
-    public void Hardware() {
-        //Hardware.appendText("Get Hardware data");
+        }, 0, COMMODOTIES_TIME);
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -251,14 +202,7 @@ public class Controller {
                     Hardware.setText("Hardware: " + "\n" + "50%");
                 });
             }
-        }, 0, 1000);
-    }
-
-
-    @FXML
-    public void HiTech() {
-
-       // HiTech.appendText("Get HiTech data");
+        }, 0, COMMODOTIES_TIME);
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -267,15 +211,7 @@ public class Controller {
                     HiTech.setText("HiTech: " + "\n" + "50%");
                 });
             }
-        }, 0, 1000);
-
-    }
-
-
-    @FXML
-    public void Property() {
-
-      //  Property.appendText("Get Property data");
+        }, 0, COMMODOTIES_TIME);
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -284,17 +220,17 @@ public class Controller {
                     Property.setText("Property: " + "\n" + "50%");
                 });
             }
-        }, 0, 1000);
-    }
+        }, 0, COMMODOTIES_TIME);
 
+
+    }
 
     /**
      * Bottom panel (Below graph) --> Information panel
-     * Market type, ShareIndex, Event, Day
+     * Displays the current time, updates every second.
      */
-
     @FXML
-    public void time() {
+    public void currentTime() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -307,7 +243,7 @@ public class Controller {
 
     // Textfield for timeEntry
 
-    public void date() {
+    public void currentDate() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -347,29 +283,26 @@ public class Controller {
         }, 0, 1000);
     }
 
-    //TODO test this using timer
-
-
     public void share() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    String share = Double.toString(sim.getShareIndex()); //TODO convert every type of interger to decimal, eg 1000 -> .0001, 100 --> 0.001
+                    String share = Double.toString(sim.getShareIndex());
                     shareEntry.setText(share + "p");
                 });
             }
         }, 0, 1000);
     }
 
+    /***
+     * Displays share index. Shows the share index value per every month.
+     */
     public void graph() {
-        //linechart.setTitle("Stock market");
-
         XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
         x.setLabel("Month");
         y.setLabel("Share Index / Event ");
-
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -381,26 +314,42 @@ public class Controller {
             }
         }, 0, 3000); //Calculation needed to display every month
         linechart.getData().addAll(series);
-
-
-
     }
 
     /**
-     * Back end tab --> 2 tables
+     * Back end tab, Company Table. Displays Company Name, Company values, Share Price, and total shares.
+     * Retrieves the object from CompanyData and appends each row per every instance is created
      */
-
     public  void companyTable() {
     //   for(CompanyData s: companydataList()){
         for(CompanyData s: companydataList()){
             companyDataTableView.getItems().add(s);
         }
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                   companyDataTableView.refresh();
+                });
+
+            }
+        }, 0, 1000);
+
     }
 
+    /***
+     * Populates arraylists, Company Name, Values, Price and total shares accordingly.
+     * Creates a new instance of companydata and passes the data inside
+     * @return CompanyData object .
+     */
     private List<CompanyData> companydataList(){
         List<String> companyNames = new ArrayList<>();
         Set<String> companyNames1 =  sim.getCompanyNames();
         companyNames.addAll(companyNames1);
+
+
+        List<Integer> clientNetworth = new ArrayList<>();
 
         List<Integer> companyValues = new ArrayList<>();
         Collection<Integer> companyValues1 = sim.getCompanyValues();
@@ -409,6 +358,7 @@ public class Controller {
         List<Integer> sharePrice = new ArrayList<>();
         for(String s: companyNames) {
             sharePrice.add(sim.getSharePrice(s));
+            clientNetworth.add(sim.getNetWorth(s));
         }
 
         List<CompanyData> companyData = new ArrayList<>();
@@ -417,20 +367,38 @@ public class Controller {
             String name = companyNames.get(i);
             int sharePrices = sharePrice.get(i);
             int value = companyValues.get(i);
-            CompanyData company = new CompanyData("Test",1,1);//Creating a object  per row
+            int networth = clientNetworth.get(i);
+            CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
             company.setPFCompanyName(name);
             company.setPFShareValues(sharePrices);
             company.setPFTotalShares(value);
+            company.setPFNetWorth(networth);
             companyData.add(company);
         }
-return companyData;
+
+        return companyData;
 
     }
 
+    /**
+     * Client Table. Displays Client Name, Cash holding, total worth, shares and trader type
+     * Retrieves the object from ClientData and appends each row per every instance is created
+     */
     public void clientTable() {
         for (ClientData s : clientdataList()) {
             clientDataTableView.getItems().add(s);
         }
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    clientDataTableView.refresh();
+                });
+
+            }
+        }, 0, 1000);
+
         Tooltip tooltip = new Tooltip();
         tooltip.setText("\nDouble click to sell stock\n");
         clientDataTableView.setTooltip(tooltip);
@@ -441,13 +409,16 @@ return companyData;
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
                     ClientData clientData = clientDataTableView.getSelectionModel().getSelectedItem();
                     sim.leaveSimulation(clientData.getPFClient());
-
                 }
             }
         });
         //Currently not working
     }
 
+    /***
+     *
+     * @return
+     */
     private List<ClientData> clientdataList() {
         //Getting client Names and appending to list
         List<String> ClientNames = new ArrayList<>();
@@ -466,16 +437,22 @@ return companyData;
         getShares.addAll(sim.getShares());
 
         //Populating arraylist<share> from the arraylist of arraylist
-        ArrayList<Share> toSingleArrayShares = new ArrayList<Share>();
+        ArrayList<Share> toSingleArrayShares = new ArrayList<>();
         for(int i = 0; i < getShares.size(); ++i){
             toSingleArrayShares.addAll(getShares.get(i));
+
         }
 
         //Converting Shares List to String for the table
 
         List<String> Shares = toSingleArrayShares.stream()
-                .map(Object::toString)
+                .map(Share::toString)
                 .collect(Collectors.toList());
+
+        //Clearing the redundant array lists
+        getShares.clear();
+        toSingleArrayShares.clear();
+
 
         List<ClientData> clientData = new ArrayList<>();
 
@@ -491,18 +468,21 @@ return companyData;
             client.setPFShares(clientShares);
             clientData.add(client);
         }
-
-
         return clientData;
-
     }
 
-
+    /**
+     * Increments count every time. Makes the graph worth within 1-12. IE: Jan-Dec
+     * @return (Incremental) count
+     */
     private int counter() {
     if(count < 12 ) count++;
         return count;
     }
 
+    /***
+     * One time only popup when BackEnd tab is clicked upon.
+     */
     private void backEnd(){
 
         backEnd.setOnSelectionChanged(new EventHandler<javafx.event.Event>() {
@@ -520,10 +500,5 @@ return companyData;
             }
         });
     }
-
-    private void sellAll(){
-        System.out.println("Sell all stock belonging to that client");
-    }
-
 
 }

@@ -24,7 +24,6 @@
             <menus>
                 <Menu id="File" mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem id="Import" mnemonicParsing="false" onAction="#getFile" text="Import File" />
                         <MenuItem id="RunSim" mnemonicParsing="false" onAction="#runSimulation" text="Run Simulation" />
                         <MenuItem id="Quit" mnemonicParsing="false" onAction="#quit" text="Quit" />
                     </items>
@@ -88,7 +87,7 @@
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="backEnd" text="Back End">
+                <Tab fx:id="backEnd" text="Middle End">
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
@@ -153,6 +152,20 @@
                     </content>
                 </Tab>
             </tabs>
+            <Tab text="Back End">
+                <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <children>
+                            <TableView layoutX="8.0" prefHeight="618.0" prefWidth="1080.0">
+                                <columns>
+                                    <TableColumn prefWidth="235.0" text="Company" />
+                                    <TableColumn prefWidth="846.0" text="Client" />
+                                </columns>
+                            </TableView>
+                        </children>
+                    </AnchorPane>
+                </content>
+            </Tab>
         </TabPane>
     </children>
 </VBox>

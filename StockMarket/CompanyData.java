@@ -13,11 +13,13 @@ public class CompanyData {
     private final StringProperty PFCompanyName;
     private final IntegerProperty PFShareValues;
     private final IntegerProperty PFTotalShares;
+    private final IntegerProperty PFNetWorth;
 
-    public CompanyData(String CompanyName, int ShareValue, int TotalShares) {
+    public CompanyData(String CompanyName, int ShareValue, int networth, int TotalShares) {
         this.PFCompanyName = new SimpleStringProperty(CompanyName);
         this.PFShareValues = new SimpleIntegerProperty(ShareValue);
         this.PFTotalShares = new SimpleIntegerProperty(TotalShares);
+        this.PFNetWorth = new SimpleIntegerProperty(networth);
     }
 
     public String getPFCompanyName() {
@@ -56,5 +58,15 @@ public class CompanyData {
         this.PFTotalShares.set(PFTotalShares);
     }
 
+    public int getPFNetWorth() {
+        return PFNetWorth.get();
+    }
 
+    public IntegerProperty PFNetWorthProperty() {
+        return PFNetWorth;
+    }
+
+    public void setPFNetWorth(int PFNetWorth) {
+        this.PFNetWorth.set(PFNetWorth);
+    }
 }
