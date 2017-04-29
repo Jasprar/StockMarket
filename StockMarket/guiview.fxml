@@ -1,48 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
     <children>
         <MenuBar id="MenuBar">
             <menus>
                 <Menu id="File" mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem id="Import" mnemonicParsing="false" text="Import File" onAction="#getFile" />
-                        <MenuItem id="RunSim" mnemonicParsing="false" text="Run Simulation" onAction="#runSimulation"/>
-                        <MenuItem id="Quit" mnemonicParsing="false" text="Quit" onAction="#quit" />
+                        <MenuItem id="Import" mnemonicParsing="false" onAction="#getFile" text="Import File" />
+                        <MenuItem id="RunSim" mnemonicParsing="false" onAction="#runSimulation" text="Run Simulation" />
+                        <MenuItem id="Quit" mnemonicParsing="false" onAction="#quit" text="Quit" />
                     </items>
                 </Menu>
                 <Menu id="Help" mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem id="HowToUse" mnemonicParsing="false" text="How to use" onAction="#howToUse" />
-                        <MenuItem id="aboutUs" mnemonicParsing="false" text="About Us" onAction="#aboutUs"/>
+                        <MenuItem id="HowToUse" mnemonicParsing="false" onAction="#howToUse" text="How to use" />
+                        <MenuItem id="aboutUs" mnemonicParsing="false" onAction="#aboutUs" text="About Us" />
                     </items>
                 </Menu>
                 <Menu id="Legal" mnemonicParsing="false" text="Legal">
                     <items>
-                        <MenuItem id="License" mnemonicParsing="false" text="License" onAction="#License"/>
-                        <MenuItem id="copyRight" mnemonicParsing="false" text="Copyright" onAction="#copyRight"/>
-                        <MenuItem id="credits" mnemonicParsing="false" text="Credits" onAction="#credits"/>
+                        <MenuItem id="License" mnemonicParsing="false" onAction="#License" text="License" />
+                        <MenuItem id="copyRight" mnemonicParsing="false" onAction="#copyRight" text="Copyright" />
+                        <MenuItem id="credits" mnemonicParsing="false" onAction="#credits" text="Credits" />
                     </items>
                 </Menu>
             </menus>
@@ -65,7 +62,7 @@
                                     <children>
                                         <LineChart fx:id="linechart" prefHeight="483.0" prefWidth="867.0">
                                             <xAxis>
-                                                <NumberAxis  fx:id="x" side="BOTTOM" />
+                                                <NumberAxis side="BOTTOM" fx:id="x" />
                                             </xAxis>
                                             <yAxis>
                                                 <NumberAxis fx:id="y" side="LEFT" />
@@ -95,51 +92,62 @@
                     <content>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
-                                <SplitPane dividerPositions="0.5004533091568449" layoutX="-4.0" layoutY="-6.0" prefHeight="628.0" prefWidth="1105.0">
+                                <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1099.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="230.0">
                                             <children>
-                                                <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="553.0">
+                                                <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="400.0">
                                                     <columns>
-
-                                                        <TableColumn fx:id="companyName" prefWidth="200.0" text="Company">
+                                                             <TableColumn fx:id="companyName" prefWidth="200.0" text="Company">
                                                             <cellValueFactory>
-                                                                <PropertyValueFactory property= "PFCompanyName" />
+                                                                <PropertyValueFactory property="PFCompanyName" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="companyShares" prefWidth="100.0" text="Total shares">
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFShareValues"/> </cellValueFactory>
+                                                        <TableColumn fx:id="companyShares" prefWidth="100.0" text="Share Price">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFShareValues" /> </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="closingPence" prefWidth="300.0" text="Closing pence">
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFclosingPence"/></cellValueFactory>
+                                                        <TableColumn fx:id="closingPence" prefWidth="100.0" text="Total Shares">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFclosingPence" />
+                                             </cellValueFactory>
                                                         </TableColumn>
-
-                                                    </columns>
+                              
+                                                                                  </columns>
                                                 </TableView>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                                            <children>
-                                                <TableView fx:id ="clientDataTableView" layoutY="4.0" prefHeight="616.0" prefWidth="545.0">
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="643.0">
+                                 <children>
+                                                <TableView fx:id="clientDataTableView" layoutX="6.0" layoutY="5.0" prefHeight="616.0" prefWidth="1000.0">
                                                     <columns>
-                                                        <TableColumn fx:id="client" prefWidth="160.0" text="Client" >
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFClient"/></cellValueFactory>
+                                                        <TableColumn fx:id="client" prefWidth="130.0" text="Client">
+                                                            <columns>
+                                                                <TableColumn fx:id="firstName" prefWidth="130.0" text="First Name"> </TableColumn>
+                              
+                                                                                                                                                                      <TableColumn fx:id="lastName" prefWidth="130.0" text="Last Name"> </TableColumn>
+                              
+                                                                                                                                                                  </columns>
+                                                            <cellValueFactory> <PropertyValueFactory property="PFClient" />
+                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="clientWealth" prefWidth="75.0" text="Wealth" >
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFWealth"/></cellValueFactory>
+                                                        <TableColumn fx:id="clientWealth" prefWidth="75.0" text="Wealth">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFWealth" />
+                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="cashHolding" prefWidth="100.0" text="CashHolding" >
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFCashHolding"/></cellValueFactory>
+                                                        <TableColumn fx:id="cashHolding" prefWidth="100.0" text="CashHolding">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFCashHolding" />
+                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="clientShares" prefWidth="75.0" text="Shares" >
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFShares"/></cellValueFactory>
+                                                        <TableColumn fx:id="clientShares" prefWidth="75.0" text="Shares">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFShares" />
+                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="managedBy" prefWidth="100.0" text="Managed By" >
-                                                            <cellValueFactory> <PropertyValueFactory property= "PFManagedBy"/></cellValueFactory>
+                                                        <TableColumn fx:id="managedBy" prefWidth="100.0" text="Managed By">
+                                                            <cellValueFactory> <PropertyValueFactory property="PFManagedBy" />
+                                             </cellValueFactory>
                                                         </TableColumn>
                                                     </columns>
                                                 </TableView>
-                                            </children>
+                                 </children>
                                         </AnchorPane>
                                     </items>
                                 </SplitPane>
