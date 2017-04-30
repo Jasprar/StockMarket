@@ -147,32 +147,31 @@ public class Controller {
                 tray.showAndWait();
 
                 break;
-            case 51: tray.setMessage("What does Short Selling mean?");
-                tray.setMessage("What factors affect stock market?") ;
+            case 51:
+                tray.setMessage("What does Short Selling mean?");
                 tray.setTitle("QUIZ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
             case 39: tray.setMessage("What is a stock?");
-                tray.setMessage("What factors affect stock market?") ;
                 tray.setTitle("QUIZ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
-            case 74: tray.setMessage("Where's the oldest stock exchange in the world?");
-                tray.setMessage("What factors affect stock market?") ;
+            case 74:
+                tray.setMessage("Where's the oldest stock exchange in the world?");
                 tray.setTitle("QUIZ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
-            case 15: tray.setMessage("Which type of bond is the safest?");
-                tray.setMessage("What factors affect stock market?") ;
+            case 15:
+                tray.setMessage("Which type of bond is the safest?");
                 tray.setTitle("QUIZ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
-            case 6: tray.setMessage("In general, if interest rates go down, then bond prices…");
-                tray.setMessage("What factors affect stock market?") ;
+            case 6:
+                tray.setMessage("In general, if interest rates go down, then bond prices…");
                 tray.setTitle("QUIZ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
