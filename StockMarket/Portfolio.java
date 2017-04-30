@@ -58,5 +58,9 @@ public class Portfolio {
             }
         }
     }
+    @Override
+    public String toString(){
+        return shares.toString();
+    }
 }
 

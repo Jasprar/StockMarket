@@ -9,12 +9,18 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import tray.notification.TrayNotification;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static tray.animations.AnimationType.POPUP;
 
 /**
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
@@ -119,6 +125,63 @@ public class Controller {
         clientTable();
         companyTable();
         backEnd();
+        quiz();
+    }
+
+    private void quiz() {
+        TrayNotification tray = new TrayNotification();
+        tray.setRectangleFill(Paint.valueOf("#ff3300"));
+        tray.setAnimationType(POPUP);
+        Image whatsAppImg = new Image("StockMarket/img/lightbulb.png");
+        tray.setImage(whatsAppImg);
+
+
+
+        Random ran = new Random();
+        int x = ran.nextInt(100) + 1;
+        switch (x) {
+            case 14:
+                tray.setMessage("What factors affect stock market?") ;
+                tray.setTitle("QUIZ");
+                tray.showAndDismiss(Duration.seconds(7));
+                tray.showAndWait();
+
+                break;
+            case 51: tray.setMessage("What does Short Selling mean?");
+                tray.setMessage("What factors affect stock market?") ;
+                tray.setTitle("QUIZ");
+                tray.showAndDismiss(Duration.seconds(7));
+                tray.showAndWait();
+                break;
+            case 39: tray.setMessage("What is a stock?");
+                tray.setMessage("What factors affect stock market?") ;
+                tray.setTitle("QUIZ");
+                tray.showAndDismiss(Duration.seconds(7));
+                tray.showAndWait();
+                break;
+            case 74: tray.setMessage("Where's the oldest stock exchange in the world?");
+                tray.setMessage("What factors affect stock market?") ;
+                tray.setTitle("QUIZ");
+                tray.showAndDismiss(Duration.seconds(7));
+                tray.showAndWait();
+                break;
+            case 15: tray.setMessage("Which type of bond is the safest?");
+                tray.setMessage("What factors affect stock market?") ;
+                tray.setTitle("QUIZ");
+                tray.showAndDismiss(Duration.seconds(7));
+                tray.showAndWait();
+                break;
+            case 6: tray.setMessage("In general, if interest rates go down, then bond prices…");
+                tray.setMessage("What factors affect stock market?") ;
+                tray.setTitle("QUIZ");
+                tray.showAndDismiss(Duration.seconds(7));
+                tray.showAndWait();
+            break;
+        }
+
+
+
+
     }
 
     private void globalspeedControl() {
@@ -380,6 +443,7 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
+                    quiz();
                     companyDataTableView.getItems().clear();
                     for(CompanyData s: companydataList()){
                         companyDataTableView.getItems().add(s);

@@ -516,7 +516,6 @@ public class Simulator {
                 portfolios.add(p.getShares());
             }
         }
-        System.out.println(portfolios);
         return portfolios;
     }
 
