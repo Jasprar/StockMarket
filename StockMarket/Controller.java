@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -66,6 +67,8 @@ public class Controller {
     Button runButton;
     @FXML
     AnchorPane ClientPane,CompanyPane;
+    @FXML
+    VBox frame;
 
     //Java fields
     int duration;
@@ -79,27 +82,33 @@ public class Controller {
     Simulator sim = new Simulator();
 
 
+    /***
+     * Initializes the set up of the program
+     */
+    @FXML
+    public void initialize(){
 
-
+    }
     /**
      * Runs the simulation.
      * Pop up for the user to enter duration which gets passed in to Sim.runsim(duration).
      */
     @FXML
     public void runSimulation() throws Exception {
-            TextInputDialog dialog = new TextInputDialog("");
-            dialog.setTitle("Duration Needed");
-            dialog.setHeaderText("Enter duration (Minutes)");
-            dialog.setContentText("Duration: ");
-            dialog.show();
-            //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
-            // Currently doesnt work
-            // duration = Integer.parseInt("3");
-            // if(duration != 0) sim.runSimulation(duration);
-            //int totalTime = duration * 60; // Minutes to seconds
+        TextInputDialog dialog = new TextInputDialog("");
+        dialog.setTitle("Duration Needed");
+        dialog.setHeaderText("Enter duration (Minutes)");
+        dialog.setContentText("Duration: ");
+        dialog.show();
+        //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
+        // Currently doesnt work
+        // duration = Integer.parseInt("3");
+        // if(duration != 0) sim.runSimulation(duration){
+        //int totalTime = duration * 60; // Minutes to seconds
         RunSim.setDisable(true);
         runButton.setVisible(false);
         callMethod();
+    //}
         }
 
     private void globalTimer() throws Exception {
@@ -416,7 +425,7 @@ public class Controller {
         XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
         x.setLabel("Month");
-        y.setLabel("Share Index / Event ");
+        y.setLabel("Share Index");
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override

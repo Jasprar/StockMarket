@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -23,9 +24,10 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("guiview.fxml"));
-        primaryStage.setTitle("Stockmarket simulation");
+        primaryStage.setTitle("Wolf & Gecko Stockmarket Simulation");
         primaryStage.setScene(new Scene(root, 1110, 695));
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image("StockMarket/img/logo.png"));
         primaryStage.show();
     }
 
