@@ -10,6 +10,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ public class Controller {
     //Views
 
     @FXML
-    MenuItem runSim;
+    MenuItem RunSim;
     @FXML
     Label dateEntry, eventEntry,timeEntry,shareEntry,marketEntry;
     @FXML
@@ -54,7 +56,10 @@ public class Controller {
     NumberAxis x,y;
     @FXML
     Tab backEnd;
-
+    @FXML
+    Button runButton;
+    @FXML
+    AnchorPane ClientPane,CompanyPane;
 
     //Java fields
     int duration;
@@ -62,6 +67,7 @@ public class Controller {
     int count;
     int clicked;
     final int COMMODOTIES_TIME = 1000;
+    int TABLE_REFRESH_RATE = 6000;
 
     Timer timer = new Timer();
     Simulator sim = new Simulator();
@@ -74,24 +80,34 @@ public class Controller {
      * Pop up for the user to enter duration which gets passed in to Sim.runsim(duration).
      */
     @FXML
-    public void runSimulation() {
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle("Duration Needed");
-        dialog.setHeaderText("Enter duration (Minutes)");
-        dialog.setContentText("Duration: ");
-        dialog.show();
-        //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
-        // Currently doesnt work
-        // duration = Integer.parseInt("3");
-        // if(duration != 0) sim.runSimulation(duration);
+    public void runSimulation() throws Exception {
+            TextInputDialog dialog = new TextInputDialog("");
+            dialog.setTitle("Duration Needed");
+            dialog.setHeaderText("Enter duration (Minutes)");
+            dialog.setContentText("Duration: ");
+            dialog.show();
+            //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
+            // Currently doesnt work
+            // duration = Integer.parseInt("3");
+            // if(duration != 0) sim.runSimulation(duration);
+            //int totalTime = duration * 60; // Minutes to seconds
+        RunSim.setDisable(true);
+        runButton.setVisible(false);
         callMethod();
+        }
+
+    private void globalTimer() throws Exception {
+
+
     }
+
 
     /***
      * Once run simulation duration as been entered, call these methods
      */
     @FXML
     public void callMethod() {
+
         commodities();
         currentTime();
         share();
@@ -99,9 +115,45 @@ public class Controller {
         MarketType();
         event();
         graph();
+        globalspeedControl();
         clientTable();
         companyTable();
         backEnd();
+    }
+
+    private void globalspeedControl() {
+        CompanyPane.addEventFilter(MouseEvent.MOUSE_PRESSED, e ->{
+            if(e.isSecondaryButtonDown()){
+                List<String> choices = new ArrayList<>();
+                choices.add("Slow");
+                choices.add("Normal");
+                choices.add("Fast");
+
+                ChoiceDialog<String> dialog = new ChoiceDialog<>("Normal", choices);
+                dialog.setTitle("Speed Choice");
+                dialog.setHeaderText("Select the speed you wish the table to simulate at");
+                dialog.setContentText("Choose speed: ");
+                Optional<String> result = dialog.showAndWait();
+
+                if (result.isPresent()){
+                    if(result.get().equals("Slow")){
+
+                        this.TABLE_REFRESH_RATE = 3000;
+
+                        System.out.println(TABLE_REFRESH_RATE);
+                    }
+                    if(result.get().equals("Normal")){
+                        this.TABLE_REFRESH_RATE = 2000;
+                        System.out.println(TABLE_REFRESH_RATE);
+                    }
+                    if(result.get().equals("Fast")){
+                        this.TABLE_REFRESH_RATE = 1000;
+
+                        System.out.println(TABLE_REFRESH_RATE);
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -322,19 +374,21 @@ public class Controller {
      */
     public  void companyTable() {
     //   for(CompanyData s: companydataList()){
-        for(CompanyData s: companydataList()){
-            companyDataTableView.getItems().add(s);
-        }
+
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                   companyDataTableView.refresh();
+                    companyDataTableView.getItems().clear();
+                    for(CompanyData s: companydataList()){
+                        companyDataTableView.getItems().add(s);
+                    }
                 });
 
             }
-        }, 0, 1000);
+        }, 0, TABLE_REFRESH_RATE);
+
 
     }
 
@@ -385,19 +439,25 @@ public class Controller {
      * Retrieves the object from ClientData and appends each row per every instance is created
      */
     public void clientTable() {
-        for (ClientData s : clientdataList()) {
-            clientDataTableView.getItems().add(s);
-        }
+
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    clientDataTableView.refresh();
+                    clientDataTableView.getItems().clear();
+        for (ClientData s : clientdataList()) { //Needs to be changed to global timer
+            clientDataTableView.getItems().add(s);
+        }
+
+
+
                 });
 
             }
-        }, 0, 1000);
+
+        }, 0, TABLE_REFRESH_RATE);
+
 
         Tooltip tooltip = new Tooltip();
         tooltip.setText("\nDouble click to sell stock\n");
@@ -420,14 +480,20 @@ public class Controller {
      * @return
      */
     private List<ClientData> clientdataList() {
+
+
+
         //Getting client Names and appending to list
         List<String> ClientNames = new ArrayList<>();
         ClientNames.addAll(sim.getClientNames());
 
         //Getting Cash holding and appending to list
         List<Integer> CashHolding = new ArrayList<>();
-        CashHolding.addAll(sim.getCashHolding());
-
+        Random rand = new Random();
+        int x = rand.nextInt(50)+1;
+        for(int i = 0; i <= 10; i++) {
+            CashHolding.add(x);
+        }
         //Getting total worth and appending to list
         List<Integer> TotalWorth = new ArrayList<>(); //Wealth
         TotalWorth.addAll(sim.getTotalWorth());
@@ -465,7 +531,7 @@ public class Controller {
             client.setPFClient(clientNames);
             client.setPFCashHolding(cashHolding);
             client.setPFWealth(totalWorth);
-            client.setPFShares(clientShares);
+          //  client.setPFShares(clientShares);
             clientData.add(client);
         }
         return clientData;
@@ -492,7 +558,7 @@ public class Controller {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Tip");
                     alert.setHeaderText("Tip!");
-                    alert.setContentText("Double click any client row to sell all their stock!");
+                    alert.setContentText("Double click any client row to sell all their stock!\n" + "Right click to adjust speed!");
                     alert.showAndWait();
                     clicked++;
                 }
@@ -500,5 +566,4 @@ public class Controller {
             }
         });
     }
-
 }

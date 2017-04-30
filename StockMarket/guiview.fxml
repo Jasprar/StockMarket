@@ -2,6 +2,7 @@
 
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -24,8 +25,8 @@
             <menus>
                 <Menu id="File" mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem id="RunSim" mnemonicParsing="false" onAction="#runSimulation" text="Run Simulation" />
-                        <MenuItem id="Quit" mnemonicParsing="false" onAction="#quit" text="Quit" />
+                        <MenuItem fx:id="RunSim" mnemonicParsing="false" onAction="#runSimulation" text="Run Simulation" />
+                        <MenuItem fx:id="Quit" mnemonicParsing="false" onAction="#quit" text="Quit" />
                     </items>
                 </Menu>
                 <Menu id="Help" mnemonicParsing="false" text="Help">
@@ -76,20 +77,21 @@
                                         <Text id="Event" layoutX="12.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Event :" wrappingWidth="90.2978515625" />
                                         <Text id="day" layoutX="446.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date: " wrappingWidth="86.6708984375" />
                                         <Text id="time" layoutX="9.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="96.61669921875" />
-                                        <Label fx:id="timeEntry" layoutX="64.0" layoutY="96.0" prefHeight="15.0" prefWidth="186.0" />
-                                        <Label fx:id="dateEntry" layoutX="557.0" layoutY="97.0" prefHeight="15.0" prefWidth="186.0" />
-                                        <Label fx:id="eventEntry" layoutX="64.0" layoutY="8.0" prefHeight="15.0" prefWidth="186.0" />
-                                        <Label fx:id="marketEntry" layoutX="557.0" layoutY="8.0" prefHeight="15.0" prefWidth="186.0" />
-                                        <Label fx:id="shareEntry" layoutX="557.0" layoutY="51.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label fx:id="timeEntry" layoutX="71.0" layoutY="102.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label fx:id="dateEntry" layoutX="509.0" layoutY="102.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label fx:id="eventEntry" layoutX="65.0" layoutY="14.0" prefHeight="21.0" prefWidth="373.0" />
+                                        <Label fx:id="marketEntry" layoutX="556.0" layoutY="12.0" prefHeight="15.0" prefWidth="186.0" />
+                                        <Label fx:id="shareEntry" layoutX="550.0" layoutY="61.0" prefHeight="15.0" prefWidth="186.0" />
+                              <Button fx:id="runButton" layoutX="800.0" layoutY="97.0" mnemonicParsing="false" text="Run" onAction="#runSimulation"/>
                                     </children>
                                 </Pane>
                             </children>
                         </AnchorPane>
                     </content>
                 </Tab>
-                <Tab fx:id="backEnd" text="Middle End">
+                <Tab fx:id="backEnd" text="Back End">
                     <content>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
+                        <AnchorPane fx:id ="CompanyPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
                                 <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1199.0">
                                     <items>
@@ -117,7 +119,7 @@
                                                 </TableView>
                                             </children>
                                         </AnchorPane>
-                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="643.0">
+                                        <AnchorPane fx:id ="ClientPane" minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="643.0">
                                  <children>
                                                 <TableView fx:id="clientDataTableView" layoutX="6.0" layoutY="5.0" prefHeight="616.0" prefWidth="1000.0">
                                                     <columns>
@@ -131,10 +133,6 @@
                                                         </TableColumn>
                                                         <TableColumn fx:id="cashHolding" prefWidth="100.0" text="CashHolding">
                                                             <cellValueFactory> <PropertyValueFactory property="PFCashHolding" />
-                                             </cellValueFactory>
-                                                        </TableColumn>
-                                                        <TableColumn fx:id="clientShares" prefWidth="100.0" text="Shares">
-                                                            <cellValueFactory> <PropertyValueFactory property="PFShares" />
                                              </cellValueFactory>
                                                         </TableColumn>
                                                         <TableColumn fx:id="managedBy" prefWidth="100.0" text="Managed By">
@@ -152,20 +150,6 @@
                     </content>
                 </Tab>
             </tabs>
-            <Tab text="Back End">
-                <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                        <children>
-                            <TableView layoutX="8.0" prefHeight="618.0" prefWidth="1080.0">
-                                <columns>
-                                    <TableColumn prefWidth="235.0" text="Company" />
-                                    <TableColumn prefWidth="846.0" text="Client" />
-                                </columns>
-                            </TableView>
-                        </children>
-                    </AnchorPane>
-                </content>
-            </Tab>
         </TabPane>
     </children>
 </VBox>
