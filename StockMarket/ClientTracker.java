@@ -6,15 +6,18 @@ public class ClientTracker {
     private int amount;
     private int amountSold;
     private int buyPrice;
+    private int fluctuation; // Negative if buyPrice dropping since bought, positive otherwise.
 
     public ClientTracker(String clientName, String companyName, int buyPrice) {
         this.clientName = clientName;
         companyName = null;
         amount = 1;
         amountSold = 0;
-        buyPrice = 0;
+        this.buyPrice = buyPrice;
+        fluctuation = 0;
     }
 
+    public int getFluctuation() { return fluctuation; }
     public int getAmount() {
         return amount;
     }
@@ -32,7 +35,9 @@ public class ClientTracker {
         return buyPrice;
     }
     public void setBuyPrice(int buyPrice) {
+        int oldPrice = this.buyPrice;
         this.buyPrice = buyPrice;
+        fluctuation += (oldPrice - buyPrice);
     }
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }
