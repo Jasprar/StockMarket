@@ -16,9 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import tray.notification.TrayNotification;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static tray.animations.AnimationType.POPUP;
 
@@ -90,7 +88,7 @@ public class Controller {
      * Event created:
      * Dialogue popup, asking the user to enter the duration in minutes.
      * Runs the simulation for that certain minutes by calling sim.RunSimulation(duration).
-     * Sets the buttons to disable so the user cannot run the simulation againw whilst the current
+     * Sets the buttons to disable so the user cannot run the simulation again whilst the current
      * simulation is running.
      */
     @FXML
@@ -114,7 +112,7 @@ public class Controller {
     private void globalTimer() throws Exception {}
 
     /**
-     * Quit the program by calling System.exit(0);. Clears all background data (Notifications) automatically.
+     * Quits the program by calling System.exit(0);. Clears all background data (Notifications) automatically.
      */
     @FXML
     private void quit() {
@@ -123,8 +121,8 @@ public class Controller {
 
 
     /**
-     * On click event from  <MenuItem fx:id="HowToUse" Title = "How to use" onAction="#howToUse"></MenuItem>
-     * displays an information dialogue displaying how to use the simulation.
+     * On click event from  <MenuItem fx:id="HowToUse" Title = "How to use" onAction="#howToUse"></MenuItem>.
+     * Displays an information dialogue displaying how to use the simulation.
      */
     @FXML
     private void howToUse() {
@@ -138,8 +136,8 @@ public class Controller {
     }
 
     /**
-     * On click event from  <MenuItem fx:id="aboutUs" Title = "About Us" onAction="#aboutUs"></MenuItem>
-     * displays an information dialogue displaying the history of Wolf and Gecko.
+     * On click event from  <MenuItem fx:id="aboutUs" Title = "About Us" onAction="#aboutUs"></MenuItem>.
+     * Displays an information dialogue displaying the history of Wolf and Gecko.
      */
     @FXML
     private void aboutUs() {
@@ -156,8 +154,8 @@ public class Controller {
 
 
     /**
-     * On click event from  <MenuItem fx:id="license" Title = "License" onAction="#License"></MenuItem>
-     * displays an information dialogue displaying the terms of the License agreement.
+     * On click event from  <MenuItem fx:id="license" Title = "License" onAction="#License"></MenuItem>.
+     * Displays an information dialogue displaying the terms of the License agreement.
      */
     @FXML
     private void License() {
@@ -169,8 +167,8 @@ public class Controller {
     }
 
     /**
-     * On click event from  <MenuItem fx:id="copyright" Title = "Copyright" onAction="#copyRight"></MenuItem>
-     * displays an information dialogue displaying the terms of the copyright agreement.
+     * On click event from  <MenuItem fx:id="copyright" Title = "Copyright" onAction="#copyRight"></MenuItem>.
+     * Displays an information dialogue displaying the terms of the copyright agreement.
      */
     @FXML
     private void copyRight() {
@@ -182,8 +180,8 @@ public class Controller {
     }
 
     /**
-     * On click event from  <MenuItem fx:id="credits" Title = "credits" onAction="#credits"></MenuItem>
-     * displays an information dialogue displaying the credits.
+     * On click event from  <MenuItem fx:id="credits" Title = "credits" onAction="#credits"></MenuItem>.
+     * Displays an information dialogue displaying the credits.
      */
     @FXML
     private void credits() {
@@ -209,7 +207,7 @@ public class Controller {
      * CompanyTable ClientTable shows their information in "Back End Tab".
      * BackEnd tab, when clicked upon , it displays a 1 time only popup tip. Telling the user how to sell clients stock
      * and how to manage the speed.
-     * Quiz, a window tray notification asking quizes at random times.
+     * Quiz, a window tray notification asking quizzes at random times.
      */
     private void callMethod() {
         commodities(); currentTime(); share(); currentDate(); MarketType(); event(); graph();
@@ -219,7 +217,7 @@ public class Controller {
 
     /**
      * Gets called from callMethod(), displays the commodities values(Food, HardWare, HiTech, Property)
-     * in in accordance to COMMODOTIES_TIME. (Updates it's values).
+     * in accordance to COMMODITIES_TIME. (Updates it's values).
      */
     private void commodities(){
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -376,9 +374,9 @@ public class Controller {
 
     /***
      *When the user right clicks on on anchor pane with FX:ID  = "CompanyPane" (CompanyPane is the global pane for
-     * Company and Client) then a choice dialog popup occurs, asking the user to Selectt from the choice
+     * Company and Client) then a choice dialog popup occurs, asking the user to Select from the choice
      * of speed. When the user selects it's speed the "TABLE_REFRESH_RATE" value gets updated and changes
-     * the speed of the table refresh rate. Causes some data to be lost / gain in responce to how fast the table
+     * the speed of the table refresh rate. Causes some data to be lost / gain in response to how fast the table
      * should update its results.
      */
     private void speedControl() {
@@ -418,7 +416,7 @@ public class Controller {
 
     /**
      * Back end tab, Company Table. Displays Company Name, Company values, Share Price, and total shares.
-     * Retrieves the object from CompanyData and appends each row per every instance is created.
+     * Retrieves the object from CompanyData and appends each row per every instance created.
      * Refreshes in response to the users request when right clicking to set the speed.
      */
     private  void companyTable() {
@@ -492,7 +490,7 @@ public class Controller {
             public void run() {
                 Platform.runLater(() -> {
                     clientDataTableView.getItems().clear();
-        for (ClientData s : clientdataList()) { //Needs to be changed to global timer
+        for (ClientData s : clientDataList()) { //Needs to be changed to global timer
             clientDataTableView.getItems().add(s);
         }
                 });
@@ -517,14 +515,14 @@ public class Controller {
     }
 
     /***
-     *  Populates arraylists, Client Name, CashHolding, and totalWorth shares accordingly.
+     * Populates arraylists, Client Name, CashHolding, and totalWorth shares accordingly.
      * Creates a new instance of ClientData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
      * Sends the object.
      * Keeps repeating till ClientNames.Size() has been reached.
      * @return
      */
-    private List<ClientData> clientdataList() {
+    private List<ClientData> clientDataList() {
         //Getting client Names and appending to list
         List<String> ClientNames = new ArrayList<>();
         ClientNames.addAll(sim.getClientNames());
@@ -574,7 +572,7 @@ public class Controller {
     }
 
     /***
-     * Uses a library from github by PlusHaze: https://github.com/PlusHaze/TrayNotification
+     * Uses a library from Github by PlusHaze: https://github.com/PlusHaze/TrayNotification
      * Uses the timer from the company timer, to save memory as it's not needed to have an independent timer.
      * Displays a quiz / "Question" regarding how a stock market works in general to test the users knowledge
      * at random timers. A user may never get a popup notification, but the chances of that is low.
