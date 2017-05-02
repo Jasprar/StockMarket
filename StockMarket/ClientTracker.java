@@ -35,4 +35,5 @@ public class ClientTracker {
     }
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }
+    public void setAmount(int amount) { this.amount = amount; }
 }

@@ -8,9 +8,21 @@ public abstract class Trader {
     private ArrayList<Portfolio> portfolios;
     private HashMap<Portfolio, ArrayList<Share>> sharesRemoved; // Used for returning shares to their respective portfolios if they don't sell.
     protected String event; // Contains the name of the company or commodity (or "Any") that the RandomTrader has to buy/sell during an event.
+    protected ArrayList<ClientTracker> clientTrackers;
 
     public Trader(ArrayList<Portfolio> portfolios) {
         this.portfolios = portfolios;
+        for(Portfolio p : portfolios) {
+            for(Share s: p.getShares()) {
+                for(ClientTracker ct : clientTrackers) {
+                    if(ct.getCompanyName().equals(s.getCompanyName())) {
+                        ct.setAmount(ct.getAmount() + 1);
+                    } else { // No such clien
+
+                    }
+                }
+            }
+        }
     }
 
     public ArrayList<Portfolio> getPortfolios() {
