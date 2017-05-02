@@ -227,7 +227,7 @@ public class Simulator {
                     }
                     int sharesSold = buyTotal * (sharesOfCompany.size() / sellTotal);
                     sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
-                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())));
+                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())), companyName);
                 }
                 // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
                 for(Trader t : traders) {

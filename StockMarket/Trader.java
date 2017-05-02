@@ -13,12 +13,14 @@ public abstract class Trader {
     public Trader(ArrayList<Portfolio> portfolios) {
         this.portfolios = portfolios;
         for(Portfolio p : portfolios) {
-            for(Share s: p.getShares()) {
+            for(Share s : p.getShares()) {
                 for(ClientTracker ct : clientTrackers) {
                     if(ct.getCompanyName().equals(s.getCompanyName())) {
-                        ct.setAmount(ct.getAmount() + 1);
-                    } else { // No such clien
-
+                        ct.addAmount(1);
+                        break;
+                    } else { // No such ClientTracker exists, create a new one.
+                        clientTrackers.add(new ClientTracker(p.getClientName(), s.getCompanyName(), s.getSharePrice()));
+                        break;
                     }
                 }
             }
@@ -43,7 +45,7 @@ public abstract class Trader {
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
     public abstract ArrayList<Share> sell();
 
-    public void returnShares(ArrayList<Share> shares) {
+    public void returnShares(ArrayList<Share> shares, String companyName) {
         // TODO: Add these shares back to their respective portfolios (you know where they came from due to sharesRemoved) and decrement totalWorths.
 
     }

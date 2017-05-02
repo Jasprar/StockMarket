@@ -7,13 +7,14 @@ public class ClientTracker {
     private int amountSold;
     private int buyPrice;
 
-    public ClientTracker(String clientName, String companyName, int amount, int buyPrice) {
+    public ClientTracker(String clientName, String companyName, int buyPrice) {
         this.clientName = clientName;
         companyName = null;
-        amount = 0;
+        amount = 1;
         amountSold = 0;
         buyPrice = 0;
     }
+
     public int getAmount() {
         return amount;
     }
@@ -35,5 +36,5 @@ public class ClientTracker {
     }
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }
-    public void setAmount(int amount) { this.amount = amount; }
+    public void addAmount(int amount) { this.amount += amount; }
 }
