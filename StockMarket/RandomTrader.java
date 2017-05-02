@@ -76,40 +76,52 @@ public class RandomTrader extends Trader {
 
     @Override
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
+        if(mode == RandomTrader.EVENTBUYER) {
+            return eventBuy();
+        } else {
+            int randomNoToBuy = modeSelector(true);
+            HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
 
-        int randomNoToBuy = modeSelector(true);
-        HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
-
-        for(int i=0; i <= randomNoToBuy; i++) {
-            randomCompany = new Random().nextInt(availableCompanies.size());
-            String randomlyChosenCompany = availableCompanies.get(randomCompany);
-            if(sharesBuying.containsKey(randomlyChosenCompany)) {
-                sharesBuying.put(randomlyChosenCompany,sharesBuying.get(randomlyChosenCompany) + 1);
+            for (int i = 0; i <= randomNoToBuy; i++) {
+                randomCompany = new Random().nextInt(availableCompanies.size());
+                String randomlyChosenCompany = availableCompanies.get(randomCompany);
+                if (sharesBuying.containsKey(randomlyChosenCompany)) {
+                    sharesBuying.put(randomlyChosenCompany, sharesBuying.get(randomlyChosenCompany) + 1);
+                } else {
+                    sharesBuying.put(randomlyChosenCompany, 1);
+                }
+                getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding());
             }
-            else {
-                sharesBuying.put(randomlyChosenCompany,1);
-            }
-            getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding() );
+            return sharesBuying;
         }
-        return sharesBuying;
+    }
+
+    private HashMap<String,Integer> eventBuy() {
+
     }
 
     @Override
     public ArrayList<Share> sell() {
         //work on the random selector
         //each share is an object so all object selling needs to be moved over to simulator class!
+        if(mode == RandomTrader.EVENTSELLER) {
+            return eventSell();
+        } else {
+            int randomNoToSell = modeSelector(false);
+            ArrayList<Share> sharesSelling = new ArrayList<>();
 
-        int randomNoToSell = modeSelector(false);
-        ArrayList<Share> sharesSelling = new ArrayList<>();
-
-        for(int i=0; i <= randomNoToSell; i++) {
-            currentRandomShare = randomShare;
-            Share shareToSell = new Share(companyName, commodityType, sharePrice);
-            sharesSelling.add(shareToSell);
-            this.getPortfolios().get(0).getShares().remove(currentRandomShare);
-            this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
+            for (int i = 0; i <= randomNoToSell; i++) {
+                currentRandomShare = randomShare;
+                Share shareToSell = new Share(companyName, commodityType, sharePrice);
+                sharesSelling.add(shareToSell);
+                this.getPortfolios().get(0).getShares().remove(currentRandomShare);
+                this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
+            }
+            return sharesSelling;
         }
-        return sharesSelling;
+    }
+
+    private ArrayList<Share> eventSell() {
     }
 
     private int modeSelector(boolean buyMode) {
