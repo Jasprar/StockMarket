@@ -10,23 +10,34 @@ public abstract class Trader {
     protected String event; // Contains the name of the company or commodity (or "Any") that the RandomTrader has to buy/sell during an event.
     protected ArrayList<ClientTracker> clientTrackers;
 
+    /**
+     *
+     * @param portfolios
+     */
     public Trader(ArrayList<Portfolio> portfolios) {
         this.portfolios = portfolios;
         for(Portfolio p : portfolios) {
             for(Share s : p.getShares()) {
-                for(ClientTracker ct : clientTrackers) {
-                    if(ct.getCompanyName().equals(s.getCompanyName())) {
+                boolean found = false;
+                int i = 0;
+                while(!found && i < clientTrackers.size()) {
+                    ClientTracker ct = clientTrackers.get(i);
+                    if(ct.getCompanyName().equals(s.getCompanyName()) && ct.getClientName().equals(p.getClientName())) {
+                        found = true;
                         ct.addAmount(1);
-                        break;
-                    } else { // No such ClientTracker exists, create a new one.
-                        clientTrackers.add(new ClientTracker(p.getClientName(), s.getCompanyName(), s.getSharePrice()));
-                        break;
                     }
+                }
+                if(!found) { // No such ClientTracker exists, create one.
+                    clientTrackers.add(new ClientTracker(p.getClientName(), s.getCompanyName(), s.getSharePrice()));
                 }
             }
         }
     }
 
+    /**
+     * This method returns the list of portfolios..
+     * @return An ArrayList of portfolios that are managed by this Trader.
+     */
     public ArrayList<Portfolio> getPortfolios() {
         return portfolios;
     }
