@@ -73,9 +73,9 @@ public class Simulator {
                         for (Trader t : traders) {
                             t.setEvent(eventInProgress.getName());
                             if (eventInProgress.isBuy()) {
-                                t.setMode(RandomTrader.BUYER);
+                                t.setMode(RandomTrader.EVENTBUYER);
                             } else {
-                                t.setMode(RandomTrader.SELLER);
+                                t.setMode(RandomTrader.EVENTSELLER);
                             }
                         }
                     }
@@ -83,7 +83,7 @@ public class Simulator {
                     eventInProgress = null;
                     for(Trader t : traders) {
                         t.setEvent(null);
-                        t.switchMode();
+                        t.setMode(RandomTrader.BALANCED);
                     }
                 }
                 run15Mins();

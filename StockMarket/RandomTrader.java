@@ -10,6 +10,8 @@ public class RandomTrader extends Trader {
     static final int BALANCED = 0;
     static final int SELLER = -1;
     static final int BUYER = 1;
+    static final int EVENTBUYER = 2;
+    static final int EVENTSELLER = -2;
     private int mode;
     private int shareSize;
     private int randomShare;
@@ -44,33 +46,28 @@ public class RandomTrader extends Trader {
         // NOTE: When there is an event occurring, this method will still be called, however we will know when an event
         //       isn't occurring when String event (in Trader superclass) is null - it will be set back to null when an
         //       event ends.
-        if(super.event == null) {
-            int randomNextDayMode = ThreadLocalRandom.current().nextInt(0, 101);
-            if (mode == RandomTrader.BALANCED) {
-                if (randomNextDayMode <= 10) {
-                    mode = RandomTrader.SELLER;
-                } else if (randomNextDayMode > 10 && randomNextDayMode <= 80) {
-                    mode = RandomTrader.BALANCED;
-                } else {
-                    mode = RandomTrader.BUYER;
-                }
-            } else if (mode == RandomTrader.SELLER) {
-                if (randomNextDayMode <= 40) {
-                    mode = RandomTrader.SELLER;
-                } else {
-                    mode = RandomTrader.BALANCED;
-                }
+        int randomNextDayMode = ThreadLocalRandom.current().nextInt(0, 101);
+        if (mode == RandomTrader.BALANCED) {
+            if (randomNextDayMode <= 10) {
+                mode = RandomTrader.SELLER;
+            } else if (randomNextDayMode > 10 && randomNextDayMode <= 80) {
+                mode = RandomTrader.BALANCED;
             } else {
-                if (randomNextDayMode <= 70) {
-                    mode = RandomTrader.BALANCED;
-                } else {
-                    mode = RandomTrader.BUYER;
-                }
+                mode = RandomTrader.BUYER;
             }
-        }
-        else {
-            mode = RandomTrader.BALANCED;
-        }
+        } else if (mode == RandomTrader.SELLER) {
+            if (randomNextDayMode <= 40) {
+                mode = RandomTrader.SELLER;
+            } else {
+                mode = RandomTrader.BALANCED;
+            }
+        } else if(mode == RandomTrader.BUYER) {
+            if (randomNextDayMode <= 70) {
+                mode = RandomTrader.BALANCED;
+            } else {
+                mode = RandomTrader.BUYER;
+            }
+        } // Else event is in progress, do not switch mode.
     }
 
     // Remember that with these methods, if an event is in progress (String event != null), then the RandomTraders should

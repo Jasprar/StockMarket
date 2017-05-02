@@ -10,7 +10,7 @@ public class ClientTracker {
 
     public ClientTracker(String clientName, String companyName, int buyPrice) {
         this.clientName = clientName;
-        companyName = null;
+        this.companyName = companyName;
         amount = 1;
         amountSold = 0;
         this.buyPrice = buyPrice;

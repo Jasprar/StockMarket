@@ -16,6 +16,7 @@ public abstract class Trader {
      */
     public Trader(ArrayList<Portfolio> portfolios) {
         this.portfolios = portfolios;
+        // Initialise ClientTrackers.
         for(Portfolio p : portfolios) {
             for(Share s : p.getShares()) {
                 boolean found = false;
