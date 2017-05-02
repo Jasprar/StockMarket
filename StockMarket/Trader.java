@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public abstract class Trader {
-    private ArrayList<Portfolio> portfolios;
+    protected ArrayList<Portfolio> portfolios;
     private HashMap<Portfolio, ArrayList<Share>> sharesRemoved; // Used for returning shares to their respective portfolios if they don't sell.
     protected String event; // Contains the name of the company or commodity (or "Any") that the RandomTrader has to buy/sell during an event.
     protected ArrayList<ClientTracker> clientTrackers;

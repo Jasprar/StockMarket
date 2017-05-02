@@ -144,4 +144,18 @@ public class RandomTrader extends Trader {
             this.getPortfolios().get(0).setCashHolding(this.getPortfolios().get(0).getCashHolding() - sharesBought.get(i).getSharePrice());
         }
     }
+
+    //selling
+    @Override
+    public void returnShares(ArrayList<Share> shares, String companyName) {
+
+/*        for(Portfolio p : super.portfolios ) {
+            for(Share s : p.getShares()) {
+                if()
+            }
+        } */
+        for()
+        getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding();
+
+    }
 }
