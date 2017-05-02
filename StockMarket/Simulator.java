@@ -277,6 +277,10 @@ public class Simulator {
                 }
             }
         }
+        // Check to see if any traders have sold all shares for a particular company-client combination.
+        for(Trader t : traders) {
+            t.checkTrackers();
+        }
         calculateShareIndex();
         calendar.add(calendar.MINUTE, 15);
     }

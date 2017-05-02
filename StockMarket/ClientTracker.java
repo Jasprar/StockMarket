@@ -1,11 +1,12 @@
 package StockMarket;
 
 public class ClientTracker {
+    private final int originalPrice;
     private String clientName;
     private String companyName;
     private int amount;
     private int amountSold;
-    private int buyPrice;
+    private int buyPrice; // Most recently bought
     private int fluctuation; // Negative if buyPrice dropping since bought, positive otherwise.
 
     public ClientTracker(String clientName, String companyName, int buyPrice) {
@@ -14,6 +15,7 @@ public class ClientTracker {
         amount = 1;
         amountSold = 0;
         this.buyPrice = buyPrice;
+        this.originalPrice = buyPrice;
         fluctuation = 0;
     }
 
@@ -41,5 +43,5 @@ public class ClientTracker {
     }
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }
-    public void addAmount(int amount) { this.amount += amount; }
+    public void incrementAmount() { amount++; }
 }
