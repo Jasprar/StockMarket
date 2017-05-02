@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--- Import the scenes needed to display the GUI
+Creates a representation of:
+
+_____________________________________
+Menu bar
+_____________________________________
+Tabs
+_____________________________________
+Commodities   |
+              |        Graph
+              |______________________
+              | Event type, time, date
+              |
+______________|_______________________
+
+
+-->
+
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -19,16 +37,25 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
+<!-- Vbox created (Flow layout) - example layout:
+[___Menu Bar_____]
+[  Text area      ]
+[ Text Area      ]
+-->
 <VBox fx:id ="frame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
     <children>
+        <!--- Create a menuBar -->
         <MenuBar id="MenuBar">
             <menus>
+                <!--- Create a menu -->
                 <Menu id="File" mnemonicParsing="false" text="File">
                     <items>
+                        <!--- List menu items -->
                         <MenuItem fx:id="RunSim" mnemonicParsing="false" onAction="#runSimulation" text="Run Simulation" />
                         <MenuItem fx:id="Quit" mnemonicParsing="false" onAction="#quit" text="Quit" />
                     </items>
                 </Menu>
+                <!--- New menu item -->
                 <Menu id="Help" mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem id="HowToUse" mnemonicParsing="false" onAction="#howToUse" text="How to use" />
@@ -44,22 +71,28 @@
                 </Menu>
             </menus>
         </MenuBar>
+        <!--- Tab pane below menu bar -->
         <TabPane id="Tab" prefHeight="677.0" prefWidth="1099.0" tabClosingPolicy="UNAVAILABLE">
             <tabs>
+                <!-- Create a tab -->
                 <Tab fx:id="frontEnd" text="Front End">
                     <content>
+                        <!-- Create an anchor pane for the content in the current tab section; lets us put content anywhere -->
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
+                                <!-- Create a flow layout <vbox> for the commodities -->
                                 <VBox layoutX="-2.0" prefHeight="623.0" prefWidth="231.0">
                                     <children>
                                         <TextArea fx:id="Food" editable="false" prefHeight="200.0" prefWidth="200.0" text="Food Commodities &#10;&#10;&#10;                        " />
                                         <TextArea fx:id="Hardware" editable="false" prefHeight="200.0" prefWidth="200.0" text="Hardware Commodities&#10;&#10;&#10;&#10;                         " />
                                         <TextArea fx:id="HiTech" editable="false" prefHeight="200.0" prefWidth="200.0" text="Hi Tech&#10;&#10;&#10;                          " />
-                                        <TextArea fx:id="Property" prefHeight="200.0" prefWidth="200.0" text="Property&#10;" />
+                                        <TextArea fx:id="Property" editable="false" prefHeight="200.0" prefWidth="200.0" text="Property&#10;" />
                                     </children>
                                 </VBox>
+                                <!-- Create an empty pane (Lets us put content anywhere -->
                                 <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
                                     <children>
+                                        <!-- Create a line chart graph -->
                                         <LineChart fx:id="linechart" prefHeight="483.0" prefWidth="867.0">
                                             <xAxis>
                                                 <NumberAxis side="BOTTOM" fx:id="x" />
@@ -70,7 +103,9 @@
                                         </LineChart>
                                     </children>
                                 </Pane>
+                                <!-- Create a pane -->
                                 <Pane layoutX="229.0" layoutY="483.0" prefHeight="141.0" prefWidth="870.0">
+                                    <!-- Create text and label fields, to show text / recieving text from the Simulation -->
                                     <children>
                                         <Text id="MarketType" layoutX="446.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Market Type:" wrappingWidth="99.6708984375" />
                                         <Text id="ShareIndex" layoutX="446.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Share Index:" wrappingWidth="105.6708984375" />
@@ -89,18 +124,24 @@
                         </AnchorPane>
                     </content>
                 </Tab>
+                <!-- Create a new tab -->
                 <Tab fx:id="backEnd" text="Back End">
                     <content>
+                        <!-- Create an Anchor Pane for the company Table -->
                         <AnchorPane fx:id ="CompanyPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
+                                <!-- Create a divider between Company And client Table -->
                                 <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1199.0">
                                     <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="393.0" prefWidth="230.0">
                                             <children>
+                                                <!-- Create a table for company -->
                                                 <TableView fx:id="companyDataTableView" layoutY="5.0" prefHeight="632.0" prefWidth="600.0">
                                                     <columns>
+                                                        <!-- Create columns -->
                                                              <TableColumn fx:id="companyName" prefWidth="180.0" text="Company">
-                                                            <cellValueFactory>
+                                                                 <!-- Create a propertyValueFactory ID for the company to pass data into to -->
+                                                                 <cellValueFactory>
                                                                 <PropertyValueFactory property="PFCompanyName" />
                                                             </cellValueFactory>
                                                         </TableColumn>
@@ -119,8 +160,10 @@
                                                 </TableView>
                                             </children>
                                         </AnchorPane>
+                                        <!-- Create pane for Client Table -->
                                         <AnchorPane fx:id ="ClientPane" minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="643.0">
                                  <children>
+                                            <!-- Create a table for client -->
                                                 <TableView fx:id="clientDataTableView" layoutX="6.0" layoutY="5.0" prefHeight="616.0" prefWidth="1000.0">
                                                     <columns>
                                                         <TableColumn fx:id="client" prefWidth="200.0" text="Client">
@@ -141,7 +184,7 @@
                                                         </TableColumn>
                                                     </columns>
                                                 </TableView>
-                                 </children>
+                                         </children>
                                         </AnchorPane>
                                     </items>
                                 </SplitPane>
