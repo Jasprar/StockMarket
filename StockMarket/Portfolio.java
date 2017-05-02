@@ -23,7 +23,7 @@ public class Portfolio {
     public void addShares(ArrayList<Share> shares) {
         this.shares.addAll(shares);
         for(Share share : shares) {
-            totalWorth += share.getSharePrice();
+            totalWorth -= share.getSharePrice();
         }
     }
 
@@ -61,6 +61,10 @@ public class Portfolio {
     @Override
     public String toString(){
         return shares.toString();
+    }
+
+    public void addToTotalWorth(int amount) {
+        this.totalWorth += amount;
     }
 }
 
