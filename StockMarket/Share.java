@@ -22,4 +22,8 @@ public class Share {
     public void setSharePrice(int sharePrice) {
         this.sharePrice = sharePrice;
     }
+
+    public String getCommodity() {
+        return commodity;
+    }
 }

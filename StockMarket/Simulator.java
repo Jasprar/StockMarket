@@ -73,9 +73,9 @@ public class Simulator {
                         for (Trader t : traders) {
                             t.setEvent(eventInProgress.getName());
                             if (eventInProgress.isBuy()) {
-                                t.setMode(RandomTrader.BUYER);
+                                t.setMode(RandomTrader.EVENTBUYER);
                             } else {
-                                t.setMode(RandomTrader.SELLER);
+                                t.setMode(RandomTrader.EVENTSELLER);
                             }
                         }
                     }
@@ -83,7 +83,7 @@ public class Simulator {
                     eventInProgress = null;
                     for(Trader t : traders) {
                         t.setEvent(null);
-                        t.switchMode();
+                        t.setMode(RandomTrader.BALANCED);
                     }
                 }
                 run15Mins();
@@ -227,7 +227,7 @@ public class Simulator {
                     }
                     int sharesSold = buyTotal * (sharesOfCompany.size() / sellTotal);
                     sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
-                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())));
+                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())), companyName);
                 }
                 // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
                 for(Trader t : traders) {
@@ -276,6 +276,10 @@ public class Simulator {
                     sharesForSale.remove(sharesBought);
                 }
             }
+        }
+        // Check to see if any traders have sold all shares for a particular company-client combination.
+        for(Trader t : traders) {
+            t.checkTrackers();
         }
         calculateShareIndex();
         calendar.add(calendar.MINUTE, 15);

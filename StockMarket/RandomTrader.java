@@ -10,6 +10,8 @@ public class RandomTrader extends Trader {
     static final int BALANCED = 0;
     static final int SELLER = -1;
     static final int BUYER = 1;
+    static final int EVENTBUYER = 2;
+    static final int EVENTSELLER = -2;
     private int mode;
     private int shareSize;
     private int randomShare;
@@ -44,33 +46,28 @@ public class RandomTrader extends Trader {
         // NOTE: When there is an event occurring, this method will still be called, however we will know when an event
         //       isn't occurring when String event (in Trader superclass) is null - it will be set back to null when an
         //       event ends.
-        if(super.event == null) {
-            int randomNextDayMode = ThreadLocalRandom.current().nextInt(0, 101);
-            if (mode == RandomTrader.BALANCED) {
-                if (randomNextDayMode <= 10) {
-                    mode = RandomTrader.SELLER;
-                } else if (randomNextDayMode > 10 && randomNextDayMode <= 80) {
-                    mode = RandomTrader.BALANCED;
-                } else {
-                    mode = RandomTrader.BUYER;
-                }
-            } else if (mode == RandomTrader.SELLER) {
-                if (randomNextDayMode <= 40) {
-                    mode = RandomTrader.SELLER;
-                } else {
-                    mode = RandomTrader.BALANCED;
-                }
+        int randomNextDayMode = ThreadLocalRandom.current().nextInt(0, 101);
+        if (mode == RandomTrader.BALANCED) {
+            if (randomNextDayMode <= 10) {
+                mode = RandomTrader.SELLER;
+            } else if (randomNextDayMode > 10 && randomNextDayMode <= 80) {
+                mode = RandomTrader.BALANCED;
             } else {
-                if (randomNextDayMode <= 70) {
-                    mode = RandomTrader.BALANCED;
-                } else {
-                    mode = RandomTrader.BUYER;
-                }
+                mode = RandomTrader.BUYER;
             }
-        }
-        else {
-            mode = RandomTrader.BALANCED;
-        }
+        } else if (mode == RandomTrader.SELLER) {
+            if (randomNextDayMode <= 40) {
+                mode = RandomTrader.SELLER;
+            } else {
+                mode = RandomTrader.BALANCED;
+            }
+        } else if(mode == RandomTrader.BUYER) {
+            if (randomNextDayMode <= 70) {
+                mode = RandomTrader.BALANCED;
+            } else {
+                mode = RandomTrader.BUYER;
+            }
+        } // Else event is in progress, do not switch mode.
     }
 
     // Remember that with these methods, if an event is in progress (String event != null), then the RandomTraders should
@@ -79,40 +76,52 @@ public class RandomTrader extends Trader {
 
     @Override
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
+        if(mode == RandomTrader.EVENTBUYER) {
+            return eventBuy();
+        } else {
+            int randomNoToBuy = modeSelector(true);
+            HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
 
-        int randomNoToBuy = modeSelector(true);
-        HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
-
-        for(int i=0; i <= randomNoToBuy; i++) {
-            randomCompany = new Random().nextInt(availableCompanies.size());
-            String randomlyChosenCompany = availableCompanies.get(randomCompany);
-            if(sharesBuying.containsKey(randomlyChosenCompany)) {
-                sharesBuying.put(randomlyChosenCompany,sharesBuying.get(randomlyChosenCompany) + 1);
+            for (int i = 0; i <= randomNoToBuy; i++) {
+                randomCompany = new Random().nextInt(availableCompanies.size());
+                String randomlyChosenCompany = availableCompanies.get(randomCompany);
+                if (sharesBuying.containsKey(randomlyChosenCompany)) {
+                    sharesBuying.put(randomlyChosenCompany, sharesBuying.get(randomlyChosenCompany) + 1);
+                } else {
+                    sharesBuying.put(randomlyChosenCompany, 1);
+                }
+                getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding());
             }
-            else {
-                sharesBuying.put(randomlyChosenCompany,1);
-            }
-            getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding() );
+            return sharesBuying;
         }
-        return sharesBuying;
+    }
+
+    private HashMap<String,Integer> eventBuy() {
+
     }
 
     @Override
     public ArrayList<Share> sell() {
         //work on the random selector
         //each share is an object so all object selling needs to be moved over to simulator class!
+        if(mode == RandomTrader.EVENTSELLER) {
+            return eventSell();
+        } else {
+            int randomNoToSell = modeSelector(false);
+            ArrayList<Share> sharesSelling = new ArrayList<>();
 
-        int randomNoToSell = modeSelector(false);
-        ArrayList<Share> sharesSelling = new ArrayList<>();
-
-        for(int i=0; i <= randomNoToSell; i++) {
-            currentRandomShare = randomShare;
-            Share shareToSell = new Share(companyName, commodityType, sharePrice);
-            sharesSelling.add(shareToSell);
-            this.getPortfolios().get(0).getShares().remove(currentRandomShare);
-            this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
+            for (int i = 0; i <= randomNoToSell; i++) {
+                currentRandomShare = randomShare;
+                Share shareToSell = new Share(companyName, commodityType, sharePrice);
+                sharesSelling.add(shareToSell);
+                this.getPortfolios().get(0).getShares().remove(currentRandomShare);
+                this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
+            }
+            return sharesSelling;
         }
-        return sharesSelling;
+    }
+
+    private ArrayList<Share> eventSell() {
     }
 
     private int modeSelector(boolean buyMode) {
@@ -143,5 +152,19 @@ public class RandomTrader extends Trader {
         for(int i = 0; i <= sharesBought.size(); i++){
             this.getPortfolios().get(0).setCashHolding(this.getPortfolios().get(0).getCashHolding() - sharesBought.get(i).getSharePrice());
         }
+    }
+
+    //selling
+    @Override
+    public void returnShares(ArrayList<Share> shares, String companyName) {
+
+/*        for(Portfolio p : super.portfolios ) {
+            for(Share s : p.getShares()) {
+                if()
+            }
+        } */
+        for()
+        getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding();
+
     }
 }
