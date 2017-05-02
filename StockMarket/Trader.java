@@ -7,7 +7,7 @@ import java.util.Set;
 public abstract class Trader {
     private ArrayList<Portfolio> portfolios;
     private HashMap<Portfolio, ArrayList<Share>> sharesRemoved; // Used for returning shares to their respective portfolios if they don't sell.
-    private String event; // Contains the name of the company or commodity (or "Any") that the RandomTrader has to buy/sell during an event.
+    protected String event; // Contains the name of the company or commodity (or "Any") that the RandomTrader has to buy/sell during an event.
 
     public Trader(ArrayList<Portfolio> portfolios) {
         this.portfolios = portfolios;
@@ -33,6 +33,7 @@ public abstract class Trader {
 
     public void returnShares(ArrayList<Share> shares) {
         // TODO: Add these shares back to their respective portfolios (you know where they came from due to sharesRemoved) and decrement totalWorths.
+
     }
 
     public void addNewShares(ArrayList<Share> sharesBought) {
