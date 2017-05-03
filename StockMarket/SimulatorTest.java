@@ -13,7 +13,7 @@ class SimulatorTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        simulator = new Simulator();
+        simulator = new Simulator(1);
     }
 
     @org.junit.jupiter.api.Test

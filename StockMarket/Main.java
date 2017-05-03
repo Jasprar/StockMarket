@@ -3,7 +3,7 @@ package StockMarket;
 public class Main {
 
     public static void main(String[] args) {
-        new Simulator().runSimulation(1);
+        new Simulator(1).runSimulation();
     }
 
 }

@@ -81,7 +81,6 @@ public class RandomTrader extends Trader {
                     } else {
                         sharesBuying.put(randomlyChosenCompany, 1);
                     }
-                    p.addCashHolding(sharePrices.get(randomlyChosenCompany));
                 }
             }
             return sharesBuying;
@@ -101,7 +100,6 @@ public class RandomTrader extends Trader {
                         } else {
                             sharesBuying.put(c, 1);
                         }
-                        p.addCashHolding(sharePrices.get(c));
                         randomNoToBuy--;
                     }
                 }
@@ -118,7 +116,6 @@ public class RandomTrader extends Trader {
                             } else {
                                 sharesBuying.put(ct.getCompanyName(), 1);
                             }
-                            p.addCashHolding(sharePrices.get(ct.getCompanyName()));
                         }
                     }
                 }
