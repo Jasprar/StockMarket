@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class IntelligentTrader extends Trader {
     private ArrayList<ClientTracker> tracker = new ArrayList<>();
@@ -14,13 +15,18 @@ public class IntelligentTrader extends Trader {
 
     // I KNOW! IT LOOKS LIKE SHIT. I'LL CLEAN UP WHEN I GET IT TO WORK!
 
-/*    @Override
+    @Override
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         ArrayList clientPortfolios = this.getPortfolios();
-        if(!clientPortfolios.isEmpty()) {
-            for (int i = 0; i <= clientPortfolios.size(); i++) {
-                for (int j = 0; j <= this.getPortfolios().get(i).getShares().size(); j++) {
+        for (Portfolio p : portfolios) {
+            for (ClientTracker ct : clientTrackers) {
+                for (Share s : p.getShares()) {
+                    if (ct.getClientName().equals(p.getClientName()) && p.getShares().equals(s) && s.getSharePrice() > ct.getBuyPrice()) {
+     //                   ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.01)
+                    }
+                }
+
                     /*
                     if(!availableCompanies.contains(this.getPortfolios().get(i).getShares().get(j).getCompanyName())) {
                         tracker.add(new ClientTracker(this.getPortfolios().get(i).getClientName(), this.getPortfolios().get(i).getShares().get(j).getCompanyName(), 1));
@@ -40,16 +46,14 @@ public class IntelligentTrader extends Trader {
                     if(!availableCompanies.contains(this.getPortfolios().get(i).getShares().get(j).getCompanyName())) {
                         if(this.getPortfolios().get(i).getShares().get(j).getCompanyName()
                         tracker.add(new ClientTracker(this.getPortfolios().get(i).getClientName(), this.getPortfolios().get(i).getShares().get(j).getCompanyName(), 1, ));
-                    }
-                }
-
+                    }*/
             }
         }
         return sharesBuying;
     }
-*/
+
     // USED RANDOM TRADER buy() FOR COMPILING FOR NOW.
-    @Override
+/*    @Override
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
 
         HashMap<String, Integer> sharesBuying = new HashMap<>();
@@ -65,7 +69,7 @@ public class IntelligentTrader extends Trader {
             }
         }
         return sharesBuying;
-    }
+    }*/
 
     @Override
     public ArrayList<Share> sell() {
