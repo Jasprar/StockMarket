@@ -17,7 +17,7 @@ public class RandomTrader extends Trader {
 
     public RandomTrader(ArrayList<Portfolio> portfolios) {
         super(portfolios);
-        System.out.println("Creating a new RandomTrader with " + portfolios.size() + " portfolios...");
+        //System.out.println("Creating a new RandomTrader with " + portfolios.size() + " portfolios...");
         ArrayList<Portfolio> ports = new ArrayList<>();
         mode = RandomTrader.BALANCED;
     }
@@ -65,7 +65,7 @@ public class RandomTrader extends Trader {
 
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
-        System.out.println("RandomTrader buying begins...");
+        //System.out.println("RandomTrader buying begins...");
         if (mode == RandomTrader.EVENTBUYER) {
             return eventBuy(sharePrices);
         } else {
@@ -127,7 +127,7 @@ public class RandomTrader extends Trader {
     //sell
     @Override
     public ArrayList<Share> sell() {
-        System.out.println("RandomTrader selling begins...");
+        //System.out.println("RandomTrader selling begins...");
         //work on the random selector
         //each share is an object so all object selling needs to be moved over to simulator class!
         ArrayList<Share> sharesSelling = new ArrayList<>();
@@ -136,7 +136,8 @@ public class RandomTrader extends Trader {
             } else {
                 for (Portfolio p : portfolios) {
                     int randomNoToSell = modeSelector(false, p.getSharesTotal());
-                    for (int i = 0; i < randomNoToSell; i++) {
+                    int i = 0;
+                    while(i < randomNoToSell && p.getShares().size() > 0) {
                         int shareSize = p.getShares().size();
                         int currentRandomShare = ThreadLocalRandom.current().nextInt(0, shareSize);
                         Share s = p.getShares().remove(currentRandomShare);
@@ -147,6 +148,7 @@ public class RandomTrader extends Trader {
                         }
                         sharesSelling.add(s);
                         p.addCashHolding(s.getSharePrice());
+                        i++;
                     }
                 }
         }
@@ -185,7 +187,7 @@ public class RandomTrader extends Trader {
     }
 
     private int modeSelector(boolean buyMode, double metric) {
-        System.out.println("metric = " + metric);
+        //System.out.println("metric = " + metric);
         metric = metric / 1000;
         int randomNoToBuySell = 0;
         if(buyMode) {
@@ -205,7 +207,7 @@ public class RandomTrader extends Trader {
                 randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.005) + 1);
             }
         }
-        System.out.println("randomNoToBuySell = " + randomNoToBuySell);
+        //System.out.println("randomNoToBuySell = " + randomNoToBuySell);
         return randomNoToBuySell;
     }
 }

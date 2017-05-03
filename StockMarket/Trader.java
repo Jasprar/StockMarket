@@ -76,7 +76,7 @@ public abstract class Trader {
             int i = 0;
             while(sharesBought.size() > split && split > 1) {
                 split = (int)Math.floor(sharesBought.size() / portfolios.size());
-                System.out.println("Split size = " + split + ", Shares bought = " + sharesBought.size());
+                //System.out.println("Split size = " + split + ", Shares bought = " + sharesBought.size());
                 ArrayList<Share> shares = new ArrayList<>(sharesBought.subList(0, split));
                 Portfolio p = portfolios.get(i);
                 p.getShares().addAll(shares);
@@ -132,7 +132,7 @@ public abstract class Trader {
                 i++;
             }
             if(!found) { // No such ClientTracker exists, create one.
-                System.out.println("Creating a new ClientTracker for " + clientName + " tracking " + s.getCompanyName());
+                //System.out.println("Creating a new ClientTracker for " + clientName + " tracking " + s.getCompanyName());
                 clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity(),s.getSharePrice()));
             }
             j++;
