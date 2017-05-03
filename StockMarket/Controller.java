@@ -454,7 +454,7 @@ public class Controller {
         Collection<Integer> companyValues1 = sim.getCompanyValues();
         companyValues.addAll(companyValues1);
 
-        List<Integer> sharePrice = new ArrayList<>();
+        List<Double> sharePrice = new ArrayList<>();
         for(String s: companyNames) {
             sharePrice.add(sim.getSharePrice(s));
             clientNetworth.add(sim.getNetWorth(s));
@@ -464,7 +464,7 @@ public class Controller {
 
         for(int i = 0; i < companyNames.size(); i++){
             String name = companyNames.get(i);
-            int sharePrices = sharePrice.get(i);
+            Double sharePrices = sharePrice.get(i);
             int value = companyValues.get(i);
             int networth = clientNetworth.get(i);
             CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
@@ -528,18 +528,18 @@ public class Controller {
         ClientNames.addAll(sim.getClientNames());
 
         //Getting Cash holding and appending to list
-        List<Integer> CashHolding = new ArrayList<>();
+        List<Double> CashHolding = new ArrayList<>();
         CashHolding.addAll(sim.getCashHolding());
         //Getting total worth and appending to list
-        List<Integer> TotalWorth = new ArrayList<>(); //Wealth
+        List<Double> TotalWorth = new ArrayList<>(); //Wealth
         TotalWorth.addAll(sim.getTotalWorth());
 
         List<ClientData> clientData = new ArrayList<>();
 
         for(int i = 0; i < ClientNames.size(); i++) {
             String clientNames = ClientNames.get(i);
-            int cashHolding = CashHolding.get(i);
-            int totalWorth = TotalWorth.get(i);
+            Double cashHolding = CashHolding.get(i);
+            Double totalWorth = TotalWorth.get(i);
             ClientData client = new ClientData("Test", 1, 1,"3","Random");//Creating a object  per row
             client.setPFClient(clientNames);
             client.setPFCashHolding(cashHolding);

@@ -1,9 +1,6 @@
 package StockMarket;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 /**
  * Created by shahs on 27/04/2017.
@@ -11,15 +8,15 @@ import javafx.beans.property.StringProperty;
 public class CompanyData {
 
     private final StringProperty PFCompanyName;
-    private final IntegerProperty PFShareValues;
-    private final IntegerProperty PFTotalShares;
-    private final IntegerProperty PFNetWorth;
+    private final SimpleDoubleProperty PFShareValues;
+    private final SimpleDoubleProperty PFTotalShares;
+    private final SimpleDoubleProperty PFNetWorth;
 
     public CompanyData(String CompanyName, int ShareValue, int networth, int TotalShares) {
         this.PFCompanyName = new SimpleStringProperty(CompanyName);
-        this.PFShareValues = new SimpleIntegerProperty(ShareValue);
-        this.PFTotalShares = new SimpleIntegerProperty(TotalShares);
-        this.PFNetWorth = new SimpleIntegerProperty(networth);
+        this.PFShareValues = new SimpleDoubleProperty(ShareValue);
+        this.PFTotalShares = new SimpleDoubleProperty(TotalShares);
+        this.PFNetWorth = new SimpleDoubleProperty(networth);
     }
 
     public String getPFCompanyName() {
@@ -34,23 +31,23 @@ public class CompanyData {
         this.PFCompanyName.set(PFCompanyName);
     }
 
-    public int getPFShareValues(int j) {
+    public double getPFShareValues(int j) {
         return PFShareValues.get();
     }
 
-    public IntegerProperty PFShareValuesProperty() {
+    public SimpleDoubleProperty PFShareValuesProperty() {
         return PFShareValues;
     }
 
-    public void setPFShareValues(int PFShareValues) {
+    public void setPFShareValues(Double PFShareValues) {
         this.PFShareValues.set(PFShareValues);
     }
 
-    public int getPFTotalShares() {
+    public double getPFTotalShares() {
         return PFTotalShares.get();
     }
 
-    public IntegerProperty PFTotalSharesProperty() {
+    public SimpleDoubleProperty PFTotalSharesProperty() {
         return PFTotalShares;
     }
 
@@ -58,11 +55,11 @@ public class CompanyData {
         this.PFTotalShares.set(PFTotalShares);
     }
 
-    public int getPFNetWorth() {
+    public double getPFNetWorth() {
         return PFNetWorth.get();
     }
 
-    public IntegerProperty PFNetWorthProperty() {
+    public SimpleDoubleProperty PFNetWorthProperty() {
         return PFNetWorth;
     }
 

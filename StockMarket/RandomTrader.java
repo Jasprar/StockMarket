@@ -1,6 +1,5 @@
 package StockMarket;
 
-import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,27 +13,13 @@ public class RandomTrader extends Trader {
     static final int EVENTBUYER = 2;
     static final int EVENTSELLER = -2;
     private int mode;
-    private int shareSize;
-    private int randomShare;
-    private int randomCompany;
-    private int currentRandomShare;
-    private int sharePrice;
-    private int randomNoToBuySell;
     private int cashAvailable;
-    private String companyName;
-    private String commodityType;
 
     public RandomTrader(ArrayList<Portfolio> portfolios) {
         super(portfolios);
         System.out.println("Creating a new RandomTrader with " + portfolios.size() + " portfolios...");
         ArrayList<Portfolio> ports = new ArrayList<>();
         mode = RandomTrader.BALANCED;
-        randomShare = ThreadLocalRandom.current().nextInt(0, shareSize + 1);
-        companyName = this.getPortfolios().get(0).getShares().get(currentRandomShare).getCompanyName();
-        commodityType = this.getPortfolios().get(0).getShares().get(currentRandomShare).getCommodity();
-        sharePrice = this.getPortfolios().get(0).getShares().get(currentRandomShare).getSharePrice();
-        shareSize = this.getPortfolios().get(0).getShares().size();
-        cashAvailable = this.getPortfolios().get(0).getCashHolding();
     }
 
     // NOTE: PROBABLE BUG. Not getPortfolio or super.portfolio. Should use port
@@ -79,22 +64,24 @@ public class RandomTrader extends Trader {
     // AS IT USUALLY WOULD and vice-versa).
 
     @Override
-    public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
+    public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
         if (mode == RandomTrader.EVENTBUYER) {
-            return eventBuy(availableCompanies);
+            return eventBuy(sharePrices);
         } else {
-            int randomNoToBuy = modeSelector(true);
-            HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
-
-            for (int i = 0; i < randomNoToBuy; i++) {
-                randomCompany = new Random().nextInt(availableCompanies.size());
-                String randomlyChosenCompany = availableCompanies.get(randomCompany);
-                if (sharesBuying.containsKey(randomlyChosenCompany)) {
-                    sharesBuying.put(randomlyChosenCompany, sharesBuying.get(randomlyChosenCompany) + 1);
-                } else {
-                    sharesBuying.put(randomlyChosenCompany, 1);
+            HashMap<String, Integer> sharesBuying = new HashMap<>();
+            for(Portfolio p : portfolios) {
+                int shareSize = p.getShares().size();
+                int randomNoToBuy = modeSelector(true, p.getShares().size());
+                for (int i = 0; i < randomNoToBuy; i++) {
+                    int randomCompany = new Random().nextInt(sharePrices.size());
+                    String randomlyChosenCompany = new ArrayList<>(sharePrices.keySet()).get(randomCompany);
+                    if (sharesBuying.containsKey(randomlyChosenCompany)) {
+                        sharesBuying.put(randomlyChosenCompany, sharesBuying.get(randomlyChosenCompany) + 1);
+                    } else {
+                        sharesBuying.put(randomlyChosenCompany, 1);
+                    }
+                    p.addCashHolding(sharePrices.get(randomlyChosenCompany));
                 }
-                getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding());
             }
             return sharesBuying;
         }
@@ -102,45 +89,37 @@ public class RandomTrader extends Trader {
 
     // IS IT REALLY THIS LONG?
     // TODO: SHALL DOUBLE CHECK CODE.
-    private HashMap<String, Integer> eventBuy(ArrayList<String> availableCompanies) {
+    private HashMap<String, Integer> eventBuy(HashMap<String, Double> sharePrices) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
-        String eventType;
-        if (event.equals("Q1Q")) {
-            eventType = "Q1Q";
-        } else if (event.equals("Food")) {
-            eventType = "Food";
-        } else if (event.equals("Property")) {
-            eventType = "Property";
-        } else if (event.equals("Hard")) {
-            eventType = "Hard";
-            for (Portfolio p : portfolios) {
-                for (String c : availableCompanies) {
-                    for (ClientTracker ct : clientTrackers) {
-                        if (ct.getCommodityType().equals(eventType) && ct.getClientName().equals(p.getClientName())) {
-                            int randomNoToBuy = modeSelector(true);
-                            for (int j = 0; j <= randomNoToBuy; j++) {
-                                if (sharesBuying.containsKey(c)) {
-                                    sharesBuying.put(c, sharesBuying.get(c) + 1);
-                                } else {
-                                    sharesBuying.put(c, 1);
-                                }
-                            }
+        for (Portfolio p : portfolios) {
+            int randomNoToBuy = modeSelector(true, p.getShares().size());
+            while(randomNoToBuy > 0) {
+                for (ClientTracker ct : clientTrackers) {
+                    if ((ct.getCompanyName().equals(event) || ct.getCommodityType().equals(event)) && ct.getClientName().equals(p.getClientName())) {
+                        String c = ct.getCompanyName();
+                        if (sharesBuying.containsKey(c)) {
+                            sharesBuying.put(c, sharesBuying.get(c) + 1);
+                        } else {
+                            sharesBuying.put(c, 1);
                         }
+                        p.addCashHolding(sharePrices.get(c));
+                        randomNoToBuy--;
                     }
                 }
             }
-            if (event.equals("Any")) {
-                for (Portfolio p : portfolios) {
-                    for (ClientTracker ct : clientTrackers) {
-                        if (ct.getClientName().equals(p.getClientName())) {
-                            int randomNoToBuy = modeSelector(true);
-                            for (int i = 0; i <= randomNoToBuy; i++) {
-                                if (sharesBuying.containsKey(ct.getCompanyName())) {
-                                    sharesBuying.put(ct.getCompanyName(), sharesBuying.get(ct.getCompanyName()) + 1);
-                                } else {
-                                    sharesBuying.put(ct.getCompanyName(), 1);
-                                }
+        }
+        if (event.equals("Any")) {
+            for (Portfolio p : portfolios) {
+                for (ClientTracker ct : clientTrackers) {
+                    if (ct.getClientName().equals(p.getClientName())) {
+                        int randomNoToBuy = modeSelector(true, p.getShares().size());
+                        for (int i = 0; i < randomNoToBuy; i++) {
+                            if (sharesBuying.containsKey(ct.getCompanyName())) {
+                                sharesBuying.put(ct.getCompanyName(), sharesBuying.get(ct.getCompanyName()) + 1);
+                            } else {
+                                sharesBuying.put(ct.getCompanyName(), 1);
                             }
+                            p.addCashHolding(sharePrices.get(ct.getCompanyName()));
                         }
                     }
                 }
@@ -152,10 +131,10 @@ public class RandomTrader extends Trader {
     //sell
     @Override
     public ArrayList<Share> sell() {
+        System.out.println("RandomTrader selling begins...");
         //work on the random selector
         //each share is an object so all object selling needs to be moved over to simulator class!
         ArrayList<Share> sharesSelling = new ArrayList<>();
-        for (Portfolio p : portfolios) {
             if (mode == RandomTrader.EVENTSELLER) {
                 return eventSell();
             }/* else {
@@ -168,44 +147,45 @@ public class RandomTrader extends Trader {
                 sharesSelling.add(shareToSell);
                 this.getPortfolios().get(0).getShares().remove(currentRandomShare);
                 this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
-            }*/ else {
-                int randomNoToSell = modeSelector(false);
-                for (int i = 0; i < randomNoToSell; i++) {
-                    currentRandomShare = randomShare;
-                    Share shareToSell = new Share(companyName, commodityType, sharePrice);
-                    sharesSelling.add(shareToSell);
-                    p.getShares().remove(currentRandomShare);
-                    p.setCashHolding(p.getCashHolding() + sharePrice);
+        }*/ else {
+                for (Portfolio p : portfolios) {
+                    int shareSize = p.getShares().size();
+                    int randomNoToSell = modeSelector(false, shareSize);
+                    for (int i = 0; i < randomNoToSell; i++) {
+                        shareSize = p.getShares().size();
+                        int currentRandomShare = ThreadLocalRandom.current().nextInt(0, shareSize);
+                        Share s = p.getShares().remove(currentRandomShare);
+                        for(ClientTracker ct : clientTrackers) {
+                            if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(s.getCompanyName())) {
+                                ct.decrementAmount();
+                            }
+                        }
+                        sharesSelling.add(s);
+                        p.addCashHolding(s.getSharePrice());
+                    }
                 }
-            }
         }
         return sharesSelling;
     }
 
 
     private ArrayList<Share> eventSell() {
-        int randomNoToSell = modeSelector(false);
         ArrayList<Share> sharesSelling = new ArrayList<>();
-        String eventType;
-        if (event.equals("Q1Q")) {
-            eventType = "Q1Q";
-        } else if (event.equals("Food")) {
-            eventType = "Food";
-        } else if (event.equals("Property")) {
-            eventType = "Property";
-        } else if (event.equals("Hard")) {
-            eventType = "Hard";
-        } else {
-            eventType = "Any";
-        }
         for (Portfolio p : portfolios) {
-            for (int i = 0; i < p.getShares().size(); i++) {
-                if (p.getShares().get(i).getCommodity().equals(eventType) || eventType == "Any") {
-                    for (int j = 0; j < randomNoToSell; j++) {
-                        Share shareToSell = new Share(p.getShares().get(i).getCompanyName(), p.getShares().get(i).getCommodity(), p.getShares().get(i).getSharePrice());
+            int shareSize = p.getShares().size();
+            int randomNoToSell = modeSelector(false, shareSize);
+            while(randomNoToSell > 0) {
+                for (int i = 0; i < p.getShares().size(); i++) {
+                    if (p.getShares().get(i).getCommodity().equals(event) || event == "Any" || p.getShares().get(i).getCompanyName().equals(event)) {
+                        Share shareToSell = p.getShares().remove(i);
                         sharesSelling.add(shareToSell);
-                        p.getShares().remove(i);
-                        p.setCashHolding(p.getCashHolding() + p.getShares().get(i).getSharePrice());
+                        p.addCashHolding(shareToSell.getSharePrice());
+                        randomNoToSell--;
+                        for(ClientTracker ct : clientTrackers) {
+                            if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(shareToSell.getCompanyName())) {
+                                ct.decrementAmount();
+                            }
+                        }
                     }
                 }
             }
@@ -214,20 +194,14 @@ public class RandomTrader extends Trader {
 
     }
 
-    private int modeSelector(boolean buyMode) {
-        int randomWhat;
-        if (buyMode) {
-            randomWhat = cashAvailable;
-        } else {
-            randomWhat = shareSize;
-        }
-
+    private int modeSelector(boolean buyMode, int shareSize) {
+        int randomNoToBuySell;
         if (mode == RandomTrader.BALANCED) {
-            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.01));
+            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((shareSize + 1) * 0.01));
         } else if (mode == RandomTrader.SELLER) {
-            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.02));
+            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((shareSize + 1) * 0.02));
         } else {
-            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.005));
+            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((shareSize + 1) * 0.005));
         }
         return randomNoToBuySell;
     }
