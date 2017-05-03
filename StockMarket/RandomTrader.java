@@ -65,6 +65,7 @@ public class RandomTrader extends Trader {
 
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
+        System.out.println("RandomTrader buying begins...");
         if (mode == RandomTrader.EVENTBUYER) {
             return eventBuy(sharePrices);
         } else {
@@ -87,8 +88,6 @@ public class RandomTrader extends Trader {
         }
     }
 
-    // IS IT REALLY THIS LONG?
-    // TODO: SHALL DOUBLE CHECK CODE.
     private HashMap<String, Integer> eventBuy(HashMap<String, Double> sharePrices) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         for (Portfolio p : portfolios) {
@@ -137,17 +136,7 @@ public class RandomTrader extends Trader {
         ArrayList<Share> sharesSelling = new ArrayList<>();
             if (mode == RandomTrader.EVENTSELLER) {
                 return eventSell();
-            }/* else {
-            int randomNoToSell = modeSelector(false);
-            ArrayList<Share> sharesSelling = new ArrayList<>();
-
-            for (int i = 0; i < randomNoToSell; i++) {
-                currentRandomShare = randomShare;
-                Share shareToSell = new Share(companyName, commodityType, sharePrice);
-                sharesSelling.add(shareToSell);
-                this.getPortfolios().get(0).getShares().remove(currentRandomShare);
-                this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
-        }*/ else {
+            } else {
                 for (Portfolio p : portfolios) {
                     int shareSize = p.getShares().size();
                     int randomNoToSell = modeSelector(false, shareSize);
@@ -174,9 +163,11 @@ public class RandomTrader extends Trader {
         for (Portfolio p : portfolios) {
             int shareSize = p.getShares().size();
             int randomNoToSell = modeSelector(false, shareSize);
-            while(randomNoToSell > 0) {
+            int iterations = 0;
+            while(randomNoToSell > 0 && iterations < 10) {
                 for (int i = 0; i < p.getShares().size(); i++) {
                     if (p.getShares().get(i).getCommodity().equals(event) || event == "Any" || p.getShares().get(i).getCompanyName().equals(event)) {
+                        System.out.println("Number left to choose = " + randomNoToSell);
                         Share shareToSell = p.getShares().remove(i);
                         sharesSelling.add(shareToSell);
                         p.addCashHolding(shareToSell.getSharePrice());
@@ -186,8 +177,12 @@ public class RandomTrader extends Trader {
                                 ct.decrementAmount();
                             }
                         }
+                        if(randomNoToSell == 0) {
+                            break;
+                        }
                     }
                 }
+                iterations++;
             }
         }
         return sharesSelling;

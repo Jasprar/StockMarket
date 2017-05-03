@@ -22,6 +22,7 @@ public class Simulator {
     private int marketType;
     private double yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
+    private int duration;
     protected static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
     private static final Date END_DATE = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2018", new ParsePosition(0)); // 1st Jan 2018 at midnight.
@@ -34,8 +35,9 @@ public class Simulator {
      * InitialDataV2.csv, and imports data about events from ExternalEventsData.csv. After instantiation, the simulation
      * is completely ready to be run.
      */
-    public Simulator() {
+    public Simulator(int duration) {
         System.out.println("Creating Simulator");
+        this.duration = duration;
         calendar = new GregorianCalendar(2017, calendar.JANUARY, 2, 9, 0); // 01/01/2017 is a Sunday.
         numberOfShares = new HashMap<>();
         traders = new ArrayList<>();
@@ -53,7 +55,7 @@ public class Simulator {
      * (17:00 - 09:00 Monday - Friday & all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
      * @param duration The number of minutes you wish the simulation to take (how fast you wish data to be updated).
      */
-    public void runSimulation(int duration) {
+    public void runSimulation() {
         System.out.println("Running Simulation for " + duration + " minutes.");
         while(calendar.getTime().before(END_DATE)) {
             System.out.println("The date is now " + calendar.getTime());
@@ -164,12 +166,12 @@ public class Simulator {
             }
             // Initialise Traders.
             System.out.println("Initializing traders...");
-            ArrayList<Portfolio> port = new ArrayList<>(); //Made port a field
+            ArrayList<Portfolio> port = new ArrayList<>();
             port.add(portfolios.get(0)); // Norbert DaVinci.
             port.add(portfolios.get(7)); // Justine Thyme.
             portfolios.remove(7);
             portfolios.remove(0);
-            traders.add(new RandomTrader(port));
+            traders.add(new IntelligentTrader(port));
             while(portfolios.size() >= 2) {
                 port = new ArrayList<>();
                 port.add(portfolios.get(0));
@@ -320,6 +322,13 @@ public class Simulator {
         for(Trader t : traders) {
             t.checkTrackers();
         }
+        // Removes any companies that became worthless this cycle.
+        ArrayList<String> companyNames = new ArrayList<>(numberOfShares.keySet());
+        for(String companyName : companyNames) {
+            if(numberOfShares.get(companyName) == 0) {
+                numberOfShares.remove(companyName);
+            }
+        }
         calculateShareIndex();
         calendar.add(calendar.MINUTE, 15);
     }
@@ -349,7 +358,7 @@ public class Simulator {
                 i++;
             }
         }
-        shareIndex = newShareIndex / numberOfShares.size();
+        shareIndex = (double)newShareIndex / (double)numberOfShares.size();
         System.out.println("Share index is now " + shareIndex);
     }
 
@@ -361,14 +370,14 @@ public class Simulator {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s : p.getShares()) {
                     if(s.getCompanyName().equals(companyName)) {
-                        newSharePrice = s.getSharePrice() + ((excess / numberOfShares.get(companyName)) * s.getSharePrice());
+                        newSharePrice = s.getSharePrice() + (((double)excess / (double)numberOfShares.get(companyName)) * s.getSharePrice());
                         s.setSharePrice(newSharePrice);
                     }
                 }
             }
         }
         System.out.println("Setting the share price of " + companyName + " to " + newSharePrice + "...");
-        if(newSharePrice <= 0) { // Company is worthless. They must be removed from the simulation.
+        if(newSharePrice <= 1) { // Company is worthless. They must be removed from the simulation.
             System.out.println(companyName + " is worthless!");
             removeAllShares(companyName);
         }
