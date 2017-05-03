@@ -307,9 +307,12 @@ public class Simulator {
                 }
                 // Give the trader the number of shares (from sharesForSale) that they asked for - there are exactly enough.
                 for(Trader t : traders) {
-                    sharesBought = new ArrayList<>(sharesForSale.subList(0, toBeBought.get(t).get(companyName)));
-                    t.addNewShares(sharesBought);
-                    sharesForSale.remove(sharesBought);
+                    Integer numberBought = toBeBought.get(t).get(companyName);
+                    if(numberBought != null) {
+                        sharesBought = new ArrayList<>(sharesForSale.subList(0, numberBought));
+                        t.addNewShares(sharesBought);
+                        sharesForSale.remove(sharesBought);
+                    }
                 }
             }
         }
@@ -409,7 +412,7 @@ public class Simulator {
                 p.removeAllShares(companyName);
             }
         }
-        numberOfShares.remove(companyName);
+        numberOfShares.put(companyName, 0);
     }
 
     /**

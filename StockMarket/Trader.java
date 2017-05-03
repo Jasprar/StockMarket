@@ -74,7 +74,7 @@ public abstract class Trader {
         if (!sharesBought.isEmpty()) {
             int split = 0;
             int i = 0;
-            while(sharesBought.size() > split) {
+            while(sharesBought.size() > split && split > 1) {
                 split = (int)Math.floor(sharesBought.size() / portfolios.size());
                 System.out.println("Split size = " + split + ", Shares bought = " + sharesBought.size());
                 ArrayList<Share> shares = new ArrayList<>(sharesBought.subList(0, split));
@@ -105,17 +105,21 @@ public abstract class Trader {
     }
 
     public void checkTrackers() {
-        for(ClientTracker ct : clientTrackers) {
+        ArrayList<Integer> indices = new ArrayList<>();
+        for(int i = 0; i < clientTrackers.size(); i++) {
+            ClientTracker ct = clientTrackers.get(i);
             if(ct.getAmount() == 0) {
-                clientTrackers.remove(ct);
+                indices.add(i);
             } else {
                 ct.resetAmountSold();
             }
         }
+        for(int index : indices) {
+            clientTrackers.remove(index);
+        }
     }
 
     private void updateTrackers(ArrayList<Share> shares, String clientName) {
-        System.out.println("Updating ClientTrackers for " + shares.size() + " shares...");
         int j = 1;
         for(Share s : shares) {
             boolean found = false;
