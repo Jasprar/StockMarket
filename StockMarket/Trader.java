@@ -1,8 +1,6 @@
 package StockMarket;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public abstract class Trader {
     protected ArrayList<Portfolio> portfolios;
@@ -47,11 +45,55 @@ public abstract class Trader {
 
     public void returnShares(ArrayList<Share> shares, String companyName) {
         // TODO: Add these shares back to their respective portfolios (you know where they came from due to sharesRemoved).
+        int noOfClientSelling = 0;
+        for(Portfolio p : portfolios) {
+            for(ClientTracker ct : clientTrackers) {
+                if (ct.getCompanyName().equals(companyName) && ct.getClientName().equals(p.getClientName())) {
+                    noOfClientSelling++;
+                }
+            }
+        }
+        int temp = (int) Math.floor(shares.size() / noOfClientSelling);
+        for(int i = 0; i < shares.size(); i++) {
+            for (ClientTracker ct : clientTrackers) {
+                for (Portfolio p : portfolios) {
+                    if(ct.getCompanyName().equals(companyName) && ct.getClientName().equals(p.getClientName())) {
+                        for(int j = 0; j < temp; j++) {
+                            p.addOneShare(shares.get(j));
+                            shares.remove(j);
+
+                        }
+                    }
+                }
+            }
+        }
+        if(!shares.isEmpty()) {
+        }
+        getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding());
+
     }
 
     public void addNewShares(ArrayList<Share> sharesBought) {
-        // TODO: Add these new shares into the portfolios (fairly sure you can just evenly divide these up).
-        // At some point, you need to call updateTrackers().
+        if (!sharesBought.isEmpty()) {
+            int split = 0;
+            int i = 0;
+            while(sharesBought.size() > split) {
+                split = (int)Math.floor(sharesBought.size() / portfolios.size());
+                ArrayList<Share> shares = new ArrayList<>(sharesBought.subList(0, split));
+                sharesBought.remove(shares);
+                Portfolio p = portfolios.get(i);
+                p.getShares().addAll(shares);
+                for (Share s : shares {
+                    p.setCashHolding(p.getCashHolding() - s.getSharePrice());
+                }
+                i++;
+            }
+            if(!sharesBought.isEmpty()) {
+                Random rand = new Random();
+                int index = rand.nextInt(portfolios.size());
+                portfolios.get(index).getShares().addAll(sharesBought);
+            }
+        }
     }
 
     public void setEvent(String event) {

@@ -29,7 +29,7 @@ public class RandomTrader extends Trader {
         System.out.println("Creating a new RandomTrader with " + portfolios.size() + " portfolios...");
         ArrayList<Portfolio> ports = new ArrayList<>();
         mode = RandomTrader.BALANCED;
-        randomShare = ThreadLocalRandom.current().nextInt(0,shareSize + 1);
+        randomShare = ThreadLocalRandom.current().nextInt(0, shareSize + 1);
         companyName = this.getPortfolios().get(0).getShares().get(currentRandomShare).getCompanyName();
         commodityType = this.getPortfolios().get(0).getShares().get(currentRandomShare).getCommodity();
         sharePrice = this.getPortfolios().get(0).getShares().get(currentRandomShare).getSharePrice();
@@ -65,7 +65,7 @@ public class RandomTrader extends Trader {
             } else {
                 mode = RandomTrader.BALANCED;
             }
-        } else if(mode == RandomTrader.BUYER) {
+        } else if (mode == RandomTrader.BUYER) {
             if (randomNextDayMode <= 70) {
                 mode = RandomTrader.BALANCED;
             } else {
@@ -80,10 +80,9 @@ public class RandomTrader extends Trader {
 
     @Override
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
-        if(mode == RandomTrader.EVENTBUYER) {
+        if (mode == RandomTrader.EVENTBUYER) {
             return eventBuy(availableCompanies);
-        }
-        else {
+        } else {
             int randomNoToBuy = modeSelector(true);
             HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
 
@@ -103,7 +102,7 @@ public class RandomTrader extends Trader {
 
     // IS IT REALLY THIS LONG?
     // TODO: SHALL DOUBLE CHECK CODE.
-    private HashMap<String,Integer> eventBuy(ArrayList<String> availableCompanies) {
+    private HashMap<String, Integer> eventBuy(ArrayList<String> availableCompanies) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         String eventType;
         if (event.equals("Q1Q")) {
@@ -149,6 +148,7 @@ public class RandomTrader extends Trader {
         }
         return sharesBuying;
     }
+
     //sell
     @Override
     public ArrayList<Share> sell() {
@@ -216,69 +216,19 @@ public class RandomTrader extends Trader {
 
     private int modeSelector(boolean buyMode) {
         int randomWhat;
-        if(buyMode) {
+        if (buyMode) {
             randomWhat = cashAvailable;
-        }
-        else {
+        } else {
             randomWhat = shareSize;
         }
 
         if (mode == RandomTrader.BALANCED) {
             randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.01));
-        }
-        else if (mode == RandomTrader.SELLER) {
+        } else if (mode == RandomTrader.SELLER) {
             randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.02));
-        }
-        else {
+        } else {
             randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.005));
         }
         return randomNoToBuySell;
-    }
-
-    @Override
-    public void addNewShares(ArrayList<Share> sharesBought) {
-        // TODO: Add these new shares into the portfolios (fairly sure you can just evenly divide these up) and decrement total worths.
-        this.getPortfolios().get(0).getShares().addAll(sharesBought);
-        for(int i = 0; i <= sharesBought.size(); i++){
-            this.getPortfolios().get(0).setCashHolding(this.getPortfolios().get(0).getCashHolding() - sharesBought.get(i).getSharePrice());
-        }
-    }
-
-    //selling
-    @Override
-    public void returnShares(ArrayList<Share> shares, String companyName) {
-
-/*        for(Portfolio p : super.portfolios ) {
-            for(Share s : p.getShares()) {
-                if()
-            }
-        } */
-        // finds out how many clients were involved with transaction with this company of shares
-        int noOfClientSelling = 0;
-        for(Portfolio p : portfolios) {
-            for(ClientTracker ct : clientTrackers) {
-                if (ct.getCompanyName().equals(companyName) && ct.getClientName().equals(p.getClientName())) {
-                    noOfClientSelling++;
-                }
-            }
-        }
-        int temp = (int) Math.floor(shares.size() / noOfClientSelling);
-        for(int i = 0; i < shares.size(); i++) {
-            for (ClientTracker ct : clientTrackers) {
-                for (Portfolio p : portfolios) {
-                    if(ct.getCompanyName().equals(companyName) && ct.getClientName().equals(p.getClientName())) {
-                        for(int j = 0; j < temp; j++) {
-                            p.addOneShare(shares.get(j));
-                            shares.remove(j);
-
-                        }
-                    }
-                }
-            }
-        }
-        if(!shares.isEmpty()) {
-        }
-        getPortfolios().get(0).setCashHolding(getPortfolios().get(0).getCashHolding());
-
     }
 }
