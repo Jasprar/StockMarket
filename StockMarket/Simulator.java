@@ -153,7 +153,7 @@ public class Simulator {
             port.add(portfolios.get(7)); // Justine Thyme.
             portfolios.remove(7);
             portfolios.remove(0);
-            traders.add(new IntelligentTrader(port));
+            traders.add(new RandomTrader(port));
             while(portfolios.size() >= 2) {
                 port = new ArrayList<>();
                 port.add(portfolios.get(0));
