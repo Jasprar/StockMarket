@@ -83,7 +83,7 @@ public abstract class Trader {
                 sharesBought.remove(shares);
                 Portfolio p = portfolios.get(i);
                 p.getShares().addAll(shares);
-                for (Share s : shares {
+                for (Share s : shares) {
                     p.setCashHolding(p.getCashHolding() - s.getSharePrice());
                 }
                 i++;
