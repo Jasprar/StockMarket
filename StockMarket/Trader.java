@@ -67,6 +67,8 @@ public abstract class Trader {
     }
 
     private void updateTrackers(ArrayList<Share> shares, String clientName) {
+        System.out.println("Updating ClientTrackers for " + shares.size() + " shares...");
+        int j = 1;
         for(Share s : shares) {
             boolean found = false;
             int i = 0;
@@ -77,10 +79,13 @@ public abstract class Trader {
                     ct.incrementAmount();
                     ct.setBuyPrice(s.getSharePrice());
                 }
+                i++;
             }
             if(!found) { // No such ClientTracker exists, create one.
+                System.out.println("Creating a new ClientTracker for " + clientName + " tracking " + s.getCompanyName());
                 clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity(),s.getSharePrice()));
             }
+            j++;
         }
     }
 }
