@@ -81,7 +81,8 @@ public class RandomTrader extends Trader {
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
         if(mode == RandomTrader.EVENTBUYER) {
             return eventBuy(availableCompanies);
-        } else {
+        }
+        else {
             int randomNoToBuy = modeSelector(true);
             HashMap<String, Integer> sharesBuying = new HashMap<String, Integer>();
 
@@ -152,9 +153,11 @@ public class RandomTrader extends Trader {
     public ArrayList<Share> sell() {
         //work on the random selector
         //each share is an object so all object selling needs to be moved over to simulator class!
-        if(mode == RandomTrader.EVENTSELLER) {
-            return eventSell();
-        } else {
+        ArrayList<Share> sharesSelling = new ArrayList<>();
+        for (Portfolio p : portfolios) {
+            if (mode == RandomTrader.EVENTSELLER) {
+                return eventSell();
+            }/* else {
             int randomNoToSell = modeSelector(false);
             ArrayList<Share> sharesSelling = new ArrayList<>();
 
@@ -164,10 +167,20 @@ public class RandomTrader extends Trader {
                 sharesSelling.add(shareToSell);
                 this.getPortfolios().get(0).getShares().remove(currentRandomShare);
                 this.getPortfolios().get(i).setCashHolding(this.getPortfolios().get(i).getCashHolding() + sharePrice);
+            }*/ else {
+                int randomNoToSell = modeSelector(false);
+                for (int i = 0; i < randomNoToSell; i++) {
+                    currentRandomShare = randomShare;
+                    Share shareToSell = new Share(companyName, commodityType, sharePrice);
+                    sharesSelling.add(shareToSell);
+                    p.getShares().remove(currentRandomShare);
+                    p.setCashHolding(p.getCashHolding() + sharePrice);
+                }
             }
-            return sharesSelling;
         }
+        return sharesSelling;
     }
+
 
     private ArrayList<Share> eventSell() {
         int randomNoToSell = modeSelector(false);
