@@ -73,7 +73,7 @@ public class RandomTrader extends Trader {
         } // Else event is in progress, do not switch mode.
     }
 
-    // Remember that with these methods, if an event is in progress (String event != null), then the RandomTraders should
+    // Remember that with these methods, if an event is in progress ( String event != null), then the RandomTraders should
     // only be trading in shares of that name (and I talked to Bradley - If it is a buy event, selling should happen
     // AS IT USUALLY WOULD and vice-versa).
 
