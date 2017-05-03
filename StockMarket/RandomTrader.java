@@ -97,6 +97,8 @@ public class RandomTrader extends Trader {
         }
     }
 
+    // IS IT REALLY THIS LONG?
+    // TODO: SHALL DOUBLE CHECK CODE.
     private HashMap<String,Integer> eventBuy(ArrayList<String> availableCompanies) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         String eventType;
