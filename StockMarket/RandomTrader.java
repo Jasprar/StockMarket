@@ -149,7 +149,7 @@ public class RandomTrader extends Trader {
         }
         return sharesBuying;
     }
-
+    //sell
     @Override
     public ArrayList<Share> sell() {
         //work on the random selector
