@@ -35,7 +35,7 @@ public class Simulator {
      * InitialDataV2.csv, and imports data about events from ExternalEventsData.csv. After instantiation, the simulation
      * is completely ready to be run.
      */
-    public Simulator(int duration) {
+    public Simulator() {
         //System.out.println("Creating Simulator");
         this.duration = duration;
         calendar = new GregorianCalendar(2017, calendar.JANUARY, 2, 9, 0); // 01/01/2017 is a Sunday.
@@ -55,7 +55,7 @@ public class Simulator {
      * (17:00 - 09:00 Monday - Friday & all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
      * @param duration The number of minutes you wish the simulation to take (how fast you wish data to be updated).
      */
-    public void runSimulation() {
+    public void runSimulation(int duration) {
         //System.out.println("Running Simulation for " + duration + " minutes.");
         while(calendar.getTime().before(END_DATE)) {
             //System.out.println("The date is now " + calendar.getTime());
