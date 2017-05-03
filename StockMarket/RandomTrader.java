@@ -36,6 +36,8 @@ public class RandomTrader extends Trader {
         cashAvailable = this.getPortfolios().get(0).getCashHolding();
     }
 
+    // NOTE: PROBABLE BUG. Not getPortfolio or super.portfolio. Should use port
+
     @Override
     public void setMode(int mode) {
         this.mode = mode;
@@ -168,7 +170,34 @@ public class RandomTrader extends Trader {
     }
 
     private ArrayList<Share> eventSell() {
-        return null;
+        int randomNoToSell = modeSelector(false);
+        ArrayList<Share> sharesSelling = new ArrayList<>();
+        String eventType;
+        if (event.equals("Q1Q")) {
+            eventType = "Q1Q";
+        } else if (event.equals("Food")) {
+            eventType = "Food";
+        } else if (event.equals("Property")) {
+            eventType = "Property";
+        } else if (event.equals("Hard")) {
+            eventType = "Hard";
+        } else {
+            eventType = "Any";
+        }
+        for (Portfolio p : portfolios) {
+            for (int i = 0; i < p.getShares().size(); i++) {
+                if (p.getShares().get(i).getCommodity().equals(eventType) || eventType == "Any") {
+                    for (int j = 0; j < randomNoToSell; j++) {
+                        Share shareToSell = new Share(p.getShares().get(i).getCompanyName(), p.getShares().get(i).getCommodity(), p.getShares().get(i).getSharePrice());
+                        sharesSelling.add(shareToSell);
+                        p.getShares().remove(i);
+                        p.setCashHolding(p.getCashHolding() + p.getShares().get(i).getSharePrice());
+                    }
+                }
+            }
+        }
+        return sharesSelling;
+
     }
 
     private int modeSelector(boolean buyMode) {
