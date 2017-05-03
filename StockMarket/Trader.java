@@ -105,18 +105,16 @@ public abstract class Trader {
     }
 
     public void checkTrackers() {
-        ArrayList<Integer> indices = new ArrayList<>();
+        ArrayList<ClientTracker> trackers = new ArrayList<>();
         for(int i = 0; i < clientTrackers.size(); i++) {
             ClientTracker ct = clientTrackers.get(i);
-            if(ct.getAmount() == 0) {
-                indices.add(i);
+            if (ct.getAmount() == 0) {
+                trackers.add(clientTrackers.get(i));
             } else {
                 ct.resetAmountSold();
             }
         }
-        for(int index : indices) {
-            clientTrackers.remove(index);
-        }
+        clientTrackers.removeAll(trackers);
     }
 
     private void updateTrackers(ArrayList<Share> shares, String clientName) {
@@ -139,5 +137,13 @@ public abstract class Trader {
             }
             j++;
         }
+    }
+
+    public int getShares() {
+        int total = 0;
+        for(Portfolio p : portfolios) {
+            total += p.getShares().size();
+        }
+        return total;
     }
 }
