@@ -26,6 +26,7 @@ public class RandomTrader extends Trader {
 
     public RandomTrader(ArrayList<Portfolio> portfolios) {
         super(portfolios);
+        System.out.println("Creating a new RandomTrader with " + portfolios.size() + " portfolios...");
         ArrayList<Portfolio> ports = new ArrayList<>();
         mode = RandomTrader.BALANCED;
         randomShare = ThreadLocalRandom.current().nextInt(0,shareSize + 1);
