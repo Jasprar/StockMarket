@@ -20,16 +20,12 @@ public class Portfolio {
         return clientName;
     }
 
+    //ALSO FOR SETUP - HENCE += TOTALWORTH.
     public void addShares(ArrayList<Share> shares) {
         this.shares.addAll(shares);
         for(Share share : shares) {
-            totalWorth -= share.getSharePrice();
+            totalWorth += share.getSharePrice();
         }
-    }
-
-    public void addOneShare(Share shares) {
-        this.shares.add(shares);
-        totalWorth -= shares.getSharePrice();
     }
 
     public ArrayList<Share> getShares() {
@@ -40,7 +36,7 @@ public class Portfolio {
         return totalWorth;
     }
 
-    // MUST ONLY BE USED DURING SETUP, AS MULTIPLIES PARAMETER BY 100.
+    // MUST ONLY BE USED DURING SETUP, AS MULTIPLIES PARAMETER BY 100 & ADDS TO TOTALWORTH.
     public void setCashHolding(int cashHolding) {
         cashHolding = cashHolding * 100; // cashHolding is in pounds, we wish to store it in pence.
         this.cashHolding = cashHolding;
@@ -63,6 +59,7 @@ public class Portfolio {
             }
         }
     }
+
     @Override
     public String toString(){
         return shares.toString();
