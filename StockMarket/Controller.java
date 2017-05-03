@@ -81,7 +81,7 @@ public class Controller {
     private int TABLE_REFRESH_RATE = 6000;
 
     Timer timer = new Timer();
-    Simulator sim = new Simulator();
+    Simulator sim = new Simulator(1);
 
     /**
      * Calls runSimulation on clickevent of "Run Simulation" / "Run".

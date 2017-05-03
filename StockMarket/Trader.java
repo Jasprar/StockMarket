@@ -52,7 +52,7 @@ public abstract class Trader {
                     p.getShares().addAll(sharesReturned);
                     updateTrackers(sharesReturned, p.getClientName());
                     for (Share s : sharesReturned) {
-                        p.addCashHolding(s.getSharePrice());
+                        p.addCashHolding(-s.getSharePrice());
                     }
                     shares.removeAll(sharesReturned);
                 }
@@ -64,7 +64,7 @@ public abstract class Trader {
             Portfolio p = portfolios.get(index);
             p.getShares().addAll(shares);
             for(Share s : shares) {
-                p.addCashHolding(s.getSharePrice());
+                p.addCashHolding(-s.getSharePrice());
             }
             updateTrackers(shares, portfolios.get(index).getClientName());
         }
@@ -82,7 +82,7 @@ public abstract class Trader {
                 p.getShares().addAll(shares);
                 updateTrackers(shares, p.getClientName());
                 for (Share s : shares) {
-                    p.addCashHolding(s.getSharePrice());
+                    p.addCashHolding(-s.getSharePrice());
                 }
                 sharesBought.removeAll(shares);
                 i = (i + 1) % portfolios.size();
@@ -93,7 +93,7 @@ public abstract class Trader {
                 Portfolio p = portfolios.get(index);
                 p.getShares().addAll(sharesBought);
                 for(Share s : sharesBought) {
-                    p.addCashHolding(s.getSharePrice());
+                    p.addCashHolding(-s.getSharePrice());
                 }
                 updateTrackers(sharesBought, portfolios.get(index).getClientName());
             }
