@@ -18,58 +18,26 @@ public class IntelligentTrader extends Trader {
     @Override
     public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
-        ArrayList clientPortfolios = this.getPortfolios();
         for (Portfolio p : portfolios) {
-            for (ClientTracker ct : clientTrackers) {
-                for (Share s : p.getShares()) {
-                    if (ct.getClientName().equals(p.getClientName()) && p.getShares().equals(s) && s.getSharePrice() > ct.getBuyPrice()) {
-     //                   ThreadLocalRandom.current().nextInt(0, (int) Math.round((randomWhat + 1) * 0.01)
-                    }
-                }
+            for (Share s : p.getShares()) {
+                        for (ClientTracker ct : clientTrackers) {
 
-                    /*
-                    if(!availableCompanies.contains(this.getPortfolios().get(i).getShares().get(j).getCompanyName())) {
-                        tracker.add(new ClientTracker(this.getPortfolios().get(i).getClientName(), this.getPortfolios().get(i).getShares().get(j).getCompanyName(), 1));
-                    }
-                    else {
-                        int k = 0;
-                        while(true) {
-                            if(tracker.get(k).getCompanyName().equals(this.getPortfolios().get(i).getShares().get(j).getCompanyName())) {
-                                tracker.get(k).setAmount(tracker.get(k).getAmount() + 1);
-                                break;
-                            }
-                            else {
-                                k++;
+                            if (ct.getClientName().equals(p.getClientName()) && p.getShares().equals(s) && s.getSharePrice() > ct.getBuyPrice()) {
+                                int fluctScale = ct.getFluctuation();
+                                int randomNoToBuy = 0;
+                                randomNoToBuy = ThreadLocalRandom.current().nextInt(0, (int) Math.round((p.getCashHolding() + 1) * (fluctScale * 0.1)));
+                                if (sharesBuying.containsKey(s.getCompanyName())) {
+                                    sharesBuying.put(s.getCompanyName(), sharesBuying.get(s.getCompanyName()) + randomNoToBuy);
+                                } else {
+                                    sharesBuying.put(s.getCompanyName(), randomNoToBuy);
+                                }
+
                             }
                         }
-                    }
-                    if(!availableCompanies.contains(this.getPortfolios().get(i).getShares().get(j).getCompanyName())) {
-                        if(this.getPortfolios().get(i).getShares().get(j).getCompanyName()
-                        tracker.add(new ClientTracker(this.getPortfolios().get(i).getClientName(), this.getPortfolios().get(i).getShares().get(j).getCompanyName(), 1, ));
-                    }*/
             }
         }
         return sharesBuying;
     }
-
-    // USED RANDOM TRADER buy() FOR COMPILING FOR NOW.
-/*    @Override
-    public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
-
-        HashMap<String, Integer> sharesBuying = new HashMap<>();
-
-        for(int i=0; i <= 1; i++) {
-            int randomCompany = new Random().nextInt(availableCompanies.size());
-            String randomlyChosenCompany = availableCompanies.get(randomCompany);
-            if(sharesBuying.containsKey(randomlyChosenCompany)) {
-                sharesBuying.put(randomlyChosenCompany,sharesBuying.get(randomlyChosenCompany) + 1);
-            }
-            else {
-                sharesBuying.put(randomlyChosenCompany,1);
-            }
-        }
-        return sharesBuying;
-    }*/
 
     @Override
     public ArrayList<Share> sell() {
