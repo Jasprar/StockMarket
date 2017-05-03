@@ -235,7 +235,11 @@ public class Simulator {
             ArrayList<Share> shares = t.sell();
             toBeSold.put(t, shares);
             for(Share s : shares) {
-                sellTotals.put(s.getCompanyName(), (sellTotals.get(s.getCompanyName()) + 1));
+                if(sellTotals.containsKey(s.getCompanyName())) {
+                    sellTotals.put(s.getCompanyName(), (sellTotals.get(s.getCompanyName()) + 1));
+                } else {
+                    sellTotals.put(s.getCompanyName(), 1);
+                }
             }
         }
         System.out.println("Calculating shares to distribute...");
@@ -360,6 +364,13 @@ public class Simulator {
         }
         shareIndex = (double)newShareIndex / (double)numberOfShares.size();
         System.out.println("Share index is now " + shareIndex);
+        for(Trader t : traders) {
+            if(t instanceof RandomTrader) {
+                System.out.println("This random trader has " + t.getShares() + " shares.");
+            } else {
+                System.out.println("The intelligent trader has " + t.getShares() + " shares.");
+            }
+        }
     }
 
     // excess will be negative when Supply > Demand.

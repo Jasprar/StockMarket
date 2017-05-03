@@ -72,5 +72,13 @@ public class Portfolio {
         cashHolding += sharePrice;
         totalWorth += sharePrice;
     }
+
+    public double getSharesTotal() {
+        double total = 0;
+        for(Share s : shares) {
+            total += s.getSharePrice();
+        }
+        return total;
+    }
 }
 

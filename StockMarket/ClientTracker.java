@@ -42,7 +42,11 @@ public class ClientTracker {
     public void setBuyPrice(double buyPrice) {
         double oldPrice = this.buyPrice;
         this.buyPrice = buyPrice;
-        fluctuation += (oldPrice - buyPrice);
+        if(oldPrice > buyPrice) {
+            fluctuation--;
+        } else if(oldPrice < buyPrice) {
+            fluctuation++;
+        }
     }
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }

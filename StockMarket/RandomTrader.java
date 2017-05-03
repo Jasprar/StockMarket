@@ -72,7 +72,7 @@ public class RandomTrader extends Trader {
             HashMap<String, Integer> sharesBuying = new HashMap<>();
             for(Portfolio p : portfolios) {
                 int shareSize = p.getShares().size();
-                int randomNoToBuy = modeSelector(true, p.getShares().size());
+                int randomNoToBuy = modeSelector(true, p.getCashHolding());
                 for (int i = 0; i < randomNoToBuy; i++) {
                     int randomCompany = new Random().nextInt(sharePrices.size());
                     String randomlyChosenCompany = new ArrayList<>(sharePrices.keySet()).get(randomCompany);
@@ -90,7 +90,7 @@ public class RandomTrader extends Trader {
     private HashMap<String, Integer> eventBuy(HashMap<String, Double> sharePrices) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         for (Portfolio p : portfolios) {
-            int randomNoToBuy = modeSelector(true, p.getShares().size());
+            int randomNoToBuy = modeSelector(true, p.getCashHolding());
             while(randomNoToBuy > 0) {
                 for (ClientTracker ct : clientTrackers) {
                     if ((ct.getCompanyName().equals(event) || ct.getCommodityType().equals(event)) && ct.getClientName().equals(p.getClientName())) {
@@ -109,7 +109,7 @@ public class RandomTrader extends Trader {
             for (Portfolio p : portfolios) {
                 for (ClientTracker ct : clientTrackers) {
                     if (ct.getClientName().equals(p.getClientName())) {
-                        int randomNoToBuy = modeSelector(true, p.getShares().size());
+                        int randomNoToBuy = modeSelector(true, p.getCashHolding());
                         for (int i = 0; i < randomNoToBuy; i++) {
                             if (sharesBuying.containsKey(ct.getCompanyName())) {
                                 sharesBuying.put(ct.getCompanyName(), sharesBuying.get(ct.getCompanyName()) + 1);
@@ -135,10 +135,9 @@ public class RandomTrader extends Trader {
                 return eventSell();
             } else {
                 for (Portfolio p : portfolios) {
-                    int shareSize = p.getShares().size();
-                    int randomNoToSell = modeSelector(false, shareSize);
+                    int randomNoToSell = modeSelector(false, p.getSharesTotal());
                     for (int i = 0; i < randomNoToSell; i++) {
-                        shareSize = p.getShares().size();
+                        int shareSize = p.getShares().size();
                         int currentRandomShare = ThreadLocalRandom.current().nextInt(0, shareSize);
                         Share s = p.getShares().remove(currentRandomShare);
                         for(ClientTracker ct : clientTrackers) {
@@ -159,12 +158,11 @@ public class RandomTrader extends Trader {
         ArrayList<Share> sharesSelling = new ArrayList<>();
         for (Portfolio p : portfolios) {
             int shareSize = p.getShares().size();
-            int randomNoToSell = modeSelector(false, shareSize);
+            int randomNoToSell = modeSelector(false, p.getSharesTotal());
             int iterations = 0;
             while(randomNoToSell > 0 && iterations < 10) {
                 for (int i = 0; i < p.getShares().size(); i++) {
                     if (p.getShares().get(i).getCommodity().equals(event) || event == "Any" || p.getShares().get(i).getCompanyName().equals(event)) {
-                        System.out.println("Number left to choose = " + randomNoToSell);
                         Share shareToSell = p.getShares().remove(i);
                         sharesSelling.add(shareToSell);
                         p.addCashHolding(shareToSell.getSharePrice());
@@ -186,15 +184,28 @@ public class RandomTrader extends Trader {
 
     }
 
-    private int modeSelector(boolean buyMode, int shareSize) {
-        int randomNoToBuySell;
-        if (mode == RandomTrader.BALANCED) {
-            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((shareSize + 1) * 0.01));
-        } else if (mode == RandomTrader.SELLER) {
-            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((shareSize + 1) * 0.02));
+    private int modeSelector(boolean buyMode, double metric) {
+        System.out.println("metric = " + metric);
+        metric = metric / 1000;
+        int randomNoToBuySell = 0;
+        if(buyMode) {
+            if (mode == RandomTrader.BALANCED) {
+                randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.01) + 1);
+            } else if (mode == RandomTrader.BUYER) {
+                randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.02) + 1);
+            } else {
+                randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.005) + 1);
+            }
         } else {
-            randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((shareSize + 1) * 0.005));
+            if (mode == RandomTrader.BALANCED) {
+                randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.01) + 1);
+            } else if (mode == RandomTrader.SELLER) {
+                randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.02) + 1);
+            } else {
+                randomNoToBuySell = ThreadLocalRandom.current().nextInt(0, (int) Math.round((metric) * 0.005) + 1);
+            }
         }
+        System.out.println("randomNoToBuySell = " + randomNoToBuySell);
         return randomNoToBuySell;
     }
 }

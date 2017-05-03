@@ -21,14 +21,11 @@ public class IntelligentTrader extends Trader {
                     if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(s.getCompanyName()) && s.getSharePrice() > ct.getBuyPrice()) {
                         int fluctScale = ct.getFluctuation();
                         int randomNoToBuy = 0;
-                        if(fluctScale < 0) {
+                        if(fluctScale < 0 && !sharesBuying.containsKey(s.getCompanyName()) && randomNoToBuy != 0) {
                             fluctScale = fluctScale * -1;
-                            randomNoToBuy = ThreadLocalRandom.current().nextInt(0, (int) Math.round(((p.getShares().size() * 0.001 / sharePrices.size())) * (fluctScale * 0.01)) + 1);
-                        } else if(fluctScale == 0) {
-                            randomNoToBuy = ThreadLocalRandom.current().nextInt(0, (int) Math.round(p.getShares().size() * 0.001) + 1);
-                        }
-                        if (!sharesBuying.containsKey(s.getCompanyName()) && randomNoToBuy != 0) {
-                            sharesBuying.put(s.getCompanyName(), randomNoToBuy);
+                            sharesBuying.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.round(((p.getCashHolding() / 1000)) * (fluctScale)) + 1));
+                        } else if(fluctScale == 0 && !sharesBuying.containsKey(s.getCompanyName()) && randomNoToBuy != 0) {
+                            sharesBuying.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.round(p.getCashHolding() / 1000) + 1));
                         }
                     }
                 }
@@ -50,10 +47,10 @@ public class IntelligentTrader extends Trader {
                         if (s.getCompanyName().equals(ct.getCompanyName()) && p.getClientName().equals(ct.getClientName()) && ct.getBuyPrice() > s.getSharePrice()) {
                             int fluctScale = ct.getFluctuation();
                             if(fluctScale > 0 && !randomNoToSell.containsKey(s.getCompanyName())) {
-                                randomNoToSell.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.round((p.getShares().size()) * (fluctScale * 0.01)) + 1));
+                                randomNoToSell.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.round((p.getSharesTotal() / 1000) * (fluctScale)) + 1));
                                 companyNames.add(s.getCompanyName());
                             } else if (fluctScale == 0 && !!randomNoToSell.containsKey(s.getCompanyName())) {
-                                randomNoToSell.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, p.getShares().size() + 1));
+                                randomNoToSell.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.round(p.getSharesTotal() / 1000) + 1));
                                 companyNames.add(s.getCompanyName());
                             }
                         }
