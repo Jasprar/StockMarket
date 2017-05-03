@@ -93,17 +93,16 @@ public class IntelligentTrader extends Trader {
         // TODO: Add these new shares into the portfolios (fairly sure you can just evenly divide these up) and decrement total worths.
 
 //        this.getPortfolios().get(0).getShares().addAll(sharesBought);
+       // inputShare.put(sharesBought.get(0).getCompanyName(), new ArrayList<Share>(sharesBought));
 
-
-        /*for(int i = 0; i <= sharesBought.size(); i++){
+        for(int i = 0; i <= sharesBought.size(); i++){
             for(int j = 0; j <= getPortfolios().size(); j++) {
-                if(this.getPortfolios().size())
+             //   if(this.getPortfolios().size())
                 this.getPortfolios().get(0).setCashHolding(this.getPortfolios().get(0).getCashHolding() - sharesBought.get(i).getSharePrice());
             }
 
-        }*/
+        }
         HashMap<String,ArrayList<Share>> inputShare = new HashMap<>();
-        inputShare.put(sharesBought.get(0).getCompanyName(), new ArrayList<Share>(sharesBought));
         Iterator iterateShare = inputShare.entrySet().iterator();
         while(iterateShare.hasNext()) {
             for(int i = 0; i <= sharesBought.size(); i++) {
