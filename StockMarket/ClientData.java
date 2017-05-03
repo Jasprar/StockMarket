@@ -1,9 +1,6 @@
 package StockMarket;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 /**
  * Created by shahs on 27/04/2017.
@@ -11,16 +8,16 @@ import javafx.beans.property.StringProperty;
 public class ClientData {
 
     private final StringProperty PFClient;
-    private final IntegerProperty PFWealth;
-    private final IntegerProperty PFCashHolding;
+    private final SimpleDoubleProperty PFWealth;
+    private final SimpleDoubleProperty PFCashHolding;
     private final StringProperty PFShares;
     private final StringProperty PFManagedBy;
 
 
     public ClientData(String pfClient, int pfWealth, int pfCashHolding, String PFShares, String managedBy) {
         this.PFClient = new SimpleStringProperty(pfClient);
-        this.PFWealth = new SimpleIntegerProperty(pfWealth);
-        this.PFCashHolding = new SimpleIntegerProperty(pfCashHolding);
+        this.PFWealth = new SimpleDoubleProperty(pfWealth);
+        this.PFCashHolding = new SimpleDoubleProperty(pfCashHolding);
         this.PFShares = new SimpleStringProperty(PFShares);
         this.PFManagedBy = new SimpleStringProperty(managedBy);
     }
@@ -37,27 +34,27 @@ public class ClientData {
         this.PFClient.set(PFClient);
     }
 
-    public int getPFWealth() {
+    public double getPFWealth() {
         return PFWealth.get();
     }
 
-    public IntegerProperty PFWealthProperty() {
+    public SimpleDoubleProperty PFWealthProperty() {
         return PFWealth;
     }
 
-    public void setPFWealth(int PFWealth) {
+    public void setPFWealth(Double PFWealth) {
         this.PFWealth.set(PFWealth);
     }
 
-    public int getPFCashHolding() {
+    public double getPFCashHolding() {
         return PFCashHolding.get();
     }
 
-    public IntegerProperty PFCashHoldingProperty() {
+    public SimpleDoubleProperty PFCashHoldingProperty() {
         return PFCashHolding;
     }
 
-    public void setPFCashHolding(int PFCashHolding) {
+    public void setPFCashHolding(Double PFCashHolding) {
         this.PFCashHolding.set(PFCashHolding);
     }
 

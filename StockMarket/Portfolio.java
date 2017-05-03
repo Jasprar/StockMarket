@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Portfolio {
     private String clientName;
-    private int totalWorth;
-    private int cashHolding;
+    private double totalWorth;
+    private double cashHolding;
     private ArrayList<Share> shares;
     private boolean sellAll;
 
@@ -36,18 +36,18 @@ public class Portfolio {
         return shares;
     }
 
-    public int getTotalWorth() {
+    public double getTotalWorth() {
         return totalWorth;
     }
 
-    // MUST ONLY BE USED DURING SETUP, AS AFFECTS totalWorth!
+    // MUST ONLY BE USED DURING SETUP, AS MULTIPLIES PARAMETER BY 100.
     public void setCashHolding(int cashHolding) {
         cashHolding = cashHolding * 100; // cashHolding is in pounds, we wish to store it in pence.
         this.cashHolding = cashHolding;
         totalWorth += cashHolding;
     }
 
-    public int getCashHolding() {
+    public double getCashHolding() {
         return cashHolding;
     }
 
@@ -57,9 +57,9 @@ public class Portfolio {
 
     // Called when a company's share price reaches 0.
     public void removeAllShares(String companyName) {
-        for(Share s : shares) {
-            if(s.getCompanyName().equals(companyName)) {
-                shares.remove(s);
+        for(int i = 0; i < shares.size(); i++) {
+            if(shares.get(i).getCompanyName().equals(companyName)) {
+                shares.remove(i);
             }
         }
     }
@@ -68,8 +68,9 @@ public class Portfolio {
         return shares.toString();
     }
 
-    public void addToTotalWorth(int amount) {
-        this.totalWorth += amount;
+    public void addCashHolding(double sharePrice) {
+        cashHolding += sharePrice;
+        totalWorth += sharePrice;
     }
 }
 

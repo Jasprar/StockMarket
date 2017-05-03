@@ -1,16 +1,16 @@
 package StockMarket;
 
 public class ClientTracker {
-    private final int originalPrice;
+    private final double originalPrice;
     private String clientName;
     private String companyName;
     private String commodityType;
     private int amount;
     private int amountSold;
-    private int buyPrice; // Most recently bought
+    private double buyPrice; // Most recently bought
     private int fluctuation; // Negative if buyPrice dropping since bought, positive otherwise.
 
-    public ClientTracker(String clientName, String companyName, String commodityType, int buyPrice) {
+    public ClientTracker(String clientName, String companyName, String commodityType, double buyPrice) {
         this.clientName = clientName;
         this.companyName = companyName;
         this.commodityType = commodityType;
@@ -32,15 +32,15 @@ public class ClientTracker {
         return companyName;
     }
     public String getCommodityType() { return commodityType; }
-    public void removeAmount(int removed) {
-        this.amount -= removed;
-        amountSold = removed;
+    public void decrementAmount() {
+        this.amount--;
+        amountSold++;
     }
-    public int getBuyPrice() {
+    public double getBuyPrice() {
         return buyPrice;
     }
-    public void setBuyPrice(int buyPrice) {
-        int oldPrice = this.buyPrice;
+    public void setBuyPrice(double buyPrice) {
+        double oldPrice = this.buyPrice;
         this.buyPrice = buyPrice;
         fluctuation += (oldPrice - buyPrice);
     }

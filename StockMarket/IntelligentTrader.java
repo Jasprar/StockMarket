@@ -3,8 +3,6 @@ package StockMarket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IntelligentTrader extends Trader {
@@ -14,7 +12,7 @@ public class IntelligentTrader extends Trader {
 
     // SHOULD BE DONE WITH THE BUY, NOT SURE YET, TESTING NEEDED.
     @Override
-    public HashMap<String, Integer> buy(ArrayList<String> availableCompanies) {
+    public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         for (Portfolio p : portfolios) {
             for (Share s : p.getShares()) {
@@ -52,7 +50,7 @@ public class IntelligentTrader extends Trader {
                                 Share shareToSell = new Share(s.getCompanyName(), s.getCommodity(), s.getSharePrice());
                                 sharesSelling.add(shareToSell);
                                 p.getShares().remove(s);
-                                p.setCashHolding(p.getCashHolding() + s.getSharePrice());
+                                p.addCashHolding(s.getSharePrice());
                             }
                         }
                     }

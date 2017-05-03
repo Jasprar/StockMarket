@@ -36,7 +36,7 @@ public class Simulator {
      */
     public Simulator() {
         System.out.println("Creating Simulator");
-        calendar = new GregorianCalendar(2017, calendar.JANUARY, 2, 9, 0);
+        calendar = new GregorianCalendar(2017, calendar.JANUARY, 2, 9, 0); // 01/01/2017 is a Sunday.
         numberOfShares = new HashMap<>();
         traders = new ArrayList<>();
         events = new ArrayList<>();
@@ -208,7 +208,6 @@ public class Simulator {
 
     }
 
-    //TODO: TEST THIS METHOD.
     private void run15Mins() {
         System.out.println("Running one 15 minute cycle...");
         HashMap<Trader, ArrayList<Share>> toBeSold = new HashMap<>();
@@ -221,8 +220,12 @@ public class Simulator {
         }
         // Get what everyone wants to buy & sell.
         System.out.println("Traders buy and sell...");
+        HashMap<String, Double> sharePrices = new HashMap<>();
+        for(String companyName : numberOfShares.keySet()) {
+            sharePrices.put(companyName, getSharePrice(companyName));
+        }
         for(Trader t : traders) {
-            HashMap<String, Integer> traderBuys = t.buy(new ArrayList<String>(numberOfShares.keySet()));
+            HashMap<String, Integer> traderBuys = t.buy(sharePrices);
             toBeBought.put(t, traderBuys);
             for(String companyName : traderBuys.keySet()) {
                 buyTotals.put(companyName, (buyTotals.get(companyName) + traderBuys.get(companyName)));
@@ -252,18 +255,21 @@ public class Simulator {
                     }
                     int sharesSold = buyTotal * (sharesOfCompany.size() / sellTotal);
                     sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
-                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())), companyName);
+                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())), companyName, sellTotal);
                 }
                 // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
                 for(Trader t : traders) {
                     sharesBought = new ArrayList<>();
-                    for(int i = 0; i < toBeBought.get(t).get(companyName); i++) {
-                        if(i < sharesForSale.size()) { // Could occur that there are a couple more in toBeBought than in sharesRemoved due to rounding down for sharesSold.
-                            sharesBought.add(sharesForSale.get(i));
+                    Integer numberBought = toBeBought.get(t).get(companyName);
+                    if(numberBought != null) {
+                        for (int i = 0; i < numberBought; i++) {
+                            if (i < sharesForSale.size()) { // Could occur that there are a couple more in toBeBought than in sharesRemoved due to rounding down for sharesSold.
+                                sharesBought.add(sharesForSale.get(i));
+                            }
                         }
+                        t.addNewShares(sharesBought);
+                        sharesForSale.remove(sharesBought);
                     }
-                    t.addNewShares(sharesBought);
-                    sharesForSale.remove(sharesBought);
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else if(buyTotal > sellTotal) { // Supply < Demand.
@@ -276,14 +282,17 @@ public class Simulator {
                     }
                 }
                 for(Trader t : traders) {
-                    int sharesPurchased = sellTotal * (toBeBought.get(t).get(companyName) / buyTotal);
-                    if(sharesPurchased < sharesForSale.size()) { // Stops an error if there was rounding in sharesPurchased calculation.
-                        sharesBought = new ArrayList<>(sharesForSale.subList(0, sharesPurchased));
-                    } else {
-                        sharesBought = sharesForSale;
+                    Integer numberBought = toBeBought.get(t).get(companyName);
+                    if(numberBought != null) {
+                        int sharesPurchased = sellTotal * (numberBought / buyTotal);
+                        if (sharesPurchased < sharesForSale.size()) { // Stops an error if there was rounding in sharesPurchased calculation.
+                            sharesBought = new ArrayList<>(sharesForSale.subList(0, sharesPurchased));
+                        } else {
+                            sharesBought = sharesForSale;
+                        }
+                        t.addNewShares(sharesBought);
+                        sharesForSale.remove(sharesBought);
                     }
-                    t.addNewShares(sharesBought);
-                    sharesForSale.remove(sharesBought);
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else { // Supply = Demand.
@@ -298,9 +307,12 @@ public class Simulator {
                 }
                 // Give the trader the number of shares (from sharesForSale) that they asked for - there are exactly enough.
                 for(Trader t : traders) {
-                    sharesBought = new ArrayList<>(sharesForSale.subList(0, toBeBought.get(t).get(companyName)));
-                    t.addNewShares(sharesBought);
-                    sharesForSale.remove(sharesBought);
+                    Integer numberBought = toBeBought.get(t).get(companyName);
+                    if(numberBought != null) {
+                        sharesBought = new ArrayList<>(sharesForSale.subList(0, numberBought));
+                        t.addNewShares(sharesBought);
+                        sharesForSale.remove(sharesBought);
+                    }
                 }
             }
         }
@@ -344,12 +356,12 @@ public class Simulator {
     // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
         System.out.println("Changing the share price for " + companyName + ", using an excess of " + excess);
-        int newSharePrice = 0;
+        double newSharePrice = 0;
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s : p.getShares()) {
                     if(s.getCompanyName().equals(companyName)) {
-                        newSharePrice = (excess / numberOfShares.get(companyName)) * s.getSharePrice();
+                        newSharePrice = s.getSharePrice() + ((excess / numberOfShares.get(companyName)) * s.getSharePrice());
                         s.setSharePrice(newSharePrice);
                     }
                 }
@@ -400,6 +412,7 @@ public class Simulator {
                 p.removeAllShares(companyName);
             }
         }
+        numberOfShares.put(companyName, 0);
     }
 
     /**
@@ -407,7 +420,7 @@ public class Simulator {
      * @param companyName An (exact) string representation of a company's name.
      * @return The share price of the company, or -1 if the company does not exist.
      */
-    public int getSharePrice(String companyName) {
+    public double getSharePrice(String companyName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s: p.getShares()) {
@@ -520,8 +533,8 @@ public class Simulator {
      * Provides a list of Cash holdings correlating to client names within the simulation.
      * @return A list of Cash holdings from all Portfolio instances in the simulation.
      */
-    public List<Integer> getCashHolding(){
-        ArrayList<Integer> portfolios = new ArrayList<>();
+    public ArrayList<Double> getCashHolding(){
+        ArrayList<Double> portfolios = new ArrayList<>();
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()){
                 portfolios.add(p.getCashHolding());
@@ -534,8 +547,8 @@ public class Simulator {
      * Provides a list of Total Worth correlating to client names within the simulation.
      * @return A list of Total Worth from all Portfolio instances in the simulation.
      */
-    public List<Integer> getTotalWorth(){
-        ArrayList<Integer> portfolios = new ArrayList<>();
+    public ArrayList<Double> getTotalWorth(){
+        ArrayList<Double> portfolios = new ArrayList<>();
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()){
                 portfolios.add(p.getTotalWorth());

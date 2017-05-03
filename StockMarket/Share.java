@@ -3,15 +3,15 @@ package StockMarket;
 public class Share {
     private String companyName;
     private String commodity;
-    private int sharePrice;
+    private double sharePrice;
 
-    public Share(String companyName, String commodity, int sharePrice) {
+    public Share(String companyName, String commodity, double sharePrice) {
         this.companyName = companyName;
         this.commodity = commodity;
         this.sharePrice = sharePrice;
     }
 
-    public int getSharePrice() {
+    public double getSharePrice() {
         return sharePrice;
     }
 
@@ -19,7 +19,7 @@ public class Share {
         return companyName;
     }
 
-    public void setSharePrice(int sharePrice) {
+    public void setSharePrice(double sharePrice) {
         this.sharePrice = sharePrice;
     }
 
