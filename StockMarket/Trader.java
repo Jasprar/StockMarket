@@ -78,7 +78,7 @@ public abstract class Trader {
                 }
             }
             if(!found) { // No such ClientTracker exists, create one.
-                clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getSharePrice()));
+                clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity(),s.getSharePrice()));
             }
         }
     }

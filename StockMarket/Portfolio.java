@@ -27,6 +27,11 @@ public class Portfolio {
         }
     }
 
+    public void addOneShare(Share shares) {
+        this.shares.add(shares);
+        totalWorth -= shares.getSharePrice();
+    }
+
     public ArrayList<Share> getShares() {
         return shares;
     }
