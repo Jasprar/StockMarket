@@ -7,77 +7,75 @@ import javafx.beans.property.*;
  */
 public class ClientData {
 
-    private final StringProperty PFClient;
-    private final SimpleDoubleProperty PFWealth;
-    private final SimpleDoubleProperty PFCashHolding;
-    private final StringProperty PFShares;
-    private final StringProperty PFManagedBy;
+    private final StringProperty client;
+    private final SimpleDoubleProperty wealth;
+    private final SimpleDoubleProperty cashHolding;
+    private final StringProperty shares;
+    private final StringProperty managedBy;
 
 
-    public ClientData(String pfClient, int pfWealth, int pfCashHolding, String PFShares, String managedBy) {
-        this.PFClient = new SimpleStringProperty(pfClient);
-        this.PFWealth = new SimpleDoubleProperty(pfWealth);
-        this.PFCashHolding = new SimpleDoubleProperty(pfCashHolding);
-        this.PFShares = new SimpleStringProperty(PFShares);
-        this.PFManagedBy = new SimpleStringProperty(managedBy);
+    public ClientData(String client, int wealth, int cashHolding, String shares, String managedBy) {
+        this.client = new SimpleStringProperty(client);
+        this.wealth = new SimpleDoubleProperty(wealth);
+        this.cashHolding = new SimpleDoubleProperty(cashHolding);
+        this.shares = new SimpleStringProperty(shares);
+        this.managedBy = new SimpleStringProperty(managedBy);
     }
 
-    public String getPFClient() {
-        return PFClient.get();
+    public String getClient() {
+        return client.get();
     }
 
-    public StringProperty PFClientProperty() {
-        return PFClient;
+    public StringProperty clientProperty() {
+        return client;
     }
 
-    public void setPFClient(String PFClient) {
-        this.PFClient.set(PFClient);
+    public void setClient(String PFClient) {
+        this.client.set(PFClient);
     }
 
-    public double getPFWealth() {
-        return PFWealth.get();
+    public double getWealth() {
+        return wealth.get();
     }
 
     public SimpleDoubleProperty PFWealthProperty() {
-        return PFWealth;
+        return wealth;
     }
 
-    public void setPFWealth(Double PFWealth) {
-        this.PFWealth.set(PFWealth);
+    public void setWealth(Double wealth) {
+        this.wealth.set(wealth);
     }
 
-    public double getPFCashHolding() {
-        return PFCashHolding.get();
+    public double getCashHolding() {
+        return cashHolding.get();
     }
 
     public SimpleDoubleProperty PFCashHoldingProperty() {
-        return PFCashHolding;
+        return cashHolding;
     }
 
-    public void setPFCashHolding(Double PFCashHolding) {
-        this.PFCashHolding.set(PFCashHolding);
+    public void setCashHolding(Double PFCashHolding) {
+        this.cashHolding.set(PFCashHolding);
     }
 
-    public String getPFShares() {
-        return PFShares.get();
+    public String getShares() {
+        return shares.get();
     }
 
-    public StringProperty PFSharesProperty() {
-        return PFShares;
+    public StringProperty sharesProperty() {
+        return shares;
     }
 
-    public void setPFShares(String PFShares) {
-        this.PFShares.set(PFShares);
+    public void setShares(String shares) {
+        this.shares.set(shares);
     }
-    public String getPFManagedBy() {
-        return PFManagedBy.get();
-    }
-
-    public StringProperty PFManagedByProperty() {
-        return PFManagedBy;
+    public String getManagedBy() {
+        return managedBy.get();
     }
 
-    public void setPFManagedBy(String PFManagedBy) {
-        this.PFManagedBy.set(PFManagedBy);
+    public StringProperty managedByProperty() {
+        return managedBy;
     }
+
+    public void setManagedBy(String managedBy) {this.managedBy.set(managedBy);}
 }

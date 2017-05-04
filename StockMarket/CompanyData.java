@@ -7,63 +7,64 @@ import javafx.beans.property.*;
  */
 public class CompanyData {
 
-    private final StringProperty PFCompanyName;
-    private final SimpleDoubleProperty PFShareValues;
-    private final SimpleDoubleProperty PFTotalShares;
-    private final SimpleDoubleProperty PFNetWorth;
+    private final StringProperty companyName;
+    private final SimpleDoubleProperty shareValues;
+    private final SimpleDoubleProperty totalShares;
+    private final SimpleDoubleProperty netWorth;
 
-    public CompanyData(String CompanyName, int ShareValue, int networth, int TotalShares) {
-        this.PFCompanyName = new SimpleStringProperty(CompanyName);
-        this.PFShareValues = new SimpleDoubleProperty(ShareValue);
-        this.PFTotalShares = new SimpleDoubleProperty(TotalShares);
-        this.PFNetWorth = new SimpleDoubleProperty(networth);
+    public CompanyData(String companyName, double shareValue, double netWorth, double totalShares) {
+        this.companyName = new SimpleStringProperty(companyName);
+        this.shareValues = new SimpleDoubleProperty(shareValue);
+        this.netWorth = new SimpleDoubleProperty(netWorth);
+        this.totalShares = new SimpleDoubleProperty(totalShares);
+
     }
 
-    public String getPFCompanyName() {
-        return PFCompanyName.get();
+    public String getCompanyName() {
+        return companyName.get();
     }
 
-    public StringProperty PFCompanyNameProperty() {
-        return PFCompanyName;
+    public StringProperty companyNameProperty() {
+        return companyName;
     }
 
-    public void setPFCompanyName(String PFCompanyName) {
-        this.PFCompanyName.set(PFCompanyName);
+    public void setCompanyName(String companyName) {
+        this.companyName.set(companyName);
     }
 
-    public double getPFShareValues(int j) {
-        return PFShareValues.get();
+    public double getShareValues(int j) {
+        return shareValues.get();
     }
 
-    public SimpleDoubleProperty PFShareValuesProperty() {
-        return PFShareValues;
+    public DoubleProperty shareValuesProperty() {
+        return shareValues;
     }
 
-    public void setPFShareValues(Double PFShareValues) {
-        this.PFShareValues.set(PFShareValues);
+    public void setShareValues(Double shareValues) {
+        this.shareValues.set(shareValues);
     }
 
-    public double getPFTotalShares() {
-        return PFTotalShares.get();
+    public double getTotalShares() {
+        return totalShares.get();
     }
 
-    public SimpleDoubleProperty PFTotalSharesProperty() {
-        return PFTotalShares;
+    public DoubleProperty totalSharesProperty() {
+        return totalShares;
     }
 
-    public void setPFTotalShares(int PFTotalShares) {
-        this.PFTotalShares.set(PFTotalShares);
+    public void setTotalShares(int totalShares) {
+        this.totalShares.set(totalShares);
     }
 
-    public double getPFNetWorth() {
-        return PFNetWorth.get();
+    public double getNetWorth() {
+        return netWorth.get();
     }
 
-    public SimpleDoubleProperty PFNetWorthProperty() {
-        return PFNetWorth;
+    public DoubleProperty netWorthProperty() {
+        return netWorth;
     }
 
-    public void setPFNetWorth(int PFNetWorth) {
-        this.PFNetWorth.set(PFNetWorth);
+    public void setNetWorth(int netWorth) {
+        this.netWorth.set(netWorth);
     }
 }

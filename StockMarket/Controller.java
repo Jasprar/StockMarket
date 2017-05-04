@@ -2,6 +2,7 @@ package StockMarket;
 
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.*;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ import static tray.animations.AnimationType.POPUP;
  * The annotation - "FXML" enables the FXMLLoader in GUI.java to inject values defined
  * in the FXML file into references in the controller class.  For example, if we annotate
  * a menu item 'run sim' with @FXML then it will be initialized by the FXMLLoader when the
- * load() method is called by an element int he FXML file with "<MenuItem fx:id="RunSim></MenuItem>"
+ * load() method is called by an element int he FXML file with "<MenuItem fx:id="runSim></MenuItem>"
  *
  * The @FXML above methods makes the method handle the action event. This only works if the FXML file has component of
  * onAction="#(MethodName)". For example <MenuItem fx:id="runSim" onAction = "#RunSimulation"></MenuItem>
@@ -36,16 +37,16 @@ import static tray.animations.AnimationType.POPUP;
 
 
 
-public class Controller {
+public class Controller{
     //Views, the FXML annontations that is linked with the FXML file references.
     // Needed to access the type of component and to add events/ listeners.
 
     @FXML
-    private MenuItem RunSim;
+    private MenuItem runSim;
     @FXML
     private Label dateEntry, eventEntry,timeEntry,shareEntry,marketEntry;
     @FXML
-    private TextArea Hardware, Food, HiTech,Property;
+    private TextArea hardware, food, hiTech, property;
     @FXML
     private TableView<CompanyData> companyDataTableView;
     @FXML
@@ -61,7 +62,7 @@ public class Controller {
     @FXML
     private TableColumn<ClientData,Number> clientWealth,cashHolding,clientShares,managedBy;
     @FXML
-    private LineChart linechart;
+    private LineChart lineChart;
     @FXML
     private NumberAxis x,y;
     @FXML
@@ -69,7 +70,7 @@ public class Controller {
     @FXML
     private Button runButton;
     @FXML
-    private AnchorPane ClientPane,CompanyPane;
+    private AnchorPane clientPane, companyPane;
     @FXML
     private VBox frame;
 
@@ -81,7 +82,9 @@ public class Controller {
     private int TABLE_REFRESH_RATE = 6000;
 
     Timer timer = new Timer();
-    Simulator sim = new Simulator(1);
+    Simulator sim = new Simulator();
+
+
 
     /**
      * Calls runSimulation on clickevent of "Run Simulation" / "Run".
@@ -97,15 +100,31 @@ public class Controller {
         dialog.setTitle("Duration Needed");
         dialog.setHeaderText("Enter duration (Minutes)");
         dialog.setContentText("Duration: ");
-        dialog.show();
+//        dialog.show();
         //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
         // Currently doesnt work
-        // duration = Integer.parseInt("3");
-        // if(duration != 0) sim.runSimulation(duration){
-        //int totalTime = duration * 60; // Minutes to seconds
-        RunSim.setDisable(true);
-        runButton.setVisible(false);
-        callMethod();
+        Optional<String> result = dialog.showAndWait();
+        duration = Integer.parseInt(result.get());
+         if(duration != 0) {
+
+             Task task = new Task<Void>() {
+                 @Override
+                 public Void call() {
+                     sim.runSimulation(duration);
+                     return null;
+                 }
+             };
+             runButton.setVisible(false);
+             runSim.setDisable(true);
+
+             callMethod();
+
+
+             new Thread(task).start();
+
+                 //int totalTime = duration * 60; // Minutes to seconds
+
+        }
     //}
         }
 
@@ -158,7 +177,7 @@ public class Controller {
      * Displays an information dialogue displaying the terms of the License agreement.
      */
     @FXML
-    private void License() {
+    private void license() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("License");
         alert.setHeaderText(null);
@@ -171,7 +190,7 @@ public class Controller {
      * Displays an information dialogue displaying the terms of the copyright agreement.
      */
     @FXML
-    private void copyRight() {
+    private void copyright() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Copyright");
         alert.setHeaderText(null);
@@ -194,7 +213,7 @@ public class Controller {
 
     /***
      * Once the run simulation duration as been entered, these methods are called.
-     * Commodities method displays the overall commodities values. EG: Property value has
+     * Commodities method displays the overall commodities values. EG: property value has
      * went down from 52% to 35%.
      *
      * CurrentTime displays the current time in the simulation in a format of 00:00:00
@@ -210,13 +229,13 @@ public class Controller {
      * Quiz, a window tray notification asking quizzes at random times.
      */
     private void callMethod() {
-        commodities(); currentTime(); share(); currentDate(); MarketType(); event(); graph();
-        speedControl(); clientTable(); companyTable();  backEnd(); quiz();
+        commodities(); speedControl();  currentTime(); share(); currentDate(); marketType(); event(); graph();
+        clientTable(); companyTable();  backEnd(); quiz();
     }
 
 
     /**
-     * Gets called from callMethod(), displays the commodities values(Food, HardWare, HiTech, Property)
+     * Gets called from callMethod(), displays the commodities values(food, HardWare, hiTech, property)
      * in accordance to COMMODITIES_TIME. (Updates it's values).
      */
     private void commodities(){
@@ -224,7 +243,7 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    Food.setText("Food: " + "\n" + "50%");
+                    food.setText("food: " + "\n" + "50%");
                 });
             }
         }, 0, COMMODOTIES_TIME);
@@ -233,7 +252,7 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    Hardware.setText("Hardware: " + "\n" + "50%");
+                    hardware.setText("hardware: " + "\n" + "50%");
                 });
             }
         }, 0, COMMODOTIES_TIME);
@@ -242,7 +261,7 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    HiTech.setText("HiTech: " + "\n" + "50%");
+                    hiTech.setText("hiTech: " + "\n" + "50%");
                 });
             }
         }, 0, COMMODOTIES_TIME);
@@ -251,7 +270,7 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    Property.setText("Property: " + "\n" + "50%");
+                    property.setText("property: " + "\n" + "50%");
                 });
             }
         }, 0, COMMODOTIES_TIME);
@@ -295,7 +314,7 @@ public class Controller {
      * Gets called from callMethod()
      * Displays the current market type , updates every second, eg Bear Market.
      */
-    private void MarketType() {
+    private void marketType() {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -319,9 +338,11 @@ public class Controller {
                 Platform.runLater(() -> {
                     if (sim.getEvent() == null) eventEntry.setText("");
                     else eventEntry.setText(String.valueOf(sim.getEvent().getMessage()));
+                    eventEntry.setWrapText(true);
                 });
             }
         }, 0, 1000);
+
     }
 
     /**
@@ -349,7 +370,6 @@ public class Controller {
         series.setName("Share Index");
         x.setLabel("Month");
         y.setLabel("Share Index");
-
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -358,8 +378,8 @@ public class Controller {
                 });
 
             }
-        }, 0, 3000); //Calculation needed to display every month
-        linechart.getData().addAll(series);
+        }, 0, 1000); //Calculation needed to display every month
+        lineChart.getData().addAll(series);
     }
 
     /**
@@ -367,20 +387,20 @@ public class Controller {
      * @return (Incremental) count
      */
     private int counter() {
-        if(count < 12 ) count++;
-        return count;
+        return count++;
     }
 
 
     /***
-     *When the user right clicks on on anchor pane with FX:ID  = "CompanyPane" (CompanyPane is the global pane for
+     *When the user right clicks on on anchor pane with FX:ID  = "companyPane" (companyPane is the global pane for
      * Company and Client) then a choice dialog popup occurs, asking the user to Select from the choice
      * of speed. When the user selects it's speed the "TABLE_REFRESH_RATE" value gets updated and changes
      * the speed of the table refresh rate. Causes some data to be lost / gain in response to how fast the table
      * should update its results.
      */
-    private void speedControl() {
-        CompanyPane.addEventFilter(MouseEvent.MOUSE_PRESSED, e ->{
+    @FXML
+   private void speedControl() {
+        companyPane.addEventFilter(MouseEvent.MOUSE_PRESSED, e ->{
             if(e.isSecondaryButtonDown()){ // If right click
                 List<String> choices = new ArrayList<>();
                 choices.add("Slow");
@@ -414,6 +434,7 @@ public class Controller {
         });
     }
 
+
     /**
      * Back end tab, Company Table. Displays Company Name, Company values, Share Price, and total shares.
      * Retrieves the object from CompanyData and appends each row per every instance created.
@@ -424,14 +445,14 @@ public class Controller {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    quiz();
+                    //quiz();
                     companyDataTableView.getItems().clear();
-                    for(CompanyData s: companydataList()){
+                    for(CompanyData s: companyDataList()){
                         companyDataTableView.getItems().add(s);
                     }
                 });
             }
-        }, 0, TABLE_REFRESH_RATE);
+        }, 0, 1000);
     }
 
     /***
@@ -442,13 +463,15 @@ public class Controller {
      * Keeps repeating till CompanyName.Size() has been reached.
      * @return A list of CompanyData object(s)
      */
-    private List<CompanyData> companydataList(){
+    private List<CompanyData> companyDataList(){
         List<String> companyNames = new ArrayList<>();
         Set<String> companyNames1 =  sim.getCompanyNames();
         companyNames.addAll(companyNames1);
 
+        System.out.println("Added Company names names...");
 
-        List<Integer> clientNetworth = new ArrayList<>();
+
+        List<Integer> netWorth = new ArrayList<>();
 
         List<Integer> companyValues = new ArrayList<>();
         Collection<Integer> companyValues1 = sim.getCompanyValues();
@@ -457,21 +480,31 @@ public class Controller {
         List<Double> sharePrice = new ArrayList<>();
         for(String s: companyNames) {
             sharePrice.add(sim.getSharePrice(s));
-            clientNetworth.add(sim.getNetWorth(s));
+            System.out.println("Added Share price ...");
+
+//             netWorth.add(sim.getNetWorth(s));
+            System.out.println("Added Company networths...");
+
         }
+
+
 
         List<CompanyData> companyData = new ArrayList<>();
 
         for(int i = 0; i < companyNames.size(); i++){
-            String name = companyNames.get(i);
-            Double sharePrices = sharePrice.get(i);
-            int value = companyValues.get(i);
-            int networth = clientNetworth.get(i);
-            CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
-            company.setPFCompanyName(name);
-            company.setPFShareValues(sharePrices);
-            company.setPFTotalShares(value);
-            company.setPFNetWorth(networth);
+            String getNames = companyNames.get(i);
+           Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
+            int getTotalShares = companyValues.get(i);
+           // int getNetWorth = netWorth.get(i);
+              CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
+            company.setCompanyName(getNames);
+         //     System.out.println("Name: " + name);
+           company.setShareValues(getSharePrices);
+            System.out.println("Share prices" + getTotalShares);
+            company.setTotalShares(getTotalShares);
+            //System.out.println("Total shares " + value);
+          //  company.setNetWorth(getNetWorth);
+            //System.out.println("Networth " + value);
             companyData.add(company);
         }
         return companyData;
@@ -490,9 +523,9 @@ public class Controller {
             public void run() {
                 Platform.runLater(() -> {
                     clientDataTableView.getItems().clear();
-        for (ClientData s : clientDataList()) { //Needs to be changed to global timer
-            clientDataTableView.getItems().add(s);
-        }
+                    for (ClientData s : clientDataList()) { //Needs to be changed to global timer
+                         clientDataTableView.getItems().add(s);
+                    }
                 });
             }
 
@@ -508,7 +541,7 @@ public class Controller {
             public void handle(MouseEvent event) {
                 if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
                     ClientData clientData = clientDataTableView.getSelectionModel().getSelectedItem();
-                    sim.leaveSimulation(clientData.getPFClient());
+                    sim.leaveSimulation(clientData.getClient());
                 }
             }
         });
@@ -524,26 +557,31 @@ public class Controller {
      */
     private List<ClientData> clientDataList() {
         //Getting client Names and appending to list
-        List<String> ClientNames = new ArrayList<>();
-        ClientNames.addAll(sim.getClientNames());
-
+        System.out.println("Entering ClientDataList...");
+        List<String> clientNames = new ArrayList<>();
+        clientNames.addAll(sim.getClientNames());
+        System.out.println("Added Client names...");
         //Getting Cash holding and appending to list
-        List<Double> CashHolding = new ArrayList<>();
-        CashHolding.addAll(sim.getCashHolding());
+        List<Double> cashHolding = new ArrayList<>();
+        cashHolding.addAll(sim.getCashHolding());
+
+        System.out.println("Added Cash Holding...");
         //Getting total worth and appending to list
-        List<Double> TotalWorth = new ArrayList<>(); //Wealth
-        TotalWorth.addAll(sim.getTotalWorth());
+        List<Double> totalWorth = new ArrayList<>(); //Wealth
+        totalWorth.addAll(sim.getTotalWorth());
+
+        System.out.println("Added Total Worth...");
 
         List<ClientData> clientData = new ArrayList<>();
 
-        for(int i = 0; i < ClientNames.size(); i++) {
-            String clientNames = ClientNames.get(i);
-            Double cashHolding = CashHolding.get(i);
-            Double totalWorth = TotalWorth.get(i);
+        for(int i = 0; i < clientNames.size(); i++) {
+            String getClientNames = clientNames.get(i);
+            Double getCashHoldings = cashHolding.get(i);
+            Double getTotalWorths = totalWorth.get(i);
             ClientData client = new ClientData("Test", 1, 1,"3","Random");//Creating a object  per row
-            client.setPFClient(clientNames);
-            client.setPFCashHolding(cashHolding);
-            client.setPFWealth(totalWorth);
+            client.setClient(getClientNames);
+            client.setCashHolding(getCashHoldings);
+            client.setWealth(getTotalWorths);
             clientData.add(client);
         }
         return clientData;

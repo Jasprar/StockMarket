@@ -1,14 +1,17 @@
 package StockMarket;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -36,7 +39,14 @@ public class GUI extends Application {
         primaryStage.setScene(new Scene(root, 1110, 695));
         primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image("StockMarket/img/logo.png"));
-        primaryStage.show(); //Displays the GUI
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent t) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
