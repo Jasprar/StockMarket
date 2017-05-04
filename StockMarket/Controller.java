@@ -212,11 +212,11 @@ public class Controller{
      * CompanyTable ClientTable shows their information in "Back End Tab".
      * BackEnd tab, when clicked upon , it displays a 1 time only popup tip. Telling the user how to sell clients stock
      * and how to manage the speed.
-     * Quiz, a window tray notification asking quizzes at random times.
+     * funFacts, a window tray notification displaying fun facts about stock markets  at random times.
      */
     private void callMethod() {
         speedControl();  currentTime(); share(); currentDate(); marketType(); event(); graph();
-        clientTable(); companyTable();  backEnd(); quiz();
+        clientTable(); companyTable();  backEnd(); funFacts();
     }
 
     /**
@@ -386,7 +386,7 @@ public class Controller{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    //quiz();
+                    funFacts();
                     companyDataTableView.getItems().clear();
                     for(CompanyData s: companyDataList()){
                         companyDataTableView.getItems().add(s);
@@ -553,52 +553,52 @@ public class Controller{
     /***
      * Uses a library from Github by PlusHaze: https://github.com/PlusHaze/TrayNotification
      * Uses the timer from the company timer, to save memory as it's not needed to have an independent timer.
-     * Displays a quiz / "Question" regarding how a stock market works in general to test the users knowledge
-     * at random timers. A user may never get a popup notification, but the chances of that is low.
+     * Displays a fun fact  regarding about  stock markets.
+     * A user may never get a popup notification, but the chances of that is low.
      *
      */
-    private void quiz() {
+    private void funFacts() {
         TrayNotification tray = new TrayNotification();
-        tray.setRectangleFill(Paint.valueOf("#ff3300"));
+        tray.setRectangleFill(Paint.valueOf("Black"));
         tray.setAnimationType(POPUP);
         Image whatsAppImg = new Image("StockMarket/img/lightbulb.png");
         tray.setImage(whatsAppImg);
         Random ran = new Random();
-        int x = ran.nextInt(100) + 1;
+        int x = ran.nextInt(100) + 1;;
         switch (x) {
             case 14:
-                tray.setMessage("What factors affect stock market?") ;
-                tray.setTitle("QUIZ");
+                tray.setMessage("When the net total worth of a market  rises over time") ;
+                tray.setTitle("FACT - Bull Market is...");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
 
                 break;
             case 51:
-                tray.setMessage("What does Short Selling mean?");
-                tray.setTitle("QUIZ");
+                tray.setMessage("When the net total worth of a market falls over time.");
+                tray.setTitle("FACT - Bear Market is...");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
-            case 39: tray.setMessage("What is a stock?");
-                tray.setTitle("QUIZ");
+            case 39: tray.setMessage("consists of a set of traded companies, trading exchanges and traders.");
+                tray.setTitle("FACT - A Stock Market...");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
             case 74:
-                tray.setMessage("Where's the oldest stock exchange in the world?");
-                tray.setTitle("QUIZ");
+                tray.setMessage("The first stock tickers and ticker tapes\n were used in 1867");
+                tray.setTitle("FUN FACT");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
             case 15:
-                tray.setMessage("Which type of bond is the safest?");
-                tray.setTitle("QUIZ");
+                tray.setMessage("On an average daily basis, more than $250 billion worth of stock \n is traded on U.S. exchanges");
+                tray.setTitle("FUN FACT");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
             case 6:
-                tray.setMessage("In general, if interest rates go down, then bond prices…");
-                tray.setTitle("QUIZ");
+                tray.setMessage("In China they call the stock market 股市,\n which translates to “the stock market.”");
+                tray.setTitle("FUN FACT");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
