@@ -46,21 +46,9 @@ public class Controller{
     @FXML
     private Label dateEntry, eventEntry,timeEntry,shareEntry,marketEntry;
     @FXML
-    private TextArea hardware, food, hiTech, property;
-    @FXML
     private TableView<CompanyData> companyDataTableView;
     @FXML
-    private  TableColumn<CompanyData, String> companyName;
-    @FXML
-    private TableColumn<CompanyData,Number> companyShares;
-    @FXML
-    private TableColumn<CompanyData,Number> totalShares;
-    @FXML
     private TableView<ClientData> clientDataTableView;
-    @FXML
-    private TableColumn<ClientData,String> client;
-    @FXML
-    private TableColumn<ClientData,Number> clientWealth,cashHolding,clientShares,managedBy;
     @FXML
     private LineChart lineChart;
     @FXML
@@ -70,15 +58,12 @@ public class Controller{
     @FXML
     private Button runButton;
     @FXML
-    private AnchorPane clientPane, companyPane;
-    @FXML
-    private VBox frame;
+    private AnchorPane companyPane;
 
     //Java fields
     private int duration;
     private int count;
     private int clicked;
-    private final int COMMODOTIES_TIME = 1000;
     private int TABLE_REFRESH_RATE = 6000;
 
     Timer timer = new Timer();
@@ -114,14 +99,15 @@ public class Controller{
                      return null;
                  }
              };
-             runButton.setVisible(false);
-             runSim.setDisable(true);
 
-             callMethod();
+
 
 
              new Thread(task).start();
 
+             callMethod();
+             runButton.setVisible(false);
+             runSim.setDisable(true);
                  //int totalTime = duration * 60; // Minutes to seconds
 
         }
@@ -229,53 +215,8 @@ public class Controller{
      * Quiz, a window tray notification asking quizzes at random times.
      */
     private void callMethod() {
-        commodities(); speedControl();  currentTime(); share(); currentDate(); marketType(); event(); graph();
+        speedControl();  currentTime(); share(); currentDate(); marketType(); event(); graph();
         clientTable(); companyTable();  backEnd(); quiz();
-    }
-
-
-    /**
-     * Gets called from callMethod(), displays the commodities values(food, HardWare, hiTech, property)
-     * in accordance to COMMODITIES_TIME. (Updates it's values).
-     */
-    private void commodities(){
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    food.setText("food: " + "\n" + "50%");
-                });
-            }
-        }, 0, COMMODOTIES_TIME);
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    hardware.setText("hardware: " + "\n" + "50%");
-                });
-            }
-        }, 0, COMMODOTIES_TIME);
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    hiTech.setText("hiTech: " + "\n" + "50%");
-                });
-            }
-        }, 0, COMMODOTIES_TIME);
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    property.setText("property: " + "\n" + "50%");
-                });
-            }
-        }, 0, COMMODOTIES_TIME);
-
-
     }
 
     /**
@@ -482,7 +423,7 @@ public class Controller{
             sharePrice.add(sim.getSharePrice(s));
             System.out.println("Added Share price ...");
 
-//             netWorth.add(sim.getNetWorth(s));
+            netWorth.add(sim.getNetWorth(s));
             System.out.println("Added Company networths...");
 
         }
@@ -495,7 +436,7 @@ public class Controller{
             String getNames = companyNames.get(i);
            Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
             int getTotalShares = companyValues.get(i);
-           // int getNetWorth = netWorth.get(i);
+            int getNetWorth = netWorth.get(i);
               CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
             company.setCompanyName(getNames);
          //     System.out.println("Name: " + name);
@@ -503,7 +444,7 @@ public class Controller{
             System.out.println("Share prices" + getTotalShares);
             company.setTotalShares(getTotalShares);
             //System.out.println("Total shares " + value);
-          //  company.setNetWorth(getNetWorth);
+            company.setNetWorth(getNetWorth);
             //System.out.println("Networth " + value);
             companyData.add(company);
         }

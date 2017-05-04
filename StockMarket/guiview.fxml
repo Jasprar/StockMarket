@@ -29,8 +29,9 @@ ______________|_______________________
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -41,7 +42,8 @@ ______________|_______________________
 [  Text area      ]
 [ Text Area      ]
 -->
-<VBox fx:id= "frame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
+
+<VBox fx:id="frame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
     <children>
         <!--- Create a menuBar -->
         <MenuBar id="menuBar">
@@ -79,15 +81,6 @@ ______________|_______________________
                         <!-- Create an anchor pane for the content in the current tab section; lets us put content anywhere -->
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <!-- Create a flow layout <vbox> for the commodities -->
-                                <VBox layoutX="-2.0" prefHeight="623.0" prefWidth="231.0">
-                                    <children>
-                                        <TextArea fx:id="food" editable="false" prefHeight="200.0" prefWidth="200.0" text="Food Commodities &#10;&#10;&#10;                        " />
-                                        <TextArea fx:id="hardware" editable="false" prefHeight="200.0" prefWidth="200.0" text="Hardware Commodities&#10;&#10;&#10;&#10;                         " />
-                                        <TextArea fx:id="hiTech" editable="false" prefHeight="200.0" prefWidth="200.0" text="Hi Tech&#10;&#10;&#10;                          " />
-                                        <TextArea fx:id="property" editable="false" prefHeight="200.0" prefWidth="200.0" text="Property&#10;" />
-                                    </children>
-                                </VBox>
                                 <!-- Create an empty pane (Lets us put content anywhere -->
                                 <Pane layoutX="223.0" prefHeight="483.0" prefWidth="869.0">
                                     <children>
@@ -113,12 +106,22 @@ ______________|_______________________
                                         <Text id="time" layoutX="9.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time: " wrappingWidth="96.61669921875" />
                                         <Label fx:id="timeEntry" layoutX="71.0" layoutY="102.0" prefHeight="15.0" prefWidth="186.0" />
                                         <Label fx:id="dateEntry" layoutX="509.0" layoutY="102.0" prefHeight="15.0" prefWidth="186.0" />
-                                        <Label fx:id="eventEntry" layoutX="65.0" layoutY="14.0" prefHeight="21.0" prefWidth="373.0" />
+                                        <Label fx:id="eventEntry" layoutX="58.0" layoutY="14.0" prefHeight="83.0" prefWidth="380.0" />
                                         <Label fx:id="marketEntry" layoutX="556.0" layoutY="12.0" prefHeight="15.0" prefWidth="186.0" />
                                         <Label fx:id="shareEntry" layoutX="550.0" layoutY="61.0" prefHeight="15.0" prefWidth="186.0" />
-                                        <Button fx:id="runButton" layoutX="800.0" layoutY="97.0" mnemonicParsing="false" text="Run" onAction="#runSimulation"/>
+                                        <Button fx:id="runButton" layoutX="800.0" layoutY="97.0" mnemonicParsing="false" onAction="#runSimulation" text="Run" />
                                     </children>
                                 </Pane>
+                        <AnchorPane layoutX="5.0" layoutY="8.0" prefHeight="608.0" prefWidth="230.0">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="32.0" layoutY="181.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/logo.png" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="26.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="     Wolf &amp; Gecko Ltd" wrappingWidth="183.6708984375" />
+                           </children>
+                        </AnchorPane>
                             </children>
                         </AnchorPane>
                     </content>
@@ -127,7 +130,7 @@ ______________|_______________________
                 <Tab fx:id="backEnd" text="Back End">
                     <content>
                         <!-- Create an Anchor Pane for the company Table -->
-                        <AnchorPane fx:id ="companyPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
+                        <AnchorPane fx:id="companyPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
                             <children>
                                 <!-- Create a divider between Company And client Table -->
                                 <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1199.0">
@@ -160,7 +163,7 @@ ______________|_______________________
                                             </children>
                                         </AnchorPane>
                                         <!-- Create pane for Client Table -->
-                                        <AnchorPane fx:id ="clientPane" minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="643.0">
+                                        <AnchorPane fx:id="clientPane" minHeight="0.0" minWidth="0.0" prefHeight="626.0" prefWidth="643.0">
                                             <children>
                                                 <!-- Create a table for client -->
                                                 <TableView fx:id="clientDataTableView" layoutX="6.0" layoutY="5.0" prefHeight="616.0" prefWidth="1000.0">
