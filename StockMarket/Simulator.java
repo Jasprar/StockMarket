@@ -147,7 +147,7 @@ public class Simulator {
                             for(int k = 0; k < Integer.parseInt(row[i]); k++) {
                                 shares.add(new Share(row[0], row[2], Integer.parseInt(row[3])));
                             }
-                            portfolios.get(j).addShares(shares);
+                            portfolios.get(j).addSharesInit(shares);
                             totalShares += Integer.parseInt(row[i]);
                             j++;
                         }

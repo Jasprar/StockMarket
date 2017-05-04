@@ -10,7 +10,6 @@ public class IntelligentTrader extends Trader {
         super(portfolios);
     }
 
-    // SHOULD BE DONE WITH THE BUY, NOT SURE YET, TESTING NEEDED.
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
         System.out.println("IntelligentTrader buying begins...");
@@ -34,7 +33,6 @@ public class IntelligentTrader extends Trader {
         return sharesBuying;
     }
 
-    // AGAIN, SHOULD BE COMPLETED, NEED TESTING
     @Override
     public ArrayList<Share> sell() {
         System.out.println("Intelligent trader selling begins...");

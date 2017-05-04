@@ -49,11 +49,8 @@ public abstract class Trader {
                 if(ct.getCompanyName().equals(companyName) && ct.getClientName().equals(p.getClientName())) {
                     int shareOfShares = shares.size() * (int)(Math.floor(ct.getAmountSold() / sellTotal));
                     ArrayList<Share> sharesReturned = new ArrayList<>(shares.subList(0, shareOfShares));
-                    p.getShares().addAll(sharesReturned);
+                    p.addShares(sharesReturned);
                     updateTrackers(sharesReturned, p.getClientName());
-                    for (Share s : sharesReturned) {
-                        p.addCashHolding(-s.getSharePrice());
-                    }
                     shares.removeAll(sharesReturned);
                 }
             }
@@ -79,11 +76,8 @@ public abstract class Trader {
                 System.out.println("Split size = " + split + ", Shares bought = " + sharesBought.size());
                 ArrayList<Share> shares = new ArrayList<>(sharesBought.subList(0, split));
                 Portfolio p = portfolios.get(i);
-                p.getShares().addAll(shares);
+                p.addShares(shares);
                 updateTrackers(shares, p.getClientName());
-                for (Share s : shares) {
-                    p.addCashHolding(-s.getSharePrice());
-                }
                 sharesBought.removeAll(shares);
                 i = (i + 1) % portfolios.size();
             }

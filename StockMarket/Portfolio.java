@@ -21,10 +21,17 @@ public class Portfolio {
     }
 
     //ALSO FOR SETUP - HENCE += TOTALWORTH.
-    public void addShares(ArrayList<Share> shares) {
+    public void addSharesInit(ArrayList<Share> shares) {
         this.shares.addAll(shares);
         for(Share share : shares) {
             totalWorth += share.getSharePrice();
+        }
+    }
+
+    public void addShares(ArrayList<Share> shares) {
+        this.shares.addAll(shares);
+        for(Share s : shares) {
+            totalWorth -= s.getSharePrice();
         }
     }
 
