@@ -1,5 +1,7 @@
 package StockMarket;
 
+import javax.sound.sampled.Port;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public abstract class Trader {
@@ -43,56 +45,41 @@ public abstract class Trader {
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
     public abstract ArrayList<Share> sell();
 
-    public void returnShares(ArrayList<Share> shares, String companyName, int sellTotal) {
-        for(Portfolio p : portfolios) {
-            for (ClientTracker ct : clientTrackers) {
-                if(ct.getCompanyName().equals(companyName) && ct.getClientName().equals(p.getClientName())) {
-                    int shareOfShares = shares.size() * (int)(Math.floor(ct.getAmountSold() / sellTotal));
-                    ArrayList<Share> sharesReturned = new ArrayList<>(shares.subList(0, shareOfShares));
-                    p.addShares(sharesReturned);
-                    updateTrackers(sharesReturned, p.getClientName());
-                    shares.removeAll(sharesReturned);
-                }
-            }
-        }
-        if(!shares.isEmpty()) {
-            Random rand = new Random();
-            int index = rand.nextInt(portfolios.size());
-            Portfolio p = portfolios.get(index);
-            p.getShares().addAll(shares);
-            for(Share s : shares) {
-                p.addCashHolding(-s.getSharePrice());
-            }
-            updateTrackers(shares, portfolios.get(index).getClientName());
+    public void addNewShares(ArrayList<Share> shares) {
+        int i = 0;
+        for(Share s : shares) {
+            ArrayList<Share> temp = new ArrayList<>();
+            temp.add(s);
+            portfolios.get(i).addShares(temp);
+            updateTrackers(temp, portfolios.get(i).getClientName());
+            i = (i + 1) % portfolios.size();
         }
     }
 
-    public void addNewShares(ArrayList<Share> sharesBought) {
-        if (!sharesBought.isEmpty()) {
-            int split = 0;
-            int i = 0;
-            while(sharesBought.size() > split && split > 1) {
-                split = (int)Math.floor(sharesBought.size() / portfolios.size());
-                System.out.println("Split size = " + split + ", Shares bought = " + sharesBought.size());
-                ArrayList<Share> shares = new ArrayList<>(sharesBought.subList(0, split));
-                Portfolio p = portfolios.get(i);
-                p.addShares(shares);
-                updateTrackers(shares, p.getClientName());
-                sharesBought.removeAll(shares);
-                i = (i + 1) % portfolios.size();
-            }
-            if(!sharesBought.isEmpty()) {
-                Random rand = new Random();
-                int index = rand.nextInt(portfolios.size());
-                Portfolio p = portfolios.get(index);
-                p.getShares().addAll(sharesBought);
-                for(Share s : sharesBought) {
-                    p.addCashHolding(-s.getSharePrice());
+    public void returnShares(ArrayList<Share> shares, String companyName, int sellTotal) {
+        for(Portfolio p : portfolios) {
+            ArrayList<Share> sharesReturned = new ArrayList<>();
+            for(ClientTracker ct : clientTrackers) {
+                if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName)) {
+                    int amount = (int) Math.floor((double) shares.size() * ((double)ct.getAmountSold() / (double)sellTotal));
+                    sharesReturned.addAll(shares.subList(0, amount));
                 }
-                updateTrackers(sharesBought, portfolios.get(index).getClientName());
+            }
+            p.addShares(sharesReturned);
+            shares.removeAll(sharesReturned);
+            updateTrackers(sharesReturned, p.getClientName());
+        }
+        if(!shares.isEmpty()) {
+            for(Share s : shares) {
+                Portfolio p = portfolios.get(new Random().nextInt(portfolios.size()));
+                ArrayList<Share> temp = new ArrayList<>();
+                temp.add(s);
+                p.addShares(temp);
+                updateTrackers(temp, p.getClientName());
             }
         }
     }
+
 
     public void setEvent(String event) {
         this.event = event;
@@ -140,4 +127,5 @@ public abstract class Trader {
         }
         return total;
     }
+
 }

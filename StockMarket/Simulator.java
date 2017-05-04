@@ -299,11 +299,13 @@ public class Simulator {
                         }
                     }
                 }
+                int total = 0;
                 Collections.shuffle(traders);
                 for(Trader t : traders) {
                     Integer numberBought = toBeBought.get(t).get(companyName);
                     if(numberBought != null) {
                         int sharesPurchased = (int) Math.round((double)sellTotal * ((double)numberBought / (double)buyTotal));
+                        total += sharesPurchased;
                         if (sharesPurchased < sharesForSale.size()) {
                             sharesBought = new ArrayList<>(sharesForSale.subList(0, sharesPurchased));
                         } else {
@@ -313,15 +315,14 @@ public class Simulator {
                         sharesForSale.removeAll(sharesBought);
                     }
                 }
-                if(!sharesForSale.isEmpty()) {
-                    System.out.println("This is running now.");
-                    for(int i = 0; i < sharesForSale.size(); i++) {
-                        Trader t = traders.get(new Random().nextInt(traders.size()));
-                        ArrayList<Share> temp = new ArrayList<>();
-                        temp.add(sharesForSale.remove(0));
-                        t.returnShares(temp, companyName, sellTotal);
-                        sellTotal--;
-                    }
+                System.out.println("SOMe total thing? " + total);
+                while(!sharesForSale.isEmpty()) {
+                    System.out.println("Returning a share to even things out...");
+                    Trader t = traders.get(new Random().nextInt(traders.size()));
+                    ArrayList<Share> temp = new ArrayList<>();
+                    temp.add(sharesForSale.remove(0));
+                    t.returnShares(temp, companyName, sellTotal);
+                    sellTotal--;
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else { // Supply = Demand.

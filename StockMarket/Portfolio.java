@@ -31,7 +31,10 @@ public class Portfolio {
     public void addShares(ArrayList<Share> shares) {
         this.shares.addAll(shares);
         for(Share s : shares) {
-            totalWorth -= s.getSharePrice();
+            addCashHolding(-s.getSharePrice());
+        }
+        if(cashHolding < 0) {
+            System.err.println("Houston, We have a problem.");
         }
     }
 
