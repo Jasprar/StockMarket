@@ -176,6 +176,10 @@ public class RandomTrader extends Trader {
                     amount = rand.nextInt((int)Math.ceil(0.005 * metric));
                 case BUYER:
                     amount = rand.nextInt((int)Math.ceil(0.02 * metric));
+                case EVENTBUYER:
+                    amount = rand.nextInt((int)Math.ceil(0.02 * metric));
+                case EVENTSELLER:
+                    amount = rand.nextInt((int)Math.ceil(0.005 * metric));
             }
         } else {
             switch(mode) {
@@ -185,6 +189,10 @@ public class RandomTrader extends Trader {
                     amount = rand.nextInt((int)Math.ceil(0.02 * metric));
                 case BUYER:
                     amount = rand.nextInt((int)Math.ceil(0.005 * metric));
+                case EVENTBUYER:
+                    amount = rand.nextInt((int)Math.ceil(0.005 * metric));
+                case EVENTSELLER:
+                    amount = rand.nextInt((int)Math.ceil(0.02 * metric));
             }
         }
         return amount;

@@ -210,7 +210,7 @@ public class Simulator {
 
     }
 
-    private void run15Mins() {
+    void run15Mins() {
         System.out.println("Running one 15 minute cycle...");
         HashMap<Trader, ArrayList<Share>> toBeSold = new HashMap<>();
         HashMap<Trader, HashMap<String, Integer>> toBeBought = new HashMap<>(); // Inner HashMap maps Company Name to number of shares sought for purchase.
@@ -259,11 +259,23 @@ public class Simulator {
                             sharesOfCompany.add(s);
                         }
                     }
-                    int sharesSold = buyTotal * (sharesOfCompany.size() / sellTotal);
+                    int sharesSold = (int)Math.round((double)buyTotal * (double)sharesOfCompany.size() / (double)sellTotal);
                     sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
                     t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())), companyName, sellTotal);
                 }
                 // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
+                int leftOver = sharesForSale.size() - buyTotal;
+                if(leftOver > 0) {
+                    for(int i = 0; i < leftOver; i++) {
+                        Trader t = traders.get(new Random().nextInt(traders.size()));
+                        ArrayList<Share> temp = new ArrayList<>();
+                        temp.add(sharesForSale.remove(0));
+                        t.returnShares(temp, companyName, sellTotal);
+                    }
+                } else if(leftOver < 0) {
+                    buyTotal += leftOver;
+                }
+                Collections.shuffle(traders); // So the last trader isn't always getting fewer.
                 for(Trader t : traders) {
                     sharesBought = new ArrayList<>();
                     Integer numberBought = toBeBought.get(t).get(companyName);
@@ -274,7 +286,7 @@ public class Simulator {
                             }
                         }
                         t.addNewShares(sharesBought);
-                        sharesForSale.remove(sharesBought);
+                        sharesForSale.removeAll(sharesBought);
                     }
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
@@ -287,17 +299,28 @@ public class Simulator {
                         }
                     }
                 }
+                Collections.shuffle(traders);
                 for(Trader t : traders) {
                     Integer numberBought = toBeBought.get(t).get(companyName);
                     if(numberBought != null) {
-                        int sharesPurchased = sellTotal * (numberBought / buyTotal);
-                        if (sharesPurchased < sharesForSale.size()) { // Stops an error if there was rounding in sharesPurchased calculation.
+                        int sharesPurchased = (int) Math.round((double)sellTotal * ((double)numberBought / (double)buyTotal));
+                        if (sharesPurchased < sharesForSale.size()) {
                             sharesBought = new ArrayList<>(sharesForSale.subList(0, sharesPurchased));
                         } else {
-                            sharesBought = sharesForSale;
+                            sharesBought = sharesForSale; // Stops an error if there was rounding in sharesPurchased calculation.
                         }
                         t.addNewShares(sharesBought);
-                        sharesForSale.remove(sharesBought);
+                        sharesForSale.removeAll(sharesBought);
+                    }
+                }
+                if(!sharesForSale.isEmpty()) {
+                    System.out.println("This is running now.");
+                    for(int i = 0; i < sharesForSale.size(); i++) {
+                        Trader t = traders.get(new Random().nextInt(traders.size()));
+                        ArrayList<Share> temp = new ArrayList<>();
+                        temp.add(sharesForSale.remove(0));
+                        t.returnShares(temp, companyName, sellTotal);
+                        sellTotal--;
                     }
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
@@ -317,7 +340,7 @@ public class Simulator {
                     if(numberBought != null) {
                         sharesBought = new ArrayList<>(sharesForSale.subList(0, numberBought));
                         t.addNewShares(sharesBought);
-                        sharesForSale.remove(sharesBought);
+                        sharesForSale.removeAll(sharesBought);
                     }
                 }
             }
@@ -364,13 +387,7 @@ public class Simulator {
         }
         shareIndex = (double)newShareIndex / (double)numberOfShares.size();
         System.out.println("Share index is now " + shareIndex);
-        for(Trader t : traders) {
-            if(t instanceof RandomTrader) {
-                System.out.println("This random trader has " + t.getShares() + " shares.");
-            } else {
-                System.out.println("The intelligent trader has " + t.getShares() + " shares.");
-            }
-        }
+        System.out.println("The traders now have " + totalSharesInPortfolios() + ", there should be " + totalSharesForCompanies() + " shares.");
     }
 
     // excess will be negative when Supply > Demand.
@@ -612,5 +629,21 @@ public class Simulator {
      * @return a HashMap from String (companyName) to int (numberOfShares).
      */
     public HashMap<String, Integer> getCompanyDetails() { return numberOfShares;}
+
+    private int totalSharesForCompanies() {
+        int total = 0;
+        for(int numberOfShares : numberOfShares.values()) {
+            total += numberOfShares;
+        }
+        return total;
+    }
+
+    private int totalSharesInPortfolios() {
+        int total = 0;
+        for(Trader t : traders) {
+            total += t.getShares();
+        }
+        return total;
+    }
 
 }
