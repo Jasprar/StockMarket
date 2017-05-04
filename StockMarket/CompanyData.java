@@ -2,6 +2,7 @@ package StockMarket;
 
 import javafx.beans.property.*;
 
+
 /**
  * Created by shahs on 27/04/2017.
  */
