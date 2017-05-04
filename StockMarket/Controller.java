@@ -29,7 +29,7 @@ import static tray.animations.AnimationType.POPUP;
  * load() method is called by an element int he FXML file with "<MenuItem fx:id="runSim></MenuItem>"
  *
  * The @FXML above methods makes the method handle the action event. This only works if the FXML file has component of
- * onAction="#(MethodName)". For example <MenuItem fx:id="runSim" onAction = "#RunSimulation"></MenuItem>
+ * onAction="#(MethodName)". For example <MenuItem fx:id="runSim" onAction = "#RunSimulation"></MenuItem>.
  *
  * @Author 132224
  * @Version 24/04/2017

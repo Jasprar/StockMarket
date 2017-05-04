@@ -13,7 +13,6 @@ public class ClientData {
     private final StringProperty shares;
     private final StringProperty managedBy;
 
-
     public ClientData(String client, int wealth, int cashHolding, String shares, String managedBy) {
         this.client = new SimpleStringProperty(client);
         this.wealth = new SimpleDoubleProperty(wealth);
