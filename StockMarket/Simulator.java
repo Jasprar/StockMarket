@@ -123,6 +123,7 @@ public class Simulator {
     }
 
     private void initialiseData() {
+        ArrayList<Share> allShares = new ArrayList<>();
         System.out.println("Initializing clients & shares...");
         try {
             ArrayList<Portfolio> portfolios = new ArrayList<>();
@@ -145,7 +146,9 @@ public class Simulator {
                             ArrayList<Share> shares = new ArrayList<>();
                             System.out.println("Adding shares for company " + row[0] + " to " + portfolios.get(j).getClientName() + "'s portfolio.");
                             for(int k = 0; k < Integer.parseInt(row[i]); k++) {
-                                shares.add(new Share(row[0], row[2], Integer.parseInt(row[3])));
+                                Share s = new Share(row[0], row[2], Integer.parseInt(row[3]));
+                                shares.add(s);
+                                allShares.add(s);
                             }
                             portfolios.get(j).addSharesInit(shares);
                             totalShares += Integer.parseInt(row[i]);
@@ -171,17 +174,17 @@ public class Simulator {
             port.add(portfolios.get(7)); // Justine Thyme.
             portfolios.remove(7);
             portfolios.remove(0);
-            traders.add(new RandomTrader(port));
+            traders.add(new RandomTrader(port, allShares));
             while(portfolios.size() >= 2) {
                 port = new ArrayList<>();
                 port.add(portfolios.get(0));
                 portfolios.remove(0);
                 port.add(portfolios.get(0)); // As we have just removed index 0, there is a new element at the front of the list.
                 portfolios.remove(0);
-                traders.add(new RandomTrader(port));
+                traders.add(new RandomTrader(port, allShares));
             }
             if(portfolios.size() != 0) { // Must be one 'left over' portfolio.
-                traders.add(new RandomTrader(portfolios));
+                traders.add(new RandomTrader(portfolios, allShares));
             }
             System.out.println("There are now " + traders.size() + " traders!");
         } catch(IOException e) {
@@ -267,10 +270,16 @@ public class Simulator {
                 int leftOver = sharesForSale.size() - buyTotal;
                 if(leftOver > 0) {
                     for(int i = 0; i < leftOver; i++) {
-                        Trader t = traders.get(new Random().nextInt(traders.size()));
-                        ArrayList<Share> temp = new ArrayList<>();
-                        temp.add(sharesForSale.remove(0));
-                        t.returnShares(temp, companyName, sellTotal);
+                        boolean returnedOne = false;
+                        while(!returnedOne) {
+                            Trader t = traders.get(new Random().nextInt(traders.size()));
+                            if(toBeSold.get(t).contains(sharesForSale.get(0))) {
+                                ArrayList<Share> temp = new ArrayList<>();
+                                temp.add(sharesForSale.remove(0));
+                                t.returnShares(temp, companyName, sellTotal);
+                                returnedOne = true;
+                            }
+                        }
                     }
                 } else if(leftOver < 0) {
                     buyTotal += leftOver;
@@ -285,7 +294,7 @@ public class Simulator {
                                 sharesBought.add(sharesForSale.get(i));
                             }
                         }
-                        t.addNewShares(sharesBought);
+                        t.addNewShares(sharesBought, companyName, buyTotal);
                         sharesForSale.removeAll(sharesBought);
                     }
                 }
@@ -302,8 +311,9 @@ public class Simulator {
                 int total = 0;
                 Collections.shuffle(traders);
                 for(Trader t : traders) {
-                    Integer numberBought = toBeBought.get(t).get(companyName);
-                    if(numberBought != null) {
+                    try {
+                        int numberBought = toBeBought.get(t).get(companyName);
+                        System.out.println("The trader managing " + t.getPortfolios().get(0).getClientName() + " requested " + numberBought + " shares of " + companyName);
                         int sharesPurchased = (int) Math.round((double)sellTotal * ((double)numberBought / (double)buyTotal));
                         total += sharesPurchased;
                         if (sharesPurchased < sharesForSale.size()) {
@@ -311,18 +321,19 @@ public class Simulator {
                         } else {
                             sharesBought = sharesForSale; // Stops an error if there was rounding in sharesPurchased calculation.
                         }
-                        t.addNewShares(sharesBought);
+                        t.addNewShares(sharesBought, companyName, buyTotal);
                         sharesForSale.removeAll(sharesBought);
-                    }
+                    } catch(NullPointerException e) {/* This trader requested no shares for this company*/}
                 }
-                System.out.println("SOMe total thing? " + total);
                 while(!sharesForSale.isEmpty()) {
                     System.out.println("Returning a share to even things out...");
                     Trader t = traders.get(new Random().nextInt(traders.size()));
-                    ArrayList<Share> temp = new ArrayList<>();
-                    temp.add(sharesForSale.remove(0));
-                    t.returnShares(temp, companyName, sellTotal);
-                    sellTotal--;
+                    if(toBeSold.get(t).contains(sharesForSale.get(0))) {
+                        ArrayList<Share> temp = new ArrayList<>();
+                        temp.add(sharesForSale.remove(0));
+                        t.returnShares(temp, companyName, sellTotal);
+                        sellTotal--;
+                    }
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else { // Supply = Demand.
@@ -338,10 +349,13 @@ public class Simulator {
                 // Give the trader the number of shares (from sharesForSale) that they asked for - there are exactly enough.
                 for(Trader t : traders) {
                     Integer numberBought = toBeBought.get(t).get(companyName);
-                    if(numberBought != null) {
+                    if(numberBought != null && sharesForSale.size() > numberBought) {
                         sharesBought = new ArrayList<>(sharesForSale.subList(0, numberBought));
-                        t.addNewShares(sharesBought);
+                        t.addNewShares(sharesBought, companyName, buyTotal);
                         sharesForSale.removeAll(sharesBought);
+                    } else if(numberBought != null) {
+                        t.addNewShares(sharesForSale, companyName, buyTotal);
+                        sharesForSale.clear();
                     }
                 }
             }

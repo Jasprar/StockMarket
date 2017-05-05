@@ -17,8 +17,8 @@ public class RandomTrader extends Trader {
     /**
      * @param portfolios
      */
-    public RandomTrader(ArrayList<Portfolio> portfolios) {
-        super(portfolios);
+    public RandomTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
+        super(portfolios, allShares);
         mode = BALANCED;
         rand = new Random();
     }
@@ -33,17 +33,35 @@ public class RandomTrader extends Trader {
             for (Portfolio p : portfolios) {
                 double amountToSpend = modeSelector(true, p.getCashHolding()); // % of the cash the client has.
                 int i = 0; // To prevent infinite while-loop.
-                while(amountToSpend > 0 && i < 100) {
+                while(amountToSpend > Collections.min(sharePrices.values()) && i < 100) {
                     String chosenCompany = companyNames.get(rand.nextInt(companyNames.size()));
-                    if(buying.containsKey(chosenCompany)) {
-                        buying.put(chosenCompany, buying.get(chosenCompany) + 1);
-                    } else {
-                        buying.put(chosenCompany, 1);
+                    if(sharePrices.get(chosenCompany) < amountToSpend) {
+                        if (buying.containsKey(chosenCompany)) {
+                            buying.put(chosenCompany, buying.get(chosenCompany) + 1);
+                        } else {
+                            buying.put(chosenCompany, 1);
+                        }
+                        amountToSpend -= sharePrices.get(chosenCompany);
+                        for (ClientTracker ct : clientTrackers) {
+                            if (ct.getCompanyName().equals(chosenCompany) && ct.getClientName().equals(p.getClientName())) {
+                                ct.incrementAmountBought();
+                            }
+                        }
                     }
-                    amountToSpend -= sharePrices.get(chosenCompany);
                     i++;
                 }
+                double amountClientSpends = 0;
+                for(ClientTracker ct : clientTrackers) {
+                    if(ct.getClientName().equals(p.getClientName())) {
+                        System.out.println(ct.getClientName() + " wants to buy " + ct.getAmountBought() + " of " + ct.getCompanyName());
+                        try {
+                            amountClientSpends += ((double) ct.getAmountBought() * sharePrices.get(ct.getCompanyName()));
+                        } catch(NullPointerException e) {}
+                    }
+                }
+                System.out.println("Total for " + p.getClientName() + ": " + amountClientSpends + ", client has " + p.getCashHolding());
             }
+            System.out.println("This trader has requested shares of Dawn Technology: " + buying.containsKey("Dawn Technology"));
             return buying;
         }
     }
@@ -54,7 +72,7 @@ public class RandomTrader extends Trader {
         for (Portfolio p : portfolios) {
             double amountToSpend = modeSelector(true, p.getCashHolding()); // 1% of the cash the client has.
             int i = 0;
-            while(amountToSpend > 0 && i < 100) {
+            while(amountToSpend > Collections.min(sharePrices.values()) && i < 100) {
                 String chosenCompany = "";
                 if(companyNames.contains(event)) {
                     chosenCompany = event;
@@ -68,12 +86,19 @@ public class RandomTrader extends Trader {
                         }
                     }
                 }
-                if(buying.containsKey(chosenCompany)) {
-                    buying.put(chosenCompany, buying.get(chosenCompany) + 1);
-                } else {
-                    buying.put(chosenCompany, 1);
+                if(sharePrices.get(chosenCompany) < amountToSpend) {
+                    if (buying.containsKey(chosenCompany)) {
+                        buying.put(chosenCompany, buying.get(chosenCompany) + 1);
+                    } else {
+                        buying.put(chosenCompany, 1);
+                    }
+                    amountToSpend -= sharePrices.get(chosenCompany);
+                    for (ClientTracker ct : clientTrackers) {
+                        if (ct.getCompanyName().equals(chosenCompany) && ct.getClientName().equals(p.getClientName())) {
+                            ct.incrementAmountBought();
+                        }
+                    }
                 }
-                amountToSpend -= sharePrices.get(chosenCompany);
                 i++;
             }
         }
@@ -167,6 +192,7 @@ public class RandomTrader extends Trader {
     }
 
     private double modeSelector(boolean buying, double metric) {
+        System.out.println("metric =" + metric);
         double amount = 0;
         if (buying) {
             switch(mode) {

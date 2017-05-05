@@ -7,6 +7,7 @@ public class ClientTracker {
     private String commodityType;
     private int amount;
     private int amountSold;
+    private int amountBought;
     private double buyPrice; // Most recently bought
     private int fluctuation; // Negative if buyPrice dropping since bought, positive otherwise.
 
@@ -14,8 +15,9 @@ public class ClientTracker {
         this.clientName = clientName;
         this.companyName = companyName;
         this.commodityType = commodityType;
-        amount = 1;
+        amount = 0;
         amountSold = 0;
+        amountBought = 0;
         this.buyPrice = buyPrice;
         this.originalPrice = buyPrice;
         fluctuation = 0;
@@ -51,4 +53,30 @@ public class ClientTracker {
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }
     public void incrementAmount() { amount++; }
+    public void resetAmountBought() {
+        System.out.println("Resetting amount bought for " + clientName + "...");
+        amountBought = 0;
+    }
+    public void incrementAmountBought() {
+        amountBought++;
+    }
+
+    public void addAmountBought(int amountBought) {
+        this.amountBought += amountBought;
+    }
+
+    public int getAmountBought() {
+        //System.out.println(clientName + " has bought " + amountBought + " shares of " + companyName);
+        return amountBought;
+    }
+
+    public void removeAmountBought(int amount) {
+        int prevAmountBought = amountBought;
+        amountBought -= amount;
+        System.out.println(prevAmountBought + " - " + amount + " = " + amountBought);
+    }
+
+    public void decrementAmountSold() {
+        amountSold--;
+    }
 }

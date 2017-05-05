@@ -29,12 +29,17 @@ public class Portfolio {
     }
 
     public void addShares(ArrayList<Share> shares) {
+        System.out.println(shares.size() + " shares added to " + clientName + ".");
         this.shares.addAll(shares);
         for(Share s : shares) {
+            System.out.println(s.getCompanyName() + " has a share price of " + s.getSharePrice());
             addCashHolding(-s.getSharePrice());
         }
+        System.out.println(clientName + "'s cash now = " + cashHolding);
         if(cashHolding < 0) {
-            System.err.println("Houston, We have a problem.");
+            System.err.println("Houston, We have a problem: " + clientName + ": " + cashHolding);
+            System.err.println(getCallingMethodName());
+            System.exit(-1);
         }
     }
 
@@ -63,11 +68,13 @@ public class Portfolio {
 
     // Called when a company's share price reaches 0.
     public void removeAllShares(String companyName) {
+        ArrayList<Share> sharesToRemove = new ArrayList<>();
         for(int i = 0; i < shares.size(); i++) {
             if(shares.get(i).getCompanyName().equals(companyName)) {
-                shares.remove(i);
+                sharesToRemove.add(shares.get(i));
             }
         }
+        shares.removeAll(sharesToRemove);
     }
 
     @Override
@@ -87,5 +94,8 @@ public class Portfolio {
         }
         return total;
     }
+    private String getCallingMethodName() {
+        StackTraceElement callingFrame = Thread.currentThread().getStackTrace()[4];
+        return callingFrame.getMethodName();
+    }
 }
-

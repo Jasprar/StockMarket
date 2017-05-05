@@ -1,7 +1,5 @@
 package StockMarket;
 
-import javax.sound.sampled.Port;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public abstract class Trader {
@@ -13,11 +11,12 @@ public abstract class Trader {
      *
      * @param portfolios
      */
-    public Trader(ArrayList<Portfolio> portfolios) {
+    public Trader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         this.portfolios = portfolios;
         // Initialise ClientTrackers.
         clientTrackers = new ArrayList<>();
         for(Portfolio p : portfolios) {
+            initialiseTrackers(allShares, p.getClientName());
             updateTrackers(p.getShares(), p.getClientName());
         }
     }
@@ -45,40 +44,7 @@ public abstract class Trader {
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
     public abstract ArrayList<Share> sell();
 
-    public void addNewShares(ArrayList<Share> shares) {
-        int i = 0;
-        for(Share s : shares) {
-            ArrayList<Share> temp = new ArrayList<>();
-            temp.add(s);
-            portfolios.get(i).addShares(temp);
-            updateTrackers(temp, portfolios.get(i).getClientName());
-            i = (i + 1) % portfolios.size();
-        }
-    }
 
-    public void returnShares(ArrayList<Share> shares, String companyName, int sellTotal) {
-        for(Portfolio p : portfolios) {
-            ArrayList<Share> sharesReturned = new ArrayList<>();
-            for(ClientTracker ct : clientTrackers) {
-                if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName)) {
-                    int amount = (int) Math.floor((double) shares.size() * ((double)ct.getAmountSold() / (double)sellTotal));
-                    sharesReturned.addAll(shares.subList(0, amount));
-                }
-            }
-            p.addShares(sharesReturned);
-            shares.removeAll(sharesReturned);
-            updateTrackers(sharesReturned, p.getClientName());
-        }
-        if(!shares.isEmpty()) {
-            for(Share s : shares) {
-                Portfolio p = portfolios.get(new Random().nextInt(portfolios.size()));
-                ArrayList<Share> temp = new ArrayList<>();
-                temp.add(s);
-                p.addShares(temp);
-                updateTrackers(temp, p.getClientName());
-            }
-        }
-    }
 
 
     public void setEvent(String event) {
@@ -89,13 +55,9 @@ public abstract class Trader {
         ArrayList<ClientTracker> trackers = new ArrayList<>();
         for(int i = 0; i < clientTrackers.size(); i++) {
             ClientTracker ct = clientTrackers.get(i);
-            if (ct.getAmount() == 0) {
-                trackers.add(clientTrackers.get(i));
-            } else {
-                ct.resetAmountSold();
-            }
+            ct.resetAmountSold();
+            ct.resetAmountBought();
         }
-        clientTrackers.removeAll(trackers);
     }
 
     private void updateTrackers(ArrayList<Share> shares, String clientName) {
@@ -113,10 +75,25 @@ public abstract class Trader {
                 i++;
             }
             if(!found) { // No such ClientTracker exists, create one.
-                System.out.println("Creating a new ClientTracker for " + clientName + " tracking " + s.getCompanyName());
-                clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity(),s.getSharePrice()));
+                System.err.println("THIS SHOULD NOT HAVE OCCURRED");
             }
             j++;
+        }
+    }
+
+    private void initialiseTrackers(ArrayList<Share> allShares, String clientName) {
+        for(Share s : allShares) {
+            boolean done = false;
+            for(ClientTracker ct : clientTrackers) {
+                if(ct.getCompanyName().equals(s.getCompanyName()) && ct.getClientName().equals(clientName)) {
+                    // Already done this share.
+                    done = true;
+                }
+            }
+            if(!done) {
+                System.out.println("Creating a new ClientTracker for " + clientName + " tracking " + s.getCompanyName());
+                clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity(), s.getSharePrice()));
+            }
         }
     }
 
@@ -128,4 +105,101 @@ public abstract class Trader {
         return total;
     }
 
+    public void returnShares(ArrayList<Share> shares, String companyName, int sellTotal) {
+        System.out.println("Returning Shares...");
+        HashMap<Portfolio, Integer> amountForEachPortfolio = new HashMap<>();
+        for(Portfolio p : portfolios) {
+            for(ClientTracker ct : clientTrackers) {
+                if(p.getClientName().equals(ct.getClientName()) && companyName.equals(ct.getCompanyName())) {
+                    System.out.println(p.getClientName() + ": " + shares.size() + " * " + ct.getAmountSold() + " / " + sellTotal + " = " + (int) Math.ceil((double) shares.size() * ((double)ct.getAmountSold() / (double)sellTotal)));
+                    amountForEachPortfolio.put(p, (int) Math.floor((double) shares.size() * ((double)ct.getAmountSold() / (double)sellTotal)));
+                    System.out.println(p.getClientName() + ": " + amountForEachPortfolio.get(p));
+                }
+            }
+            if(!amountForEachPortfolio.containsKey(p)) {
+                amountForEachPortfolio.put(p, 0);
+            }
+        }
+        ArrayList<Share> leftOverShares = addShares(shares, companyName, new HashMap<>(amountForEachPortfolio));
+        while(!leftOverShares.isEmpty()) {
+            System.out.println("While leftovershares isnt empty...");
+            for (Portfolio p : portfolios) {
+                for (ClientTracker ct : clientTrackers) {
+                    if(shares.isEmpty()) {
+                        break;
+                    }
+                    if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName)) {
+                       // System.out.println(p.getClientName() + ": " + ct.getAmountSold() + " - " + amountForEachPortfolio.get(p));
+                    }
+                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountSold() - amountForEachPortfolio.get(p)) > 0) {
+                        Share s = leftOverShares.remove(0);
+                        ArrayList<Share> temp = new ArrayList<>();
+                        temp.add(s);
+                        p.addShares(temp);
+                        updateTrackers(temp, p.getClientName());
+                    }
+                }
+            }
+        }
+    }
+
+    public void addNewShares(ArrayList<Share> shares, String companyName, int buyTotal) {
+        System.out.println("Adding shares of " + companyName);
+        HashMap<Portfolio, Integer> amountForEachPortfolio = new HashMap<>();
+        for(Portfolio p : portfolios) {
+            for(ClientTracker ct : clientTrackers) {
+                if(p.getClientName().equals(ct.getClientName()) && companyName.equals(ct.getCompanyName())) {
+                    System.out.println(p.getClientName() + ": " + shares.size() + " * " + ct.getAmountBought() + " / " + buyTotal + " = " + (int) Math.ceil((double)ct.getAmountBought() * ((double) shares.size() / (double)buyTotal)));
+                    amountForEachPortfolio.put(p, (int) Math.floor((double)ct.getAmountBought() * ((double) shares.size() / (double)buyTotal)));
+                }
+            }
+            if(!amountForEachPortfolio.containsKey(p)) {
+                amountForEachPortfolio.put(p, 0);
+            }
+        }
+        ArrayList<Share> leftOverShares = addShares(shares, companyName, new HashMap<>(amountForEachPortfolio));
+        while(!leftOverShares.isEmpty()) {
+            for (Portfolio p : portfolios) {
+                for (ClientTracker ct : clientTrackers) {
+                    if(shares.isEmpty()) {
+                        break;
+                    }
+                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountBought() - amountForEachPortfolio.get(p)) > 0) {
+                        Share s = leftOverShares.remove(0);
+                        ArrayList<Share> temp = new ArrayList<>();
+                        temp.add(s);
+                        p.addShares(temp);
+                        updateTrackers(temp, p.getClientName());
+                    }
+                }
+            }
+        }
+    }
+
+    private ArrayList<Share> addShares(ArrayList<Share> shares, String companyName, HashMap<Portfolio, Integer> amountForEachPortfolio) {
+        int i = 0;
+        while(!shares.isEmpty() & i < 10) {
+            System.out.println("Remaining shares = " + shares.size());
+            for (Portfolio p : portfolios) {
+                System.out.println(p.getClientName() + "'s turn");
+                int amount = amountForEachPortfolio.get(p);
+                for (ClientTracker ct : clientTrackers) {
+                    if(shares.isEmpty()) {
+                        break;
+                    }
+                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && amount > 0) {
+                        Share s = shares.remove(0);
+                        ArrayList<Share> temp = new ArrayList<>();
+                        temp.add(s);
+                        p.addShares(temp);
+                        updateTrackers(temp, p.getClientName());
+                        amount--;
+                    }
+                }
+                amountForEachPortfolio.put(p, amount);
+            }
+            i++;
+        }
+        return shares;
+    }
 }

@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IntelligentTrader extends Trader {
-    public IntelligentTrader(ArrayList<Portfolio> portfolios) {
-        super(portfolios);
+    public IntelligentTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
+        super(portfolios, allShares);
     }
 
     @Override
@@ -22,9 +22,13 @@ public class IntelligentTrader extends Trader {
                         int randomNoToBuy = 0;
                         if(fluctScale < 0 && !sharesBuying.containsKey(s.getCompanyName()) && randomNoToBuy != 0) {
                             fluctScale = fluctScale * -1;
-                            sharesBuying.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.ceil(((p.getCashHolding() * 0.01)) * (fluctScale))));
+                            int amount = ThreadLocalRandom.current().nextInt(0, (int) Math.ceil(((p.getCashHolding() * 0.01)) * (fluctScale)));
+                            sharesBuying.put(s.getCompanyName(), amount);
+                            ct.addAmountBought(amount);
                         } else if(fluctScale == 0 && !sharesBuying.containsKey(s.getCompanyName()) && randomNoToBuy != 0) {
-                            sharesBuying.put(s.getCompanyName(), ThreadLocalRandom.current().nextInt(0, (int) Math.ceil(p.getCashHolding() * 0.01)));
+                            int amount = ThreadLocalRandom.current().nextInt(0, (int) Math.ceil(p.getCashHolding() * 0.01));
+                            sharesBuying.put(s.getCompanyName(), amount);
+                            ct.addAmountBought(amount);
                         }
                     }
                 }
