@@ -23,6 +23,7 @@ public class Simulator {
     private double yesterdayShareIndex; // for calculating whether it has risen/fallen since yesterday.
     private Event eventInProgress;
     private int duration;
+    private HashMap<String, Double> sharePrices;
     protected static final int SIZE_DATA = 19;
     private static final int SIZE_EVENTS = 16;
     private static final Date END_DATE = new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2018", new ParsePosition(0)); // 1st Jan 2018 at midnight.
@@ -40,6 +41,7 @@ public class Simulator {
         this.duration = duration;
         calendar = new GregorianCalendar(2017, calendar.JANUARY, 2, 9, 0); // 01/01/2017 is a Sunday.
         numberOfShares = new HashMap<>();
+        sharePrices = new HashMap<>();
         traders = new ArrayList<>();
         events = new ArrayList<>();
         marketType = 0;
@@ -145,8 +147,9 @@ public class Simulator {
                         if(row[i].length() != 0) {
                             ArrayList<Share> shares = new ArrayList<>();
                             System.out.println("Adding shares for company " + row[0] + " to " + portfolios.get(j).getClientName() + "'s portfolio.");
+                            sharePrices.put(row[0], (double) Integer.parseInt(row[3]));
                             for(int k = 0; k < Integer.parseInt(row[i]); k++) {
-                                Share s = new Share(row[0], row[2], Integer.parseInt(row[3]));
+                                Share s = new Share(row[0], row[2], (double)Integer.parseInt(row[3]));
                                 shares.add(s);
                                 allShares.add(s);
                             }
@@ -187,6 +190,7 @@ public class Simulator {
                 traders.add(new RandomTrader(portfolios, allShares));
             }
             System.out.println("There are now " + traders.size() + " traders!");
+            System.out.println("There are " + sharePrices.size() + " companies.");
         } catch(IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -225,10 +229,6 @@ public class Simulator {
         }
         // Get what everyone wants to buy & sell.
         System.out.println("Traders buy and sell...");
-        HashMap<String, Double> sharePrices = new HashMap<>();
-        for(String companyName : numberOfShares.keySet()) {
-            sharePrices.put(companyName, getSharePrice(companyName));
-        }
         for(Trader t : traders) {
             HashMap<String, Integer> traderBuys = t.buy(sharePrices);
             toBeBought.put(t, traderBuys);
@@ -369,6 +369,7 @@ public class Simulator {
         for(String companyName : companyNames) {
             if(numberOfShares.get(companyName) == 0) {
                 numberOfShares.remove(companyName);
+                sharePrices.remove(companyName);
             }
         }
         calculateShareIndex();
@@ -408,18 +409,18 @@ public class Simulator {
     // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
         System.out.println("Changing the share price for " + companyName + ", using an excess of " + excess);
-        double newSharePrice = 0;
+        double newSharePrice = sharePrices.get(companyName) + (((double)excess / (double)numberOfShares.get(companyName)) * sharePrices.get(companyName));
+        sharePrices.put(companyName, newSharePrice);
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s : p.getShares()) {
                     if(s.getCompanyName().equals(companyName)) {
-                        newSharePrice = s.getSharePrice() + (((double)excess / (double)numberOfShares.get(companyName)) * s.getSharePrice());
                         s.setSharePrice(newSharePrice);
                     }
                 }
             }
         }
-        System.out.println("Setting the share price of " + companyName + " to " + newSharePrice + "...");
+        System.out.println("The share price of " + companyName + " is now " + newSharePrice + ".");
         if(newSharePrice <= 1) { // Company is worthless. They must be removed from the simulation.
             System.out.println(companyName + " is worthless!");
             removeAllShares(companyName);
@@ -463,6 +464,7 @@ public class Simulator {
                 System.out.println("Removing all shares of " + companyName + " from " + p.getClientName());
                 p.removeAllShares(companyName);
             }
+            t.removeTrackers(companyName);
         }
         numberOfShares.put(companyName, 0);
     }
