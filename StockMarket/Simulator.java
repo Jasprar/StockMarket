@@ -37,7 +37,7 @@ public class Simulator {
      * is completely ready to be run.
      */
     public Simulator() {
-        System.out.println("Creating Simulator");
+        //System.out.println("Creating Simulator");
         this.duration = duration;
         calendar = new GregorianCalendar(2017, calendar.JANUARY, 2, 9, 0); // 01/01/2017 is a Sunday.
         numberOfShares = new HashMap<>();
@@ -58,15 +58,15 @@ public class Simulator {
      * @param duration The number of minutes you wish the simulation to take (how fast you wish data to be updated).
      */
     public void runSimulation(int duration) {
-        System.out.println("Running Simulation for " + duration + " minutes.");
+        //System.out.println("Running Simulation for " + duration + " minutes.");
         while(calendar.getTime().before(END_DATE)) {
             System.out.println("The date is now " + calendar.getTime());
             // Update the marketType counter.
             if(yesterdayShareIndex < shareIndex) {
-                System.out.println("The market has grown since yesterday.");
+                //System.out.println("The market has grown since yesterday.");
                 marketType++;
             } else if(yesterdayShareIndex > shareIndex) {
-                System.out.println("The market has shrunk since yesterday.");
+                //System.out.println("The market has shrunk since yesterday.");
                 marketType--;
             }
             yesterdayShareIndex = shareIndex;
@@ -77,7 +77,7 @@ public class Simulator {
             // Perform run15Mins until trading closes for the day.
             Date endOfDay = getEndOfDay();
             while(calendar.getTime().before(endOfDay)) {
-                System.out.println("The time is now " + calendar.getTime());
+                //System.out.println("The time is now " + calendar.getTime());
                 if(eventInProgress == null) {
                     if ((eventInProgress = checkEvent()) != null) { // checkEvent returns an Event when it is the starting time of that event.
                         System.out.println("An event has started: " + eventInProgress.getMessage());
@@ -100,19 +100,19 @@ public class Simulator {
                 }
                 run15Mins();
                 // Handles making the simulation run for a duration (in minutes).
-                try {
-                    System.out.println("Time to wait...");
-                    Thread.sleep((duration * 60000) / (365 * 7 * 4)); // 365 days in the year * 7 hours open a day * 4 times an hour.
-                    System.out.println("Waiting is over!");
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Shouldn't occur.
-                }
+                //try {
+                    //System.out.println("Time to wait...");
+                    //Thread.sleep((duration * 60000) / (365 * 7 * 4)); // 365 days in the year * 7 hours open a day * 4 times an hour.
+                    //System.out.println("Waiting is over!");
+                //} catch (InterruptedException e) {
+                    //Thread.currentThread().interrupt(); // Shouldn't occur.
+                //}
             }
             // End of trading day has been reached, the date must now be changed to the 9:00AM on the next working day.
             GregorianCalendar nextDayCal = new GregorianCalendar();
             nextDayCal.setTime(calendar.getTime());
             nextDayCal.add(nextDayCal.HOUR_OF_DAY, 17);
-            System.out.println("The next day is: " + nextDayCal.getTime());
+            //System.out.println("The next day is: " + nextDayCal.getTime());
             if(nextDayCal.get(nextDayCal.DAY_OF_WEEK) == nextDayCal.SATURDAY) {
                 nextDayCal.add(nextDayCal.DATE, 2); // Skips over Sunday.
             } else if(nextDayCal.getTime().equals(GOOD_FRIDAY)) {
@@ -126,7 +126,7 @@ public class Simulator {
 
     private void initialiseData() {
         ArrayList<Share> allShares = new ArrayList<>();
-        System.out.println("Initializing clients & shares...");
+        //System.out.println("Initializing clients & shares...");
         try {
             ArrayList<Portfolio> portfolios = new ArrayList<>();
             BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
@@ -136,7 +136,7 @@ public class Simulator {
                 if(row.length == SIZE_DATA && row[0].length() == 0) { // Contains the names of the Clients.
                     for(int i = 0; i < SIZE_DATA - 1; i++) { // Final column is Total Shares Issued.
                         if(row[i].length() != 0) {
-                            System.out.println("Creating a portfolio for " + row[i]);
+                            //System.out.println("Creating a portfolio for " + row[i]);
                             portfolios.add(new Portfolio(row[i]));
                         }
                     }
@@ -146,7 +146,7 @@ public class Simulator {
                     for(int i = 4; i < SIZE_DATA - 1; i++) {
                         if(row[i].length() != 0) {
                             ArrayList<Share> shares = new ArrayList<>();
-                            System.out.println("Adding shares for company " + row[0] + " to " + portfolios.get(j).getClientName() + "'s portfolio.");
+                            //System.out.println("Adding shares for company " + row[0] + " to " + portfolios.get(j).getClientName() + "'s portfolio.");
                             sharePrices.put(row[0], (double) Integer.parseInt(row[3]));
                             for(int k = 0; k < Integer.parseInt(row[i]); k++) {
                                 Share s = new Share(row[0], row[2], (double)Integer.parseInt(row[3]));
@@ -163,7 +163,7 @@ public class Simulator {
                     int j = 0;
                     for(int i = 4; i < SIZE_DATA - 2; i++) {
                         if(row[i].length() != 0) {
-                            System.out.println(portfolios.get(j).getClientName() + " has £" + row[i]);
+                            //System.out.println(portfolios.get(j).getClientName() + " has £" + row[i]);
                             portfolios.get(j).setCashHolding(Integer.parseInt(row[i]));
                             j++;
                         }
@@ -171,7 +171,7 @@ public class Simulator {
                 }
             }
             // Initialise Traders.
-            System.out.println("Initializing traders...");
+            //System.out.println("Initializing traders...");
             ArrayList<Portfolio> port = new ArrayList<>();
             port.add(portfolios.get(0)); // Norbert DaVinci.
             port.add(portfolios.get(7)); // Justine Thyme.
@@ -189,8 +189,8 @@ public class Simulator {
             if(portfolios.size() != 0) { // Must be one 'left over' portfolio.
                 traders.add(new RandomTrader(portfolios, allShares));
             }
-            System.out.println("There are now " + traders.size() + " traders!");
-            System.out.println("There are " + sharePrices.size() + " companies.");
+            //System.out.println("There are now " + traders.size() + " traders!");
+            //System.out.println("There are " + sharePrices.size() + " companies.");
         } catch(IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -198,18 +198,18 @@ public class Simulator {
     }
 
     private void initialiseEvents() {
-        System.out.println("Initializing events...");
+        //System.out.println("Initializing events...");
         try {
             BufferedReader br = new BufferedReader(new FileReader("ExternalEventsData.csv"));
             String line;
             while((line = br.readLine()) != null) {
                 String[] row = line.split(",");
                 if(row.length == SIZE_EVENTS && !row[0].equals("Date")) { // i.e. not the header.
-                    System.out.println("Adding event '" + row[2] + "'.");
+                    //System.out.println("Adding event '" + row[2] + "'.");
                     events.add(new Event(new SimpleDateFormat("MMM dd yyyy HH:mm").parse(row[0] + " " + row[2], new ParsePosition(0)), row[4], row[15]));
                 }
             }
-            System.out.println("There are now " + events.size() + " events!");
+            //System.out.println("There are now " + events.size() + " events!");
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -218,7 +218,7 @@ public class Simulator {
     }
 
     void run15Mins() {
-        System.out.println("Running one 15 minute cycle...");
+        //System.out.println("Running one 15 minute cycle...");
         HashMap<Trader, ArrayList<Share>> toBeSold = new HashMap<>();
         HashMap<Trader, HashMap<String, Integer>> toBeBought = new HashMap<>(); // Inner HashMap maps Company Name to number of shares sought for purchase.
         HashMap<String, Integer> buyTotals = new HashMap<>();
@@ -228,7 +228,7 @@ public class Simulator {
             sellTotals.put(companyName, 0);
         }
         // Get what everyone wants to buy & sell.
-        System.out.println("Traders buy and sell...");
+        //System.out.println("Traders buy and sell...");
         for(Trader t : traders) {
             HashMap<String, Integer> traderBuys = t.buy(sharePrices);
             toBeBought.put(t, traderBuys);
@@ -245,16 +245,16 @@ public class Simulator {
                 }
             }
         }
-        System.out.println("Calculating shares to distribute...");
+        //System.out.println("Calculating shares to distribute...");
         // Work out how many shares are being sold/bought.
         for(String companyName : numberOfShares.keySet()) {
             ArrayList<Share> sharesForSale = new ArrayList<>();
             ArrayList<Share> sharesBought;
             int buyTotal = buyTotals.get(companyName);
             int sellTotal = sellTotals.get(companyName);
-            System.out.println("Total requested to be bought, sold for " + companyName + ": " + buyTotal + ", " + sellTotal);
+            //System.out.println("Total requested to be bought, sold for " + companyName + ": " + buyTotal + ", " + sellTotal);
             if(buyTotal < sellTotal) { // Supply > Demand.
-                System.out.println("Supply > Demand for " + companyName);
+                //System.out.println("Supply > Demand for " + companyName);
                 for(Trader t : traders) {
                     ArrayList<Share> sharesOfCompany = new ArrayList<>();
                     for(Share s : toBeSold.get(t)) {
@@ -300,7 +300,7 @@ public class Simulator {
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else if(buyTotal > sellTotal) { // Supply < Demand.
-                System.out.println("Supply < Demand for " + companyName);
+                //System.out.println("Supply < Demand for " + companyName);
                 for(Trader t : traders) {
                     for(Share s : toBeSold.get(t)) {
                         if(s.getCompanyName().equals(companyName)) {
@@ -313,7 +313,7 @@ public class Simulator {
                 for(Trader t : traders) {
                     try {
                         int numberBought = toBeBought.get(t).get(companyName);
-                        System.out.println("The trader managing " + t.getPortfolios().get(0).getClientName() + " requested " + numberBought + " shares of " + companyName);
+                        //System.out.println("The trader managing " + t.getPortfolios().get(0).getClientName() + " requested " + numberBought + " shares of " + companyName);
                         int sharesPurchased = (int) Math.round((double)sellTotal * ((double)numberBought / (double)buyTotal));
                         total += sharesPurchased;
                         if (sharesPurchased < sharesForSale.size()) {
@@ -326,7 +326,7 @@ public class Simulator {
                     } catch(NullPointerException e) {/* This trader requested no shares for this company*/}
                 }
                 while(!sharesForSale.isEmpty()) {
-                    System.out.println("Returning a share to even things out...");
+                    //System.out.println("Returning a share to even things out...");
                     Trader t = traders.get(new Random().nextInt(traders.size()));
                     if(toBeSold.get(t).contains(sharesForSale.get(0))) {
                         ArrayList<Share> temp = new ArrayList<>();
@@ -337,7 +337,7 @@ public class Simulator {
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else { // Supply = Demand.
-                System.out.println("Supply = Demand for " + companyName);
+                //System.out.println("Supply = Demand for " + companyName);
                 // Calculate the shares that are up for sale for this company.
                 for(Trader t : traders) {
                     for(Share s : toBeSold.get(t)) {
@@ -377,7 +377,7 @@ public class Simulator {
     }
 
     private void calculateShareIndex() {
-        System.out.println("Changing the share index...");
+        //System.out.println("Changing the share index...");
         int newShareIndex = 0;
         for(String companyName : numberOfShares.keySet()) {
             boolean found = false;
@@ -402,13 +402,13 @@ public class Simulator {
             }
         }
         shareIndex = (double)newShareIndex / (double)numberOfShares.size();
-        System.out.println("Share index is now " + shareIndex);
-        System.out.println("The traders now have " + totalSharesInPortfolios() + ", there should be " + totalSharesForCompanies() + " shares.");
+        //System.out.println("Share index is now " + shareIndex);
+        //System.out.println("The traders now have " + totalSharesInPortfolios() + ", there should be " + totalSharesForCompanies() + " shares.");
     }
 
     // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
-        System.out.println("Changing the share price for " + companyName + ", using an excess of " + excess);
+        //System.out.println("Changing the share price for " + companyName + ", using an excess of " + excess);
         double newSharePrice = sharePrices.get(companyName) + (((double)excess / (double)numberOfShares.get(companyName)) * sharePrices.get(companyName));
         sharePrices.put(companyName, newSharePrice);
         for(Trader t : traders) {
@@ -420,9 +420,9 @@ public class Simulator {
                 }
             }
         }
-        System.out.println("The share price of " + companyName + " is now " + newSharePrice + ".");
+        //System.out.println("The share price of " + companyName + " is now " + newSharePrice + ".");
         if(newSharePrice <= 1) { // Company is worthless. They must be removed from the simulation.
-            System.out.println(companyName + " is worthless!");
+            //System.out.println(companyName + " is worthless!");
             removeAllShares(companyName);
         }
     }
@@ -439,7 +439,7 @@ public class Simulator {
     /* Does not actually remove all shares for a client, but sets the boolean sellAll in their portfolio to true, alerting
      * their trader that they must attempt to sell all those shares every cycle. */
     public void leaveSimulation(String clientName) {
-        System.out.println(clientName + " wishes to leave the simulation.");
+        //System.out.println(clientName + " wishes to leave the simulation.");
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
                 if(p.getClientName().equals(clientName)) {
@@ -454,14 +454,14 @@ public class Simulator {
         GregorianCalendar dayCal = new GregorianCalendar();
         dayCal.setTime(calendar.getTime());
         dayCal.add(dayCal.HOUR_OF_DAY, 7);
-        System.out.println("End of day = " + dayCal.getTime());
+        //System.out.println("End of day = " + dayCal.getTime());
         return dayCal.getTime();
     }
 
     private void removeAllShares(String companyName) {
         for(Trader t : traders) {
             for(Portfolio p : t.getPortfolios()) {
-                System.out.println("Removing all shares of " + companyName + " from " + p.getClientName());
+                //System.out.println("Removing all shares of " + companyName + " from " + p.getClientName());
                 p.removeAllShares(companyName);
             }
             t.removeTrackers(companyName);

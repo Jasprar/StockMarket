@@ -54,7 +54,7 @@ public class ClientTracker {
     public void resetAmountSold() { amountSold = 0; }
     public void incrementAmount() { amount++; }
     public void resetAmountBought() {
-        System.out.println("Resetting amount bought for " + clientName + "...");
+        //System.out.println("Resetting amount bought for " + clientName + "...");
         amountBought = 0;
     }
     public void incrementAmountBought() {

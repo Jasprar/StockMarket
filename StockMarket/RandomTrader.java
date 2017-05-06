@@ -53,15 +53,15 @@ public class RandomTrader extends Trader {
                 double amountClientSpends = 0;
                 for(ClientTracker ct : clientTrackers) {
                     if(ct.getClientName().equals(p.getClientName())) {
-                        System.out.println(ct.getClientName() + " wants to buy " + ct.getAmountBought() + " of " + ct.getCompanyName());
+                        //System.out.println(ct.getClientName() + " wants to buy " + ct.getAmountBought() + " of " + ct.getCompanyName());
                         try {
                             amountClientSpends += ((double) ct.getAmountBought() * sharePrices.get(ct.getCompanyName()));
                         } catch(NullPointerException e) {}
                     }
                 }
-                System.out.println("Total for " + p.getClientName() + ": " + amountClientSpends + ", client has " + p.getCashHolding());
+                //System.out.println("Total for " + p.getClientName() + ": " + amountClientSpends + ", client has " + p.getCashHolding());
             }
-            System.out.println("This trader has requested shares of Dawn Technology: " + buying.containsKey("Dawn Technology"));
+            //System.out.println("This trader has requested shares of Dawn Technology: " + buying.containsKey("Dawn Technology"));
             return buying;
         }
     }
@@ -192,7 +192,7 @@ public class RandomTrader extends Trader {
     }
 
     private double modeSelector(boolean buying, double metric) {
-        System.out.println("metric =" + metric);
+        //System.out.println("metric =" + metric);
         double amount = 0;
         if (buying) {
             switch(mode) {

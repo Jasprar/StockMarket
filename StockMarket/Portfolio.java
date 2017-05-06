@@ -29,13 +29,13 @@ public class Portfolio {
     }
 
     public void addShares(ArrayList<Share> shares) {
-        System.out.println(shares.size() + " shares added to " + clientName + ".");
+        //System.out.println(shares.size() + " shares added to " + clientName + ".");
         this.shares.addAll(shares);
         for(Share s : shares) {
-            System.out.println(s.getCompanyName() + " has a share price of " + s.getSharePrice());
+            //System.out.println(s.getCompanyName() + " has a share price of " + s.getSharePrice());
             addCashHolding(-s.getSharePrice());
         }
-        System.out.println(clientName + "'s cash now = " + cashHolding);
+        //System.out.println(clientName + "'s cash now = " + cashHolding);
         if(cashHolding < 0) {
             System.err.println("Houston, We have a problem: " + clientName + ": " + cashHolding);
             System.err.println(getCallingMethodName());
