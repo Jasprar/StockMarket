@@ -90,7 +90,7 @@ public class Simulator {
                             }
                         }
                     }
-                } else if(calendar.getTime().equals(eventInProgress.getEndDateTime())) { // There is already an event in progress.
+                } else if(calendar.getTime().equals(eventInProgress.getEndDateTime())) {
                     System.out.println("The event is over!");
                     eventInProgress = null;
                     for(Trader t : traders) {
