@@ -55,9 +55,8 @@ public class Simulator {
      * Runs the simulation for 1 year (until 31/01/2017, 17:00) - Every 15 minutes, traders buy & sell shares & the share index is adjusted (along with
      * share prices & net worths for companies). Skips over hours & days where the Stock Market is closed
      * (17:00 - 09:00 Monday - Friday & all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
-     * @param duration The number of minutes you wish the simulation to take (how fast you wish data to be updated).
      */
-    public void runSimulation(int duration) {
+    public void runSimulation() {
         //System.out.println("Running Simulation for " + duration + " minutes.");
         while(calendar.getTime().before(END_DATE)) {
             System.out.println("The date is now " + calendar.getTime());
@@ -99,14 +98,6 @@ public class Simulator {
                     }
                 }
                 run15Mins();
-                // Handles making the simulation run for a duration (in minutes).
-                //try {
-                    //System.out.println("Time to wait...");
-                    //Thread.sleep((duration * 60000) / (365 * 7 * 4)); // 365 days in the year * 7 hours open a day * 4 times an hour.
-                    //System.out.println("Waiting is over!");
-                //} catch (InterruptedException e) {
-                    //Thread.currentThread().interrupt(); // Shouldn't occur.
-                //}
             }
             // End of trading day has been reached, the date must now be changed to the 9:00AM on the next working day.
             GregorianCalendar nextDayCal = new GregorianCalendar();

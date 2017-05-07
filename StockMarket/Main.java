@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
        Simulator sim = new Simulator();
-       sim.runSimulation(1);
+       sim.runSimulation();
        /*while(true) {
            System.out.println("Press enter to run one 15 minute cycle.");
            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
