@@ -315,7 +315,7 @@ public class Controller{
 
                 });
             }
-        }, 0, 1000);
+        }, 0, (long)10.416666);
     }
 
     /***
