@@ -130,13 +130,6 @@ class SimulatorTest {
         }
     }
 
-    @Test
-    void getTotalShares() {
-        //Not being used - should run with anything
-        assertEquals(simulator.getShares(), 8);
-        assertEquals(simulator.getShares(), "qq3");
-    }
-
 
     @Test
     void getTotalNetworth() {
@@ -180,10 +173,11 @@ class SimulatorTest {
     }
 
     @Test
-    void getCashHolding(){
+    void getCashHolding() {
         List<Double> cashHolding = new ArrayList<>();
         cashHolding.addAll(simulator.getCashHolding());
 
-        assertSame(cashHolding,100000);
+        assertSame(cashHolding, 100000);
     }
+
 }
