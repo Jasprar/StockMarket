@@ -121,6 +121,7 @@ public class Simulator {
                 nextDayCal.add(nextDayCal.DATE, 2);
             }
             calendar.setTime(nextDayCal.getTime());
+            System.out.println("The traders now have " + totalSharesInPortfolios() + ", there should be " + totalSharesForCompanies() + " shares.");
         }
     }
 
@@ -229,6 +230,7 @@ public class Simulator {
         }
         // Get what everyone wants to buy & sell.
         //System.out.println("Traders buy and sell...");
+        int totalPutUpForSale = 0;
         for(Trader t : traders) {
             HashMap<String, Integer> traderBuys = t.buy(sharePrices);
             toBeBought.put(t, traderBuys);
@@ -236,6 +238,7 @@ public class Simulator {
                 buyTotals.put(companyName, (buyTotals.get(companyName) + traderBuys.get(companyName)));
             }
             ArrayList<Share> shares = t.sell();
+            totalPutUpForSale += shares.size();
             toBeSold.put(t, shares);
             for(Share s : shares) {
                 if(sellTotals.containsKey(s.getCompanyName())) {
@@ -247,6 +250,8 @@ public class Simulator {
         }
         //System.out.println("Calculating shares to distribute...");
         // Work out how many shares are being sold/bought.
+        int numberReturned = 0;
+        int numberAdded = 0;
         for(String companyName : numberOfShares.keySet()) {
             ArrayList<Share> sharesForSale = new ArrayList<>();
             ArrayList<Share> sharesBought;
@@ -263,8 +268,10 @@ public class Simulator {
                         }
                     }
                     int sharesSold = (int)Math.round((double)buyTotal * (double)sharesOfCompany.size() / (double)sellTotal);
-                    sharesForSale.addAll(sharesOfCompany.subList(0, sharesSold));
-                    t.returnShares(new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size())), companyName, sellTotal);
+                    sharesForSale.addAll(new ArrayList<>(sharesOfCompany.subList(0, sharesSold)));
+                    ArrayList<Share> returnedShares = new ArrayList<>(sharesOfCompany.subList(sharesSold, sharesOfCompany.size()));
+                    numberReturned += returnedShares.size();
+                    t.returnShares(returnedShares, companyName, sellTotal);
                 }
                 // By this point sharesForSale should exactly equal the total number of shares sought for purchase (for this company).
                 int leftOver = sharesForSale.size() - buyTotal;
@@ -277,6 +284,7 @@ public class Simulator {
                                 ArrayList<Share> temp = new ArrayList<>();
                                 temp.add(sharesForSale.remove(0));
                                 t.returnShares(temp, companyName, sellTotal);
+                                numberReturned++;
                                 returnedOne = true;
                             }
                         }
@@ -287,16 +295,14 @@ public class Simulator {
                 Collections.shuffle(traders); // So the last trader isn't always getting fewer.
                 for(Trader t : traders) {
                     sharesBought = new ArrayList<>();
-                    Integer numberBought = toBeBought.get(t).get(companyName);
-                    if(numberBought != null) {
-                        for (int i = 0; i < numberBought; i++) {
-                            if (i < sharesForSale.size()) { // Could occur that there are a couple more in toBeBought than in sharesRemoved due to rounding down for sharesSold.
-                                sharesBought.add(sharesForSale.get(i));
-                            }
+                    try {
+                        int numberBought = toBeBought.get(t).get(companyName);
+                        while(sharesBought.size() < numberBought && !sharesForSale.isEmpty()) {
+                            sharesBought.add(sharesForSale.remove(0));
                         }
+                        numberAdded += sharesBought.size();
                         t.addNewShares(sharesBought, companyName, buyTotal);
-                        sharesForSale.removeAll(sharesBought);
-                    }
+                    } catch(NullPointerException e) {/* Trader requested none of this share to buy. */}
                 }
                 changeSharePrice(companyName, buyTotal - sellTotal);
             } else if(buyTotal > sellTotal) { // Supply < Demand.
@@ -308,21 +314,21 @@ public class Simulator {
                         }
                     }
                 }
-                int total = 0;
                 Collections.shuffle(traders);
                 for(Trader t : traders) {
                     try {
                         int numberBought = toBeBought.get(t).get(companyName);
                         //System.out.println("The trader managing " + t.getPortfolios().get(0).getClientName() + " requested " + numberBought + " shares of " + companyName);
                         int sharesPurchased = (int) Math.round((double)sellTotal * ((double)numberBought / (double)buyTotal));
-                        total += sharesPurchased;
                         if (sharesPurchased < sharesForSale.size()) {
                             sharesBought = new ArrayList<>(sharesForSale.subList(0, sharesPurchased));
+                            sharesForSale.removeAll(sharesBought);
                         } else {
-                            sharesBought = sharesForSale; // Stops an error if there was rounding in sharesPurchased calculation.
+                            sharesBought = new ArrayList<>(sharesForSale); // Stops an error if there was rounding in sharesPurchased calculation.
+                            sharesForSale.clear();
                         }
+                        numberAdded += sharesBought.size();
                         t.addNewShares(sharesBought, companyName, buyTotal);
-                        sharesForSale.removeAll(sharesBought);
                     } catch(NullPointerException e) {/* This trader requested no shares for this company*/}
                 }
                 while(!sharesForSale.isEmpty()) {
@@ -332,6 +338,7 @@ public class Simulator {
                         ArrayList<Share> temp = new ArrayList<>();
                         temp.add(sharesForSale.remove(0));
                         t.returnShares(temp, companyName, sellTotal);
+                        numberReturned++;
                         sellTotal--;
                     }
                 }
@@ -348,15 +355,19 @@ public class Simulator {
                 }
                 // Give the trader the number of shares (from sharesForSale) that they asked for - there are exactly enough.
                 for(Trader t : traders) {
-                    Integer numberBought = toBeBought.get(t).get(companyName);
-                    if(numberBought != null && sharesForSale.size() > numberBought) {
-                        sharesBought = new ArrayList<>(sharesForSale.subList(0, numberBought));
-                        t.addNewShares(sharesBought, companyName, buyTotal);
-                        sharesForSale.removeAll(sharesBought);
-                    } else if(numberBought != null) {
-                        t.addNewShares(sharesForSale, companyName, buyTotal);
-                        sharesForSale.clear();
-                    }
+                    try {
+                        int numberBought = toBeBought.get(t).get(companyName);
+                        if (sharesForSale.size() > numberBought) {
+                            sharesBought = new ArrayList<>(sharesForSale.subList(0, numberBought));
+                            sharesForSale.removeAll(sharesBought);
+                            numberAdded += sharesBought.size();
+                            t.addNewShares(sharesBought, companyName, buyTotal);
+                        } else {
+                            numberAdded += sharesForSale.size();
+                            t.addNewShares(sharesForSale, companyName, buyTotal);
+                            sharesForSale.clear();
+                        }
+                    } catch(NullPointerException e) {/* Trader requested no shares for this company. */}
                 }
             }
         }
@@ -374,6 +385,7 @@ public class Simulator {
         }
         calculateShareIndex();
         calendar.add(calendar.MINUTE, 15);
+        System.out.println("Difference = " + (numberAdded + numberReturned - totalPutUpForSale));
     }
 
     private void calculateShareIndex() {
@@ -403,7 +415,6 @@ public class Simulator {
         }
         shareIndex = (double)newShareIndex / (double)numberOfShares.size();
         //System.out.println("Share index is now " + shareIndex);
-        //System.out.println("The traders now have " + totalSharesInPortfolios() + ", there should be " + totalSharesForCompanies() + " shares.");
     }
 
     // excess will be negative when Supply > Demand.
