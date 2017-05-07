@@ -66,33 +66,6 @@ public class RandomTrader extends Trader {
         }
     }
 
-    @Override
-    public ArrayList<Share> sell(HashMap<String, Double> sharePrices) {
-        if(mode == EVENTSELLER) {
-            return eventSell();
-        } else {
-            ArrayList<Share> toSell = new ArrayList<>();
-            for (Portfolio p : portfolios) {
-                ArrayList<Share> shares = p.getShares();
-                double amountToEarn = modeSelector(false, p.getSharesTotal());
-                int i = 0;
-                while (amountToEarn > 0 && i < 100) {
-                    Share s = shares.remove(rand.nextInt(shares.size()));
-                    toSell.add(s);
-                    amountToEarn -= s.getSharePrice();
-                    for(ClientTracker ct : clientTrackers) {
-                        if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(s.getCompanyName())) {
-                            ct.decrementAmount();
-                        }
-                    }
-                    p.addCashHolding(s.getSharePrice());
-                    i++;
-                }
-            }
-            return toSell;
-        }
-    }
-
     private HashMap<String, Integer> eventBuy(HashMap<String, Double> sharePrices) {
         ArrayList<String> companyNames = new ArrayList<>(sharePrices.keySet());
         HashMap<String, Integer> buying = new HashMap<>();
@@ -130,6 +103,33 @@ public class RandomTrader extends Trader {
             }
         }
         return buying;
+    }
+
+    @Override
+    public ArrayList<Share> sell() {
+        if(mode == EVENTSELLER) {
+            return eventSell();
+        } else {
+            ArrayList<Share> toSell = new ArrayList<>();
+            for (Portfolio p : portfolios) {
+                ArrayList<Share> shares = p.getShares();
+                double amountToEarn = modeSelector(false, p.getSharesTotal());
+                int i = 0;
+                while (amountToEarn > 0 && i < 100) {
+                    Share s = shares.remove(rand.nextInt(shares.size()));
+                    toSell.add(s);
+                    amountToEarn -= s.getSharePrice();
+                    for(ClientTracker ct : clientTrackers) {
+                        if(ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(s.getCompanyName())) {
+                            ct.decrementAmount();
+                        }
+                    }
+                    p.addCashHolding(s.getSharePrice());
+                    i++;
+                }
+            }
+            return toSell;
+        }
     }
 
 

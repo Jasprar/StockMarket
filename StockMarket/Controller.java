@@ -81,17 +81,17 @@ public class Controller{
      */
     @FXML
     private void runSimulation() throws Exception {
-            Task task = new Task<Void>() {
-                @Override
-                public Void call() {
-                    sim.runSimulation(); //Calls runSimulation in a seperate thread, exits thread once runSimulation is finished.
-                    return null;
-                }
-            };
-            new Thread(task).start();
-            callMethod();
-            runButton.setVisible(false);
-            runSim.setDisable(true);
+        Task task = new Task<Void>() {
+            @Override
+            public Void call() {
+                sim.runSimulation(); //Calls runSimulation in a seperate thread, exits thread once runSimulation is finished.
+                return null;
+            }
+        };
+        new Thread(task).start();
+        callMethod();
+        runButton.setVisible(false);
+        runSim.setDisable(true);
     }
 
     /**
@@ -391,7 +391,7 @@ public class Controller{
         List<Double> sharePrice = new ArrayList<>();
         for(String s: companyNames) {
             sharePrice.add(sim.getSharePrice(s)); //ERROR HERE: Trying to populate the networth arraylist by iterating through
-                                                 //each company name and call getSharePrice and getNetWorth
+            //each company name and call getSharePrice and getNetWorth
             netWorth.add(sim.getNetWorth(s));
         }
 
