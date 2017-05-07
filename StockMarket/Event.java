@@ -45,6 +45,9 @@ public class Event {
         GregorianCalendar gc = new GregorianCalendar();
         gc.setTime(startDateTime);
         gc.add(gc.DATE, days);
+        if(gc.get(gc.DAY_OF_WEEK) == gc.SUNDAY) {
+            gc.add(gc.DATE, 1);
+        }
         this.endDateTime = gc.getTime();
     }
 
