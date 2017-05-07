@@ -193,7 +193,7 @@ public abstract class Trader {
         }
         ArrayList<Share> leftOverShares = addShares(shares, companyName, new HashMap<>(amountForEachPortfolio));
         while(!leftOverShares.isEmpty()) {
-            //System.out.println("While leftovershares isnt empty...");
+            //System.out.println("While leftovershares isnt empty returning...");
             for (Portfolio p : portfolios) {
                 int amount = amountForEachPortfolio.get(p);
                 for (ClientTracker ct : clientTrackers) {
@@ -239,6 +239,7 @@ public abstract class Trader {
         ArrayList<Share> leftOverShares = addShares(shares, companyName, new HashMap<>(amountForEachPortfolio));
         int i = 0;
         while(!leftOverShares.isEmpty()) {
+            //System.out.println("While addNewShares leftOverShares blah....");
             for (Portfolio p : portfolios) {
                 int amount = amountForEachPortfolio.get(p);
                 for (ClientTracker ct : clientTrackers) {

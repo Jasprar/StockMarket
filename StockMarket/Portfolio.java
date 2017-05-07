@@ -72,6 +72,7 @@ public class Portfolio {
         for(int i = 0; i < shares.size(); i++) {
             if(shares.get(i).getCompanyName().equals(companyName)) {
                 sharesToRemove.add(shares.get(i));
+                cashHolding -= shares.get(i).getSharePrice();
             }
         }
         shares.removeAll(sharesToRemove);

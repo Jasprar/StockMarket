@@ -33,9 +33,9 @@ public class RandomTrader extends Trader {
             for (Portfolio p : portfolios) {
                 double amountToSpend = modeSelector(true, p.getCashHolding()); // % of the cash the client has.
                 int i = 0; // To prevent infinite while-loop.
-                while(amountToSpend > Collections.min(sharePrices.values()) && i < 100) {
+                while (amountToSpend > Collections.min(sharePrices.values()) && i < 100) {
                     String chosenCompany = companyNames.get(rand.nextInt(companyNames.size()));
-                    if(sharePrices.get(chosenCompany) < amountToSpend) {
+                    if (sharePrices.get(chosenCompany) < amountToSpend) {
                         if (buying.containsKey(chosenCompany)) {
                             buying.put(chosenCompany, buying.get(chosenCompany) + 1);
                         } else {
@@ -50,18 +50,7 @@ public class RandomTrader extends Trader {
                     }
                     i++;
                 }
-                double amountClientSpends = 0;
-                for(ClientTracker ct : clientTrackers) {
-                    if(ct.getClientName().equals(p.getClientName())) {
-                        //System.out.println(ct.getClientName() + " wants to buy " + ct.getAmountBought() + " of " + ct.getCompanyName());
-                        try {
-                            amountClientSpends += ((double) ct.getAmountBought() * sharePrices.get(ct.getCompanyName()));
-                        } catch(NullPointerException e) {}
-                    }
-                }
-                //System.out.println("Total for " + p.getClientName() + ": " + amountClientSpends + ", client has " + p.getCashHolding());
             }
-            //System.out.println("This trader has requested shares of Dawn Technology: " + buying.containsKey("Dawn Technology"));
             return buying;
         }
     }

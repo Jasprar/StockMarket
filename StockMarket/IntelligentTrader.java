@@ -95,6 +95,7 @@ public class IntelligentTrader extends Trader {
                             traderSells.add(findAndRemove(p.getShares(), ct.getCompanyName()));
                             amountToEarn -= sharePrices.get(ct.getCompanyName());
                             ct.decrementAmount();
+                            p.addCashHolding(sharePrices.get(ct.getCompanyName()));
                         }
                     }
                 }
