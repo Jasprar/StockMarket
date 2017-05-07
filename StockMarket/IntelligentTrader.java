@@ -6,10 +6,21 @@ import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IntelligentTrader extends Trader {
+    /**
+     * Initializes Intelligent traders
+     * @param portfolios
+     * @param allShares
+     */
     public IntelligentTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         super(portfolios, allShares);
     }
 
+    /**
+     * Overrides the trader's buy method. If the price is going up, it will buy, or else
+     * it will not do anything for that share
+     * @param sharePrices
+     * @return A HashMap of shares it wants to buy
+     */
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
         //System.out.println("IntelligentTrader buying begins...");
@@ -37,6 +48,12 @@ public class IntelligentTrader extends Trader {
         return sharesBuying;
     }
 
+    /**
+     * Overrides the trader's sell method. If the price is higher than what it previously
+     * bought it at and the price is falling, sell, or else do nothing for
+     * that share
+     * @return An ArrayList of shares it wants to sell
+     */
     @Override
     public ArrayList<Share> sell() {
         //System.out.println("Intelligent trader selling begins...");

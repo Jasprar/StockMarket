@@ -15,7 +15,9 @@ public class RandomTrader extends Trader {
     private Random rand;
 
     /**
+     * Initializes random traders
      * @param portfolios
+     * @param allShares
      */
     public RandomTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         super(portfolios, allShares);
@@ -23,6 +25,14 @@ public class RandomTrader extends Trader {
         rand = new Random();
     }
 
+    /**
+     * Overrides the trader's buy method. If there is no buy event, the trader randomly
+     * picks a number from 0 to 1% of its total assets and randomly chooses a share to buy.
+     * It randomly picks shares 0 to 1% times with a for loop. If there is a buy event, it
+     * calls the EventBuy method.
+     * @param sharePrices
+     * @return A HashMap of shares it wants to buy
+     */
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
         if(mode == EVENTBUYER) {
@@ -66,6 +76,12 @@ public class RandomTrader extends Trader {
         }
     }
 
+    /**
+     * If there is a buy event. It will find the company it needs to buy and buy 0 - 1% of
+     * its total available assets.
+     * @param sharePrices
+     * @return A HashMap of shares it wants to buy
+     */
     private HashMap<String, Integer> eventBuy(HashMap<String, Double> sharePrices) {
         ArrayList<String> companyNames = new ArrayList<>(sharePrices.keySet());
         HashMap<String, Integer> buying = new HashMap<>();
@@ -105,6 +121,11 @@ public class RandomTrader extends Trader {
         return buying;
     }
 
+    /**
+     * If there is no sell event, it randomly chooses 0 - 1% of shares and then randomly sells
+     * that amount of shares. If there is a sell event, it calls the eventSell method
+     * @return An ArrayList of shares to sell
+     */
     @Override
     public ArrayList<Share> sell() {
         if(mode == EVENTSELLER) {
@@ -132,7 +153,11 @@ public class RandomTrader extends Trader {
         }
     }
 
-
+    /**
+     * If there is a sell event, it will find shares that the client owns
+     * and needs to sell and then sells it
+     * @return An ArrayList of shares it wants to sell
+     */
     private ArrayList<Share> eventSell() {
         ArrayList<Share> toSell = new ArrayList<>();
         for (Portfolio p : portfolios) {
@@ -158,12 +183,18 @@ public class RandomTrader extends Trader {
         return toSell;
     }
 
+    /**
+     * This method sets the mode to what is in the field
+     * @param mode
+     */
     @Override
     public void setMode(int mode) {
         this.mode = mode;
     }
 
-
+    /**
+     * This method randomly switches mode. The numbers are taken from the requirements document
+     */
     @Override
     public void switchMode() {
         int randomNextDayMode = rand.nextInt(100);
@@ -191,6 +222,14 @@ public class RandomTrader extends Trader {
         } // Else event is in progress, do not switch mode.
     }
 
+    /**
+     * This method overrides the 0 - 1% to buy/sell. If the mode is Balanced, it will
+     * want to buy and sell at 1% but if the modes are not balanced, numbers are different,
+     * which is all included in the requirements document
+     * @param buying
+     * @param metric
+     * @return
+     */
     private double modeSelector(boolean buying, double metric) {
         //System.out.println("metric =" + metric);
         double amount = 0;
