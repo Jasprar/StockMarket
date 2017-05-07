@@ -42,7 +42,7 @@ public abstract class Trader {
     public abstract HashMap<String,Integer> buy(HashMap<String, Double> sharePrices);
 
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
-    public abstract ArrayList<Share> sell();
+    public abstract ArrayList<Share> sell(HashMap<String, Double> sharePrices);
 
 
 
@@ -103,7 +103,7 @@ public abstract class Trader {
             }
             if(!done) {
                 //System.out.println("Creating a new ClientTracker for " + clientName + " tracking " + s.getCompanyName());
-                clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity(), s.getSharePrice()));
+                clientTrackers.add(new ClientTracker(clientName, s.getCompanyName(), s.getCommodity()));
             }
         }
     }
@@ -172,9 +172,6 @@ public abstract class Trader {
         ArrayList<Share> leftOverShares = addShares(shares, companyName, new HashMap<>(amountForEachPortfolio));
         int i = 0;
         while(!leftOverShares.isEmpty()) {
-            if(i > 100) {
-                System.out.println("Still getting stuck here...");
-            }
             for (Portfolio p : portfolios) {
                 int amount = amountForEachPortfolio.get(p);
                 for (ClientTracker ct : clientTrackers) {

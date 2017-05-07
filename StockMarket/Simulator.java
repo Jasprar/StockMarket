@@ -232,7 +232,7 @@ public class Simulator {
             for(String companyName : traderBuys.keySet()) {
                 buyTotals.put(companyName, (buyTotals.get(companyName) + traderBuys.get(companyName)));
             }
-            ArrayList<Share> shares = t.sell();
+            ArrayList<Share> shares = t.sell(sharePrices);
             totalPutUpForSale += shares.size();
             toBeSold.put(t, shares);
             for(Share s : shares) {
