@@ -185,6 +185,5 @@ class SimulatorTest {
         cashHolding.addAll(simulator.getCashHolding());
 
         assertSame(cashHolding,100000);
-
     }
 }
