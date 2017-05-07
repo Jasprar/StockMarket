@@ -200,7 +200,6 @@ public abstract class Trader {
                     if(shares.isEmpty()) {
                         break;
                     }
-                    //
                     if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountSold() - amount) > -1 && leftOverShares.get(0).getSharePrice() < p.getCashHolding()) {
                         Share s = leftOverShares.remove(0);
                         ArrayList<Share> temp = new ArrayList<>();
