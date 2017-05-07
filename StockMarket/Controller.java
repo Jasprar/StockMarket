@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import static tray.animations.AnimationType.POPUP;
+import static tray.animations.AnimationType.SLIDE;
 
 /**
  * Controller class. Handles the the users input and updates the gui every second using Timer Task.
@@ -195,8 +196,8 @@ public class Controller{
      * funFacts, a window tray notification displaying fun facts about stock markets  at random times.
      */
     private void callMethod() {
-        speedControl();  currentTime(); share(); currentDate(); marketType(); event(); graph();
-        clientTable(); companyTable();  backEnd(); funFacts();
+        speedControl();  currentTime(); graph();
+         companyTable();  backEnd(); funFacts();
     }
 
     /**
@@ -209,78 +210,20 @@ public class Controller{
             public void run() {
                 Platform.runLater(() -> {
                     timeEntry.setText(sim.getTime()); //Gets the current time
-                });
-            }
-        }, 0, 1000);
-    }
-
-
-    /**
-     * Gets called from callMethod()
-     * Displays the current date, updates every second.
-     */
-    private void currentDate() {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
                     dateEntry.setText(sim.getDate()); //Gets the date
-                });
-            }
-        }, 0, 1000);
-    }
-
-
-    /**
-     * Gets called from callMethod()
-     * Displays the current market type , updates every second, eg Bear Market.
-     */
-    private void marketType() {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
                     marketEntry.setText(sim.getMarketType()); // Gets the market type
-                });
-            }
-        }, 0, 1000);
-
-
-    }
-
-    /**
-     * Gets called from callMethod()
-     * Displays a message if an event has occured. If no event has occurred then displays an empty string.
-     */
-    private void event() {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
                     if (sim.getEvent() == null) eventEntry.setText("");
                     else eventEntry.setText(String.valueOf(sim.getEvent().getMessage()));
                     eventEntry.setWrapText(true);
-                });
-            }
-        }, 0, 1000);
-
-    }
-
-    /**
-     * Gets called from callMethod()
-     * Displays the current share index rate. Updates every second.
-     */
-    private void share() {
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
                     String share = Double.toString(sim.getShareIndex()); //Gets the share index
                     shareEntry.setText(share + "p");
+
+
                 });
             }
         }, 0, 1000);
     }
+
 
     /***
      * Gets called from callMethod()
@@ -299,7 +242,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 1000); //Calculation needed to display every month
+        }, 0, 50); //Calculation needed to display every month
         lineChart.getData().addAll(series);
     }
 
@@ -365,6 +308,12 @@ public class Controller{
                     for(CompanyData s: companyDataList()){
                         companyDataTableView.getItems().add(s);
                     }
+
+                    clientDataTableView.getItems().clear();
+                    for (ClientData s : clientDataList()) { //Needs to be changed to global timer
+                        clientDataTableView.getItems().add(s);
+                    }
+
                 });
             }
         }, 0, 1000);
@@ -416,43 +365,6 @@ public class Controller{
             companyData.add(company);
         }
         return companyData;
-    }
-
-    /**
-     * Client Table. Displays Client Name, Cash holding, total worth, shares and trader type
-     * Retrieves the object from ClientData and appends each object per row per when every instance is created.
-     * Refreshes in response to the users request when right clicking to set the speed.
-     */
-    private void clientTable() {
-
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    clientDataTableView.getItems().clear();
-                    for (ClientData s : clientDataList()) { //Needs to be changed to global timer
-                        clientDataTableView.getItems().add(s);
-                    }
-                });
-            }
-
-        }, 0, 10000);
-
-
-        Tooltip tooltip = new Tooltip(); //Lets us create a hover message
-        tooltip.setText("\nDouble click to sell stock\n");
-        clientDataTableView.setTooltip(tooltip);
-
-        clientDataTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    ClientData clientData = clientDataTableView.getSelectionModel().getSelectedItem();
-                    sim.leaveSimulation(clientData.getClient());
-                }
-            }
-        });
     }
 
     /***
@@ -526,7 +438,7 @@ public class Controller{
     private void funFacts() {
         TrayNotification tray = new TrayNotification();
         tray.setRectangleFill(Paint.valueOf("Black"));
-        tray.setAnimationType(POPUP);
+        tray.setAnimationType(SLIDE);
         Image whatsAppImg = new Image("StockMarket/img/lightbulb.png");
         tray.setImage(whatsAppImg);
         Random ran = new Random();
