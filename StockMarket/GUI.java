@@ -35,7 +35,7 @@ public class GUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("guiview.fxml"));
-        primaryStage.setTitle("Wolf & Gecko Stockmarket Simulation");
+        primaryStage.setTitle("Wolf & Gecko Stock Market Simulation");
         primaryStage.setScene(new Scene(root, 1110, 695));
         primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image("StockMarket/img/logo.png"));

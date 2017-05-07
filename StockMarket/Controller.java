@@ -95,7 +95,7 @@ public class Controller{
             Task task = new Task<Void>() {
                 @Override
                 public Void call() {
-                    sim.runSimulation(duration); //Calls runSimulation in a seperate thread, exits thread once runSimulation is finished.
+                    sim.runSimulation(); //Calls runSimulation in a seperate thread, exits thread once runSimulation is finished.
                     return null;
                 }
             };
