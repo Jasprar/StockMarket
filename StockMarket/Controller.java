@@ -81,17 +81,6 @@ public class Controller{
      */
     @FXML
     private void runSimulation() throws Exception {
-        TextInputDialog dialog = new TextInputDialog("");
-        dialog.setTitle("Duration Needed");
-        dialog.setHeaderText("Enter duration (Minutes)");
-        dialog.setContentText("Duration: ");
-//        dialog.show();
-        //TODO: Wait for the user to enter duration then do sim.runSimulation(duration)
-        // Currently doesnt work
-        Optional<String> result = dialog.showAndWait();
-        duration = Integer.parseInt(result.get());
-        if(duration != 0) {
-
             Task task = new Task<Void>() {
                 @Override
                 public Void call() {
@@ -99,19 +88,10 @@ public class Controller{
                     return null;
                 }
             };
-
-
-
-
             new Thread(task).start();
-
             callMethod();
             runButton.setVisible(false);
             runSim.setDisable(true);
-            //int totalTime = duration * 60; // Minutes to seconds
-
-        }
-        //}
     }
 
     /**
@@ -307,7 +287,7 @@ public class Controller{
     private void graph() {
         XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
-        x.setLabel("Month");
+        x.setLabel("Number of Cycles");
         y.setLabel("Share Index");
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
