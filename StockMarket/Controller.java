@@ -199,7 +199,6 @@ public class Controller{
         speedControl();  currentTime(); graph();
          companyTable();  backEnd(); funFacts();
     }
-
     /**
      * Gets called from callMethod()
      * Displays the current time, updates every second.
@@ -232,7 +231,7 @@ public class Controller{
     private void graph() {
         XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
-        x.setLabel("Number of Cycles");
+        x.setLabel("Per 15 Minute Cycle");
         y.setLabel("Share Index");
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -242,7 +241,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 50); //Calculation needed to display every month
+        }, 0, (long) 10.4166666); //Calculation needed to display every month
         lineChart.getData().addAll(series);
     }
 

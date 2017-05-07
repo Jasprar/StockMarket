@@ -15,6 +15,7 @@ import java.util.*;
  */
 public class Simulator {
     private GregorianCalendar calendar;
+
     private ArrayList<Trader> traders;
     private ArrayList<Event> events;
     private HashMap<String, Integer> numberOfShares;
@@ -647,5 +648,8 @@ public class Simulator {
         }
         return total;
     }
-
+    
+    public ArrayList<Trader> getTraders() {
+        return traders;
+    }
 }
