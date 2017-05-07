@@ -8,8 +8,12 @@ public abstract class Trader {
     protected ArrayList<ClientTracker> clientTrackers;
 
     /**
-     *
+     * Initializes traders, this also initializes trackers to be used for every
+     * pair of client and shares. Each traders has several portfolios (clients) and is
+     * kept track with an ArrayList. allShares is used as an ArrayList to store all
+     * shares available to be purchased.
      * @param portfolios
+     * @param allShares
      */
     public Trader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         this.portfolios = portfolios;
@@ -23,34 +27,60 @@ public abstract class Trader {
 
 
     /**
-     * This method returns the list of portfolios..
+     * This method returns the list of portfolios handled by this trader
      * @return An ArrayList of portfolios that are managed by this Trader.
      */
     public ArrayList<Portfolio> getPortfolios() {
         return portfolios;
     }
 
+    /**
+     * This method is only used by the Random Trader, for more information, see RandomTrader
+     * @param mode
+     */
     public void setMode(int mode) {
         // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader.
     }
 
+    /**
+     * This method is only used by the Random Trader, for more information, see RandomTrader
+     */
     public void switchMode() {
         // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader
     }
 
+    /**
+     * Creates a Hashmap of share wanting to buy with the company name and the number of shares
+     * the trader wants to buy
+     * @param sharePrices
+     * @return A Hashmap of shares wanted to buy with key "company name" and value
+     * "number of shares to buy"
+     */
     // HashMap is company name : # sought for purchase.
     public abstract HashMap<String,Integer> buy(HashMap<String, Double> sharePrices);
 
+    /**
+     * Creates an ArrayList of Share which is passed on to simulator to calculate the number
+     * of that share wanted to buy.
+     * @return An ArrayList of Share
+     */
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
     public abstract ArrayList<Share> sell();
 
-
-
-
+    /**
+     * Sets the event for the random traders to switch into that mode.
+     * Only used by the RandomTrader
+     * @param event
+     */
     public void setEvent(String event) {
         this.event = event;
     }
 
+    /**
+     * This method is called when all shares have been bought/ sold and then returned
+     * if it is unable to fulfill the demand/share. It resets the number wanted to buy
+     * and sell to 0 to prepare for the next 15 minutes cycle
+     */
     public void checkTrackers() {
         ArrayList<ClientTracker> trackers = new ArrayList<>();
         for(int i = 0; i < clientTrackers.size(); i++) {
@@ -60,6 +90,14 @@ public abstract class Trader {
         }
     }
 
+    /**
+     * Updates the tracker when the client wants to buy a number of a share.
+     * It increments the number wanted to sell as a way to track which client sold which share
+     * since when the shares are returned to the trader, it is impossible to know who sold
+     * which share
+     * @param shares
+     * @param clientName
+     */
     private void updateTrackers(ArrayList<Share> shares, String clientName) {
         int j = 1;
         for(Share s : shares) {
@@ -81,7 +119,11 @@ public abstract class Trader {
         }
     }
 
-    // For when a company is removed from the sim.
+    /**
+     * This method deleted a tracker when a company is removed from the simulator
+     * (bankrupt)
+     * @param companyName
+     */
     public void removeTrackers(String companyName) {
         ArrayList<ClientTracker> toRemove = new ArrayList<>();
         for(ClientTracker ct : clientTrackers) {
@@ -92,6 +134,12 @@ public abstract class Trader {
         clientTrackers.removeAll(toRemove);
     }
 
+    /**
+     * This method starts all trackers at the start of the simulation since clients
+     * already have shares in their portfolio (InitialDataV2.csv).
+     * @param allShares
+     * @param clientName
+     */
     private void initialiseTrackers(ArrayList<Share> allShares, String clientName) {
         for(Share s : allShares) {
             boolean done = false;
@@ -108,6 +156,10 @@ public abstract class Trader {
         }
     }
 
+    /**
+     * This method gets the shares of all portfolios and returns the total number
+     * @return Integer of all shares handled by the trader
+     */
     public int getShares() {
         int total = 0;
         for(Portfolio p : portfolios) {
@@ -116,6 +168,14 @@ public abstract class Trader {
         return total;
     }
 
+    /**
+     * This method returns shares unable to be sold from demand being lower than the supply
+     * It splits the the shares proportionally to how many the client wanted to sell and then
+     * adds them back to the portfolio
+     * @param shares
+     * @param companyName
+     * @param sellTotal
+     */
     public void returnShares(ArrayList<Share> shares, String companyName, int sellTotal) {
         //System.out.println("Returning Shares...");
         HashMap<Portfolio, Integer> amountForEachPortfolio = new HashMap<>();
@@ -155,6 +215,13 @@ public abstract class Trader {
         }
     }
 
+    /**
+     * This method adds shares wanted to buy from the client into their profolio
+     * proportionally to how many of each client wanted to buy that share.
+     * @param shares
+     * @param companyName
+     * @param buyTotal
+     */
     public void addNewShares(ArrayList<Share> shares, String companyName, int buyTotal) {
         //System.out.println("Adding shares of " + companyName);
         HashMap<Portfolio, Integer> amountForEachPortfolio = new HashMap<>();
@@ -197,6 +264,15 @@ public abstract class Trader {
         }
     }
 
+    /**
+     * This private method is only used in this class. It adds the shares to the portfolio
+     * with a proportional amount to how many they wanted to buy compared to other clients
+     * who wanted to buy also handled by this trader
+     * @param shares
+     * @param companyName
+     * @param amountForEachPortfolio
+     * @return
+     */
     private ArrayList<Share> addShares(ArrayList<Share> shares, String companyName, HashMap<Portfolio, Integer> amountForEachPortfolio) {
         int i = 0;
         while(!shares.isEmpty() & i < portfolios.size()) {
