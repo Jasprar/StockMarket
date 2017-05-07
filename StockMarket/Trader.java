@@ -140,7 +140,7 @@ public abstract class Trader {
                     if(shares.isEmpty()) {
                         break;
                     }
-                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountSold() - amount) > 0 && leftOverShares.get(0).getSharePrice() < p.getCashHolding()) {
+                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountSold() - amount) > -1 && leftOverShares.get(0).getSharePrice() < p.getCashHolding()) {
                         Share s = leftOverShares.remove(0);
                         ArrayList<Share> temp = new ArrayList<>();
                         temp.add(s);
@@ -170,14 +170,18 @@ public abstract class Trader {
             }
         }
         ArrayList<Share> leftOverShares = addShares(shares, companyName, new HashMap<>(amountForEachPortfolio));
+        int i = 0;
         while(!leftOverShares.isEmpty()) {
+            if(i > 100) {
+                System.out.println("Still getting stuck here...");
+            }
             for (Portfolio p : portfolios) {
                 int amount = amountForEachPortfolio.get(p);
                 for (ClientTracker ct : clientTrackers) {
                     if(shares.isEmpty()) {
                         break;
                     }
-                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountBought() - amount) > 0 && leftOverShares.get(0).getSharePrice() < p.getCashHolding()) {
+                    if (ct.getClientName().equals(p.getClientName()) && ct.getCompanyName().equals(companyName) && (ct.getAmountBought() - amount) > -1 && leftOverShares.get(0).getSharePrice() < p.getCashHolding()) {
                         Share s = leftOverShares.remove(0);
                         ArrayList<Share> temp = new ArrayList<>();
                         temp.add(s);
@@ -189,6 +193,7 @@ public abstract class Trader {
                 }
                 amountForEachPortfolio.put(p, amount);
             }
+            i++;
         }
     }
 

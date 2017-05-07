@@ -385,7 +385,7 @@ public class Simulator {
         }
         calculateShareIndex();
         calendar.add(calendar.MINUTE, 15);
-        System.out.println("Difference = " + (numberAdded + numberReturned - totalPutUpForSale));
+        //System.out.println("Difference = " + (numberAdded + numberReturned - totalPutUpForSale));
     }
 
     private void calculateShareIndex() {
