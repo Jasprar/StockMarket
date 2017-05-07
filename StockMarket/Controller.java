@@ -90,31 +90,29 @@ public class Controller{
         // Currently doesnt work
         Optional<String> result = dialog.showAndWait();
         duration = Integer.parseInt(result.get());
-         if(duration != 0) {
+        if(duration != 0) {
 
-             Task task = new Task<Void>() {
-                 @Override
-                 public Void call() {
-                     sim.runSimulation(duration);
-                     return null;
-                 }
-             };
-
-
+            Task task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    sim.runSimulation(duration); //Calls runSimulation in a seperate thread, exits thread once runSimulation is finished.
+                    return null;
+                }
+            };
 
 
-             new Thread(task).start();
 
-             callMethod();
-             runButton.setVisible(false);
-             runSim.setDisable(true);
-                 //int totalTime = duration * 60; // Minutes to seconds
+
+            new Thread(task).start();
+
+            callMethod();
+            runButton.setVisible(false);
+            runSim.setDisable(true);
+            //int totalTime = duration * 60; // Minutes to seconds
 
         }
-    //}
-        }
-
-    private void globalTimer() throws Exception {}
+        //}
+    }
 
     /**
      * Quits the program by calling System.exit(0);. Clears all background data (Notifications) automatically.
@@ -228,7 +226,7 @@ public class Controller{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    timeEntry.setText(sim.getTime());
+                    timeEntry.setText(sim.getTime()); //Gets the current time
                 });
             }
         }, 0, 1000);
@@ -244,7 +242,7 @@ public class Controller{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    dateEntry.setText(sim.getDate());
+                    dateEntry.setText(sim.getDate()); //Gets the date
                 });
             }
         }, 0, 1000);
@@ -260,7 +258,7 @@ public class Controller{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    marketEntry.setText(sim.getMarketType());
+                    marketEntry.setText(sim.getMarketType()); // Gets the market type
                 });
             }
         }, 0, 1000);
@@ -295,7 +293,7 @@ public class Controller{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    String share = Double.toString(sim.getShareIndex());
+                    String share = Double.toString(sim.getShareIndex()); //Gets the share index
                     shareEntry.setText(share + "p");
                 });
             }
@@ -340,7 +338,7 @@ public class Controller{
      * should update its results.
      */
     @FXML
-   private void speedControl() {
+    private void speedControl() {
         companyPane.addEventFilter(MouseEvent.MOUSE_PRESSED, e ->{
             if(e.isSecondaryButtonDown()){ // If right click
                 List<String> choices = new ArrayList<>();
@@ -356,19 +354,13 @@ public class Controller{
 
                 if (result.isPresent()){
                     if(result.get().equals("Slow")){
-
                         this.TABLE_REFRESH_RATE = 3000;
-
-                        System.out.println(TABLE_REFRESH_RATE);
                     }
                     if(result.get().equals("Normal")){
                         this.TABLE_REFRESH_RATE = 2000;
-                        System.out.println(TABLE_REFRESH_RATE);
                     }
                     if(result.get().equals("Fast")){
                         this.TABLE_REFRESH_RATE = 1000;
-
-                        System.out.println(TABLE_REFRESH_RATE);
                     }
                 }
             }
@@ -407,45 +399,36 @@ public class Controller{
     private List<CompanyData> companyDataList(){
         List<String> companyNames = new ArrayList<>();
         Set<String> companyNames1 =  sim.getCompanyNames();
-        companyNames.addAll(companyNames1);
-
-        System.out.println("Added Company names names...");
+        companyNames.addAll(companyNames1); //Get the <set> company tables and it to a list
 
 
         List<Integer> netWorth = new ArrayList<>();
 
         List<Integer> companyValues = new ArrayList<>();
         Collection<Integer> companyValues1 = sim.getCompanyValues();
-        companyValues.addAll(companyValues1);
+        companyValues.addAll(companyValues1); //Get the collection<interger> company values and it to a list
 
         List<Double> sharePrice = new ArrayList<>();
         for(String s: companyNames) {
-            sharePrice.add(sim.getSharePrice(s));
-            System.out.println("Added Share price ...");
-
+            sharePrice.add(sim.getSharePrice(s)); //ERROR HERE: Trying to populate the networth arraylist by iterating through
+                                                 //each company name and call getSharePrice and getNetWorth
             netWorth.add(sim.getNetWorth(s));
-            System.out.println("Added Company networths...");
-
         }
 
 
 
         List<CompanyData> companyData = new ArrayList<>();
 
-        for(int i = 0; i < companyNames.size(); i++){
+        for(int i = 0; i < companyNames.size(); i++){ //Passes the 'i'th element to a variable
             String getNames = companyNames.get(i);
-           Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
+            Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
             int getTotalShares = companyValues.get(i);
             int getNetWorth = netWorth.get(i);
-              CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
-            company.setCompanyName(getNames);
-         //     System.out.println("Name: " + name);
-           company.setShareValues(getSharePrices);
-            System.out.println("Share prices" + getTotalShares);
+            CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
+            company.setCompanyName(getNames); //Adds the 'i'th element to the table.
+            company.setShareValues(getSharePrices);
             company.setTotalShares(getTotalShares);
-            //System.out.println("Total shares " + value);
             company.setNetWorth(getNetWorth);
-            //System.out.println("Networth " + value);
             companyData.add(company);
         }
         return companyData;
@@ -465,7 +448,7 @@ public class Controller{
                 Platform.runLater(() -> {
                     clientDataTableView.getItems().clear();
                     for (ClientData s : clientDataList()) { //Needs to be changed to global timer
-                         clientDataTableView.getItems().add(s);
+                        clientDataTableView.getItems().add(s);
                     }
                 });
             }
@@ -498,20 +481,16 @@ public class Controller{
      */
     private List<ClientData> clientDataList() {
         //Getting client Names and appending to list
-        System.out.println("Entering ClientDataList...");
         List<String> clientNames = new ArrayList<>();
         clientNames.addAll(sim.getClientNames());
-        System.out.println("Added Client names...");
         //Getting Cash holding and appending to list
         List<Double> cashHolding = new ArrayList<>();
         cashHolding.addAll(sim.getCashHolding());
 
-        System.out.println("Added Cash Holding...");
         //Getting total worth and appending to list
         List<Double> totalWorth = new ArrayList<>(); //Wealth
         totalWorth.addAll(sim.getTotalWorth());
 
-        System.out.println("Added Total Worth...");
 
         List<ClientData> clientData = new ArrayList<>();
 
