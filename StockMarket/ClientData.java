@@ -8,15 +8,15 @@ import javafx.beans.property.*;
 public class ClientData {
 
     private final StringProperty client;
-    private final SimpleDoubleProperty wealth;
-    private final SimpleDoubleProperty cashHolding;
+    private final StringProperty wealth;
+    private final StringProperty cashHolding;
     private final StringProperty shares;
     private final StringProperty managedBy;
 
-    public ClientData(String client, int wealth, int cashHolding, String shares, String managedBy) {
+    public ClientData(String client, String wealth, String cashHolding, String shares, String managedBy) {
         this.client = new SimpleStringProperty(client);
-        this.wealth = new SimpleDoubleProperty(wealth);
-        this.cashHolding = new SimpleDoubleProperty(cashHolding);
+        this.wealth = new SimpleStringProperty(wealth);
+        this.cashHolding = new SimpleStringProperty(cashHolding);
         this.shares = new SimpleStringProperty(shares);
         this.managedBy = new SimpleStringProperty(managedBy);
     }
@@ -33,27 +33,27 @@ public class ClientData {
         this.client.set(PFClient);
     }
 
-    public double getWealth() {
+    public String getWealth() {
         return wealth.get();
     }
 
-    public SimpleDoubleProperty PFWealthProperty() {
+    public StringProperty PFWealthProperty() {
         return wealth;
     }
 
-    public void setWealth(Double wealth) {
+    public void setWealth(String wealth) {
         this.wealth.set(wealth);
     }
 
-    public double getCashHolding() {
+    public String getCashHolding() {
         return cashHolding.get();
     }
 
-    public SimpleDoubleProperty PFCashHoldingProperty() {
+    public StringProperty PFCashHoldingProperty() {
         return cashHolding;
     }
 
-    public void setCashHolding(Double PFCashHolding) {
+    public void setCashHolding(String PFCashHolding) {
         this.cashHolding.set(PFCashHolding);
     }
 

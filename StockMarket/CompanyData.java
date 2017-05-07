@@ -9,15 +9,15 @@ import javafx.beans.property.*;
 public class CompanyData {
 
     private final StringProperty companyName;
-    private final SimpleDoubleProperty shareValues;
-    private final SimpleDoubleProperty totalShares;
-    private final SimpleDoubleProperty netWorth;
+    private final StringProperty shareValues;
+    private final StringProperty totalShares;
+    private final StringProperty netWorth;
 
-    public CompanyData(String companyName, double shareValue, double netWorth, double totalShares) {
+    public CompanyData(String companyName, String shareValue, String netWorth, String totalShares) {
         this.companyName = new SimpleStringProperty(companyName);
-        this.shareValues = new SimpleDoubleProperty(shareValue);
-        this.netWorth = new SimpleDoubleProperty(netWorth);
-        this.totalShares = new SimpleDoubleProperty(totalShares);
+        this.shareValues = new SimpleStringProperty(shareValue);
+        this.netWorth = new SimpleStringProperty(netWorth);
+        this.totalShares = new SimpleStringProperty(totalShares);
 
     }
 
@@ -33,39 +33,39 @@ public class CompanyData {
         this.companyName.set(companyName);
     }
 
-    public double getShareValues(int j) {
+    public String getShareValues(int j) {
         return shareValues.get();
     }
 
-    public DoubleProperty shareValuesProperty() {
+    public StringProperty shareValuesProperty() {
         return shareValues;
     }
 
-    public void setShareValues(Double shareValues) {
+    public void setShareValues(String shareValues) {
         this.shareValues.set(shareValues);
     }
 
-    public double getTotalShares() {
+    public String getTotalShares() {
         return totalShares.get();
     }
 
-    public DoubleProperty totalSharesProperty() {
+    public StringProperty totalSharesProperty() {
         return totalShares;
     }
 
-    public void setTotalShares(int totalShares) {
+    public void setTotalShares(String totalShares) {
         this.totalShares.set(totalShares);
     }
 
-    public double getNetWorth() {
+    public String getNetWorth() {
         return netWorth.get();
     }
 
-    public DoubleProperty netWorthProperty() {
+    public StringProperty netWorthProperty() {
         return netWorth;
     }
 
-    public void setNetWorth(int netWorth) {
+    public void setNetWorth(String netWorth) {
         this.netWorth.set(netWorth);
     }
 }

@@ -17,6 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 import tray.notification.TrayNotification;
+
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static tray.animations.AnimationType.POPUP;
@@ -398,17 +400,19 @@ public class Controller{
 
 
         List<CompanyData> companyData = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
 
         for(int i = 0; i < companyNames.size(); i++){ //Passes the 'i'th element to a variable
             String getNames = companyNames.get(i);
             Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
             int getTotalShares = companyValues.get(i);
             int getNetWorth = netWorth.get(i);
-            CompanyData company = new CompanyData("Test",1,1,1);//Creating a object  per row
+            CompanyData company = new CompanyData("Test","test","test","test");//Creating a object  per row
             company.setCompanyName(getNames); //Adds the 'i'th element to the table.
-            company.setShareValues(getSharePrices);
-            company.setTotalShares(getTotalShares);
-            company.setNetWorth(getNetWorth);
+            company.setShareValues(df.format(getSharePrices));
+            company.setTotalShares(df.format(getTotalShares));
+            company.setNetWorth(df.format(getNetWorth));
             companyData.add(company);
         }
         return companyData;
@@ -433,7 +437,7 @@ public class Controller{
                 });
             }
 
-        }, 0, TABLE_REFRESH_RATE);
+        }, 0, 10000);
 
 
         Tooltip tooltip = new Tooltip(); //Lets us create a hover message
@@ -470,18 +474,21 @@ public class Controller{
         //Getting total worth and appending to list
         List<Double> totalWorth = new ArrayList<>(); //Wealth
         totalWorth.addAll(sim.getTotalWorth());
+        System.out.println(totalWorth);
 
 
         List<ClientData> clientData = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
 
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
             Double getCashHoldings = cashHolding.get(i);
             Double getTotalWorths = totalWorth.get(i);
-            ClientData client = new ClientData("Test", 1, 1,"3","Random");//Creating a object  per row
+            ClientData client = new ClientData("Test", "test", "test","3","Random");//Creating a object  per row
             client.setClient(getClientNames);
-            client.setCashHolding(getCashHoldings);
-            client.setWealth(getTotalWorths);
+            client.setCashHolding(df.format(getCashHoldings));
+            client.setWealth(df.format(getTotalWorths));
             clientData.add(client);
         }
         return clientData;
@@ -550,14 +557,14 @@ public class Controller{
                 tray.showAndWait();
                 break;
             case 15:
-                tray.setMessage("On an average daily basis, more than $250 billion worth of stock \n is traded on U.S. exchanges");
-                tray.setTitle("FUN FACT");
+                tray.setMessage("has a history of more than 300 years! ");
+                tray.setTitle("FUN FACT - London Stock Exchange ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
             case 6:
-                tray.setMessage("In China they call the stock market 股市,\n which translates to “the stock market.”");
-                tray.setTitle("FUN FACT");
+                tray.setMessage("Stock market is called 股市,\n which translates to “the stock market.”!");
+                tray.setTitle("FUN FACT - In china  ");
                 tray.showAndDismiss(Duration.seconds(7));
                 tray.showAndWait();
                 break;
