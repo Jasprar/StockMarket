@@ -106,7 +106,7 @@ public class RandomTrader extends Trader {
     }
 
     @Override
-    public ArrayList<Share> sell() {
+    public ArrayList<Share> sell(HashMap<String, Double> sharePrices) {
         if(mode == EVENTSELLER) {
             return eventSell();
         } else {

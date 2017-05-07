@@ -63,10 +63,14 @@ public class Simulator {
             // Update the marketType counter.
             if(yesterdayShareIndex < shareIndex) {
                 //System.out.println("The market has grown since yesterday.");
-                marketType++;
+                if(marketType < 3) {
+                    marketType++;
+                }
             } else if(yesterdayShareIndex > shareIndex) {
                 //System.out.println("The market has shrunk since yesterday.");
-                marketType--;
+                if(marketType > -3) {
+                    marketType--;
+                }
             }
             yesterdayShareIndex = shareIndex;
             // Switch trader modes.
@@ -169,7 +173,7 @@ public class Simulator {
             port.add(portfolios.get(7)); // Justine Thyme.
             portfolios.remove(7);
             portfolios.remove(0);
-            traders.add(new RandomTrader(port, allShares));
+            traders.add(new IntelligentTrader(port, allShares));
             while(portfolios.size() >= 2) {
                 port = new ArrayList<>();
                 port.add(portfolios.get(0));
@@ -228,7 +232,7 @@ public class Simulator {
             for(String companyName : traderBuys.keySet()) {
                 buyTotals.put(companyName, (buyTotals.get(companyName) + traderBuys.get(companyName)));
             }
-            ArrayList<Share> shares = t.sell();
+            ArrayList<Share> shares = t.sell(sharePrices);
             totalPutUpForSale += shares.size();
             toBeSold.put(t, shares);
             for(Share s : shares) {
@@ -382,27 +386,8 @@ public class Simulator {
     private void calculateShareIndex() {
         //System.out.println("Changing the share index...");
         int newShareIndex = 0;
-        for(String companyName : numberOfShares.keySet()) {
-            boolean found = false;
-            int i = 0;
-            while(!found && i < traders.size()) {
-                Trader t = traders.get(i);
-                int j = 0;
-                while(!found && j < t.getPortfolios().size()) {
-                    Portfolio p = t.getPortfolios().get(j);
-                    int k = 0;
-                    while(!found && k < p.getShares().size()) {
-                        Share s = p.getShares().get(k);
-                        if(s.getCompanyName().equals(companyName)) {
-                            newShareIndex += s.getSharePrice();
-                            found = true;
-                        }
-                        k++;
-                    }
-                    j++;
-                }
-                i++;
-            }
+        for(double sharePrice : sharePrices.values()) {
+            newShareIndex += sharePrice;
         }
         shareIndex = (double)newShareIndex / (double)numberOfShares.size();
         //System.out.println("Share index is now " + shareIndex);
@@ -626,8 +611,6 @@ public class Simulator {
         }
         return portfolios;
     }
-
-
 
     /**
      * Returns the names of all companies in the simulation.

@@ -1,7 +1,7 @@
 package StockMarket;
 
 public class ClientTracker {
-    private final double originalPrice;
+    private double originalPrice;
     private String clientName;
     private String companyName;
     private String commodityType;
@@ -9,21 +9,21 @@ public class ClientTracker {
     private int amountSold;
     private int amountBought;
     private double buyPrice; // Most recently bought
-    private int fluctuation; // Negative if buyPrice dropping since bought, positive otherwise.
+    private double fluctuation; // Negative if buyPrice dropping since bought, positive otherwise.
 
-    public ClientTracker(String clientName, String companyName, String commodityType, double buyPrice) {
+    public ClientTracker(String clientName, String companyName, String commodityType) {
         this.clientName = clientName;
         this.companyName = companyName;
         this.commodityType = commodityType;
         amount = 0;
         amountSold = 0;
         amountBought = 0;
-        this.buyPrice = buyPrice;
-        this.originalPrice = buyPrice;
+        this.buyPrice = -1;
+        this.originalPrice = -1;
         fluctuation = 0;
     }
 
-    public int getFluctuation() { return fluctuation; }
+    public double getFluctuation() { return fluctuation; }
     public int getAmount() {
         return amount;
     }
@@ -44,10 +44,10 @@ public class ClientTracker {
     public void setBuyPrice(double buyPrice) {
         double oldPrice = this.buyPrice;
         this.buyPrice = buyPrice;
-        if(oldPrice > buyPrice) {
-            fluctuation--;
-        } else if(oldPrice < buyPrice) {
-            fluctuation++;
+        if(oldPrice == -1) {
+            originalPrice = buyPrice;
+        } else {
+            fluctuation += (buyPrice - oldPrice);
         }
     }
     public int getAmountSold() { return amountSold; }
@@ -70,13 +70,7 @@ public class ClientTracker {
         return amountBought;
     }
 
-    public void removeAmountBought(int amount) {
-        int prevAmountBought = amountBought;
-        amountBought -= amount;
-        System.out.println(prevAmountBought + " - " + amount + " = " + amountBought);
-    }
-
-    public void decrementAmountSold() {
-        amountSold--;
+    public double getOriginalPrice() {
+        return originalPrice;
     }
 }
