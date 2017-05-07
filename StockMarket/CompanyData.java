@@ -13,6 +13,13 @@ public class CompanyData {
     private final StringProperty totalShares;
     private final StringProperty netWorth;
 
+    /***
+     * Constructor, creates the object
+     * @param companyName
+     * @param shareValue
+     * @param netWorth
+     * @param totalShares
+     */
     public CompanyData(String companyName, String shareValue, String netWorth, String totalShares) {
         this.companyName = new SimpleStringProperty(companyName);
         this.shareValues = new SimpleStringProperty(shareValue);
@@ -21,50 +28,37 @@ public class CompanyData {
 
     }
 
-    public String getCompanyName() {
-        return companyName.get();
-    }
-
-    public StringProperty companyNameProperty() {
-        return companyName;
-    }
-
+    /***
+     * Sets the company name
+     * @param companyName
+     */
     public void setCompanyName(String companyName) {
         this.companyName.set(companyName);
     }
 
-    public String getShareValues(int j) {
-        return shareValues.get();
-    }
 
-    public StringProperty shareValuesProperty() {
-        return shareValues;
-    }
-
+    /***
+     * Sets the share values belonging to the company
+     * @param shareValues
+     */
     public void setShareValues(String shareValues) {
         this.shareValues.set(shareValues);
     }
 
-    public String getTotalShares() {
-        return totalShares.get();
-    }
 
-    public StringProperty totalSharesProperty() {
-        return totalShares;
-    }
-
+    /***
+     * Sets the total shares issued belonging to the company
+     * @param totalShares
+     */
     public void setTotalShares(String totalShares) {
         this.totalShares.set(totalShares);
     }
 
-    public String getNetWorth() {
-        return netWorth.get();
-    }
 
-    public StringProperty netWorthProperty() {
-        return netWorth;
-    }
-
+    /**
+     * Sets the companys netWorth
+     * @param netWorth
+     */
     public void setNetWorth(String netWorth) {
         this.netWorth.set(netWorth);
     }
