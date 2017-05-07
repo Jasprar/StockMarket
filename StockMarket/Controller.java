@@ -392,6 +392,13 @@ public class Controller{
         DecimalFormat df = new DecimalFormat("#");
         df.setMaximumFractionDigits(0);
 
+        for(Trader t : sim.get) {
+            if(t instanceof IntelligentTrader) {
+                // do something
+                t.getClass()
+            }
+        }
+
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
             Double getCashHoldings = cashHolding.get(i);

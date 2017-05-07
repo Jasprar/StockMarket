@@ -8,8 +8,8 @@ Menu bar
 _____________________________________
 Tabs
 _____________________________________
-Commodities   |
-              |        Graph
+Logo          |
+Controls      |        Graph
               |______________________
               | Event type, time, date
               |
@@ -43,7 +43,7 @@ ______________|_______________________
 [ Text Area      ]
 -->
 
-<VBox fx:id="frame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller">
+<VBox fx:id="frame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="693.0" prefWidth="1099.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="StockMarket.Controller" >
     <children>
         <!--- Create a menuBar -->
         <MenuBar id="menuBar">

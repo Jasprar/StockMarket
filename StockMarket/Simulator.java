@@ -486,7 +486,8 @@ public class Simulator {
             for(Portfolio p : t.getPortfolios()) {
                 for(Share s: p.getShares()) {
                     if(s.getCompanyName().equals(companyName)) {
-                        netWorth += s.getSharePrice();
+                         netWorth += s.getSharePrice();
+
                     }
                 }
             }
@@ -596,6 +597,7 @@ public class Simulator {
                 portfolios.add(p.getTotalWorth());
             }
         }
+        System.out.println("total worth " + portfolios.toString());
         return portfolios;
     }
 
@@ -633,7 +635,7 @@ public class Simulator {
      */
     public HashMap<String, Integer> getCompanyDetails() { return numberOfShares;}
 
-    private int totalSharesForCompanies() {
+    public int totalSharesForCompanies() {
         int total = 0;
         for(int numberOfShares : numberOfShares.values()) {
             total += numberOfShares;
@@ -641,7 +643,7 @@ public class Simulator {
         return total;
     }
 
-    private int totalSharesInPortfolios() {
+    public int totalSharesInPortfolios() {
         int total = 0;
         for(Trader t : traders) {
             total += t.getShares();

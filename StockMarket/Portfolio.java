@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class Portfolio {
     private String clientName;
+    private double totalWorth;
     private double cashHolding;
     private ArrayList<Share> shares;
     private boolean sellAll;
 
     public Portfolio(String clientName) {
         this.clientName = clientName;
+        totalWorth = 0; // cashHolding is added later (due to processing the spreadsheet row-by-row).
         shares = new ArrayList<>();
         sellAll = false;
     }
@@ -22,6 +24,7 @@ public class Portfolio {
     public void addSharesInit(ArrayList<Share> shares) {
         this.shares.addAll(shares);
         for(Share share : shares) {
+            totalWorth += share.getSharePrice();
         }
     }
 
@@ -33,6 +36,13 @@ public class Portfolio {
             addCashHolding(-s.getSharePrice());
         }
         //System.out.println(clientName + "'s cash now = " + cashHolding);
+        if(cashHolding < 0) {
+            System.err.println("Houston, We have a problem: " + clientName + ": " + cashHolding);
+            System.err.println(getCallingMethodName());
+            System.exit(-1);
+        }
+
+
     }
 
     public ArrayList<Share> getShares() {
@@ -40,10 +50,8 @@ public class Portfolio {
     }
 
     public double getTotalWorth() {
-        double totalWorth = cashHolding;
-        for (Share s : shares) {
-            totalWorth += s.getSharePrice();
-        }
+        System.out.println("Total worht in portfolio " + totalWorth);
+
         return totalWorth;
     }
 
@@ -51,6 +59,7 @@ public class Portfolio {
     public void setCashHolding(int cashHolding) {
         cashHolding = cashHolding * 100; // cashHolding is in pounds, we wish to store it in pence.
         this.cashHolding = cashHolding;
+        totalWorth += cashHolding;
     }
 
     public double getCashHolding() {
@@ -67,6 +76,7 @@ public class Portfolio {
         for(int i = 0; i < shares.size(); i++) {
             if(shares.get(i).getCompanyName().equals(companyName)) {
                 sharesToRemove.add(shares.get(i));
+                cashHolding -= shares.get(i).getSharePrice();
             }
         }
         shares.removeAll(sharesToRemove);
@@ -79,11 +89,7 @@ public class Portfolio {
 
     public void addCashHolding(double sharePrice) {
         cashHolding += sharePrice;
-        if(cashHolding < 0) {
-            System.err.println("Houston, We have a problem: " + clientName + ": " + cashHolding);
-            System.err.println(getCallingMethodName());
-            System.exit(-1);
-        }
+        totalWorth += sharePrice;
     }
 
     public double getSharesTotal() {
@@ -97,4 +103,8 @@ public class Portfolio {
         StackTraceElement callingFrame = Thread.currentThread().getStackTrace()[4];
         return callingFrame.getMethodName();
     }
+
+
+
+
 }
