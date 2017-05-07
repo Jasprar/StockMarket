@@ -1,11 +1,14 @@
 package StockMarket;
 
+import org.junit.jupiter.api.Test;
+import org.omg.CORBA.portable.UnknownException;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimulatorTest {
@@ -16,47 +19,94 @@ class SimulatorTest {
         simulator = new Simulator();
     }
 
-    @org.junit.jupiter.api.Test
+
+    @Test
     void runSimulation() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getNetWorth() {
         // At initialisation:
         assertEquals(simulator.getNetWorth("Pear Computing"), 32500000);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getTime() {
         // At initialisation:
         assertEquals(simulator.getTime(), "00:00:00");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getDate() {
         // At initialisation:
         assertEquals(simulator.getDate(), "01-01-2017");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getEvent() {
         // At initialisation:
         assertNull(simulator.getEvent());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getShareIndex() {
         // At initialisation:
         assertEquals(simulator.getShareIndex(), 239.5);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getMarketType() {
         // At initialisation:
         assertEquals(simulator.getMarketType(), "Stable");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
+    void getWealth(){
+        //Initialisation:
+        try {
+            ArrayList<Double> wealth = new ArrayList<>();
+            wealth.add(2.7578586E7);
+            wealth.add(2.1968611E7);
+            wealth.add(2.3219572E7);
+            wealth.add(3.0846637E7);
+            wealth.add(2.0290926E7);
+            wealth.add(2.4105229E7);
+            wealth.add(2.1926594E7);
+            wealth.add(2.6121013E7);
+            wealth.add(3.1583543E7);
+            wealth.add(3.3436761E7);
+            assertEquals(simulator.getTotalWorth(), wealth); //Should not exist
+            System.out.println(simulator.getTotalWorth());
+        }catch(IllegalArgumentException e){
+            throw(e);
+        }
+
+    }
+
+    @Test
+    void getIncorrectWealth(){
+        //Initialisation:
+        try {
+            ArrayList<Double> wealth = new ArrayList<>();
+            wealth.add(2.7578586E7);
+            wealth.add(2.1968611E7);
+            wealth.add(2.3219572E7);
+            wealth.add(3.0846637E7);
+            wealth.add(2.0290926E7);
+            wealth.add(2.4105229E7);
+            wealth.add(2.1);
+            wealth.add(2.6121013E7);
+            wealth.add(3.1583543E7);
+            wealth.add(3.3436761E7);
+            assertNotSame(simulator.getTotalWorth(), wealth, "Wealth does not match - Correct"); //Should not exist
+        }catch(IllegalArgumentException e){
+            throw(e);
+        }
+
+    }
+
+
+    @Test
     void getSharePrice() throws IOException {
         // At initialisation:
         Iterator<String> companyNames = simulator.getCompanyNames().iterator(); // Tests getCompanyNames.
@@ -76,5 +126,44 @@ class SimulatorTest {
             i++;
         }
     }
+
+    @Test
+    void getTotalShares(){
+        //Not being used - should run with anything
+        assertEquals(simulator.getShares(),8);
+        assertEquals(simulator.getShares(),"qq3");
+    }
+
+
+    @Test
+    void getTotalNetworth(){
+        List<String> companyNames = new ArrayList<>();
+        Set<String> companyNames1 =  simulator.getCompanyNames();
+        companyNames.addAll(companyNames1);
+
+        for(String s: companyNames) {
+            int x = simulator.getNetWorth(s);
+            assertEquals(simulator.getNetWorth(s),x);
+
+        }
+    }
+
+    @Test
+    void getIncorrectTotalNetWorth(){
+            List<String> companyNames = new ArrayList<>();
+            Set<String> companyNames1 =  simulator.getCompanyNames();
+            companyNames.addAll(companyNames1);
+
+            for(String s: companyNames) {
+                int x = simulator.getNetWorth(s) + 1;
+                assertNotSame(simulator.getNetWorth(s),x,"Wealth does not match with false data ");
+
+            }
+
+    }
+
+
+
+
 
 }
