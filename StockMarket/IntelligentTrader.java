@@ -12,7 +12,7 @@ public class IntelligentTrader extends Trader {
 
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
-        System.out.println("IntelligentTrader buying begins...");
+        //System.out.println("IntelligentTrader buying begins...");
         HashMap<String, Integer> sharesBuying = new HashMap<>();
         for (Portfolio p : portfolios) {
             for (Share s : p.getShares()) {
@@ -39,7 +39,7 @@ public class IntelligentTrader extends Trader {
 
     @Override
     public ArrayList<Share> sell() {
-        System.out.println("Intelligent trader selling begins...");
+        //System.out.println("Intelligent trader selling begins...");
         ArrayList<Share> sharesSelling = new ArrayList<>();
         for (Portfolio p : portfolios) {
             HashMap<String, Integer> randomNoToSell = new HashMap<>();
