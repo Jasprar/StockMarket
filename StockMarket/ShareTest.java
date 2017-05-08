@@ -1,29 +1,35 @@
 package StockMarket;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Created by shahs on 08/05/2017.
  */
 class ShareTest {
 
     Share share;
-    void testGetSharePrice() {
-        System.out.println(share.getSharePrice());
-    }
 
-    void testGetCompanyName() {
-        System.out.println(share.getCompanyName());
-    }
 
-    void testSetSharePrice() {
-    //    System.out.println(share.setSharePrice());
+    @Test
+    void testSetAndGetSharePrice() {
+        Share share = new Share("Test Company Name", "Test Commodity", (double)1.23);
+        share.setSharePrice((double)1.23);
+        assertTrue(share.getSharePrice() == (double)1.23);
     }
-
-    void testGetCommodity() {
-        System.out.println(share.getCommodity());
+    @Test
+    void testSetAndGetCompanyName() {
+        Share share = new Share("Test Company Name", "Test Commodity", (double)1.23);
+        share.setCompanyName("Test");
+        assertTrue(share.getCompanyName().equals("Test"));
     }
-
-    void testToString() {
-        System.out.println(share.toString());
+    @Test
+    void testSetAndGetCommodity() {
+        Share share = new Share("Test Company Name", "Test Commodity", (double)1.23);
+        share.setCommodity("Test");
+        assertTrue(share.getCommodity().equals("Test"));
     }
 }
 

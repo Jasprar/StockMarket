@@ -67,4 +67,8 @@ public class Share {
                 ", sharePrice=" + sharePrice +
                 '}';
     }
+
+    // For testing purposes
+    public void setCompanyName(String name) { this.companyName = name; }
+    public void setCommodity(String type) { this.commodity = type; }
 }

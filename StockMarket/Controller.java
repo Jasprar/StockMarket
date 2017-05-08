@@ -215,7 +215,8 @@ public class Controller{
      * Market Type displays the current market type, eg: bear market
      * Event displays a message of an event has occured.
      * Graph displays the share index prices per month
-     * speedControl lets the user control the speed when looking at the information, from slow to fast.
+     * speedControl lets the user control the speed
+     * when looking at the information, from slow to fast.
      * CompanyTable ClientTable shows their information in "Back End Tab".
      * BackEnd tab, when clicked upon , it displays a 1 time only popup tip. Telling the user how to sell clients stock
      * and how to manage the speed.
