@@ -46,11 +46,7 @@ public class Portfolio {
     }
 
     public double getTotalWorth() {
-        double totalWorth = cashHolding;
-        for(Share s : shares) {
-            totalWorth += s.getSharePrice();
-        }
-        return totalWorth;
+        return cashHolding + getSharesTotal();
     }
 
     // MUST ONLY BE USED DURING SETUP, AS MULTIPLIES PARAMETER BY 100 & ADDS TO TOTALWORTH.

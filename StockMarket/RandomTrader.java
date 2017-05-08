@@ -221,12 +221,9 @@ public class RandomTrader extends Trader {
         } // Else event is in progress, do not switch mode.
     }
 
-    /**
-     *
-     * @param buying
-     * @param metric
-     * @return
-     */
+    // buying represents whether this was called from buy() or sell(), the metric is either the cash holding of the client
+    // or the combined worth of all shares (totalWorth - cashHolding). The rand.nextInt() gives us a number between 0 and
+    // % * the metric, the percentages determined by the mode the trader is in.
     private double modeSelector(boolean buying, double metric) {
         //System.out.println("metric =" + metric);
         double amount = 0;
