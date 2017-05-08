@@ -15,14 +15,14 @@ class RandomTraderTest {
      */
     @Test
     void buy() {
-        //Cannot be tested due you need to run the simulatio
-        // Multithreading is needed to test this. (Seperate back end from from testing to get all the data to test it against)
+        //Cannot be tested due you need to run the simulation
+        // Multithreading is needed to test this. (Separation back end from from testing to get all the data to test it against)
     }
 
     @Test
     void sell() {
         //Cannot be tested due you need to run the simulation
-        //Multithreading is needed to test this. (Seperate back end from from testing to get all the data to test it against)
+        // Multithreading is needed to test this. (Separation back end from from testing to get all the data to test it against)
 
     }
 
@@ -35,6 +35,6 @@ class RandomTraderTest {
     @Test
     void switchMode() {
         //Cannot be tested due you need to run the simulation
-        //Multithreading is needed to test this. (Seperate back end from from testing to get all the data to test it against)
+        // Multithreading is needed to test this. (Separation back end from from testing to get all the data to test it against)
     }
 }
