@@ -12,62 +12,57 @@ class CompanyDataTest {
     CompanyData companyData;
     @Test
     void setCompanyName() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setCompanyName("TEST");
+        assertTrue(companyData.getCompanyName().equals("TEST"));
     }
 
     @Test
     void setShareValues() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setShareValues("TEST");
+        assertTrue(companyData.getShareValues().equals("TEST"));
     }
 
     @Test
     void setTotalShares() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setTotalShares("TEST");
+        assertTrue(companyData.getTotalShares().equals("TEST"));
     }
 
     @Test
     void setNetWorth() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setNetWorth("TEST");
+        assertTrue(companyData.getNetWorth().equals("TEST"));
     }
 
     @Test
     void getCompanyName() {
-
-    }
-
-    @Test
-    void companyNameProperty() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setCompanyName("TEST");
+        assertTrue(companyData.getCompanyName().equals("TEST"));
     }
 
     @Test
     void getShareValues() {
-
-    }
-
-    @Test
-    void shareValuesProperty() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setShareValues("TEST");
+        assertTrue(companyData.getShareValues().equals("TEST"));
     }
 
     @Test
     void getTotalShares() {
-
-    }
-
-    @Test
-    void totalSharesProperty() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setTotalShares("TEST");
+        assertTrue(companyData.getTotalShares().equals("TEST"));
     }
 
     @Test
     void getNetWorth() {
-
+        CompanyData companyData = new CompanyData("Test Client", "Test Wealth", "Test Cash Holding", "Test Shares");
+        companyData.setNetWorth("TEST");
+        assertTrue(companyData.getNetWorth().equals("TEST"));
     }
-
-    @Test
-    void netWorthProperty() {
-
-    }
-
 }
