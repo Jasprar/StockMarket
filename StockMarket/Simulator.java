@@ -111,7 +111,8 @@ public class Simulator {
             //System.out.println("The next day is: " + nextDayCal.getTime());
             if(nextDayCal.get(nextDayCal.DAY_OF_WEEK) == nextDayCal.SATURDAY) {
                 nextDayCal.add(nextDayCal.DATE, 2); // Skips over Sunday.
-            } else if(nextDayCal.getTime().compareTo(GOOD_FRIDAY) == 0) {
+            }
+            if(nextDayCal.getTime().compareTo(GOOD_FRIDAY) == 0) {
                 nextDayCal.add(nextDayCal.DATE, 4);
             } else if(nextDayCal.getTime().compareTo(CHRISTMAS_DAY) == 0) {
                 nextDayCal.add(nextDayCal.DATE, 2);
