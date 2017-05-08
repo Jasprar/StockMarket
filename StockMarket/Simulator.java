@@ -476,26 +476,6 @@ public class Simulator {
     }
 
     /**
-     * Given the name of a company, returns its net worth.
-     * @param companyName An (exact) string representation of the company's name.
-     * @return The net worth (share price * number of shares) for the company.
-     */
-    public int getNetWorth(String companyName) {
-        int netWorth = 0;
-        for(Trader t : traders) {
-            for(Portfolio p : t.getPortfolios()) {
-                for(Share s: p.getShares()) {
-                    if(s.getCompanyName().equals(companyName)) {
-                         netWorth += s.getSharePrice();
-
-                    }
-                }
-            }
-        }
-        return netWorth;
-    }
-
-    /**
      * Returns the time portion of the current date & time in the simulation.
      * @return A string representation of the current time (HH:MM:SS).
      */
@@ -653,5 +633,14 @@ public class Simulator {
     
     public ArrayList<Trader> getTraders() {
         return traders;
+    }
+
+    /**
+     * Given the name of a company, returns its net worth.
+     * @param companyName An (exact) string representation of the company's name.
+     * @return The net worth (share price * number of shares) for the company.
+     */
+    public double getNetWorth(String companyName) {
+        return (double) numberOfShares.get(companyName) * sharePrices.get(companyName);
     }
 }
