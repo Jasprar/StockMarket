@@ -11,7 +11,7 @@ import java.util.*;
  * the time is right.
  *
  * @Author 146803
- * @Version 25/04/2017
+ * @Version 06/05/2017
  */
 public class Simulator {
     private GregorianCalendar calendar;
