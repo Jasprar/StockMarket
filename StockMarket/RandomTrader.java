@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * Represents a trader for a different company (one other than W&G). These traders manage all other portfolios.
+ * @Author 164875 & 146803
+ * @Version 06/05/2017
+ */
 public class RandomTrader extends Trader {
     static final int BALANCED = 0;
     static final int SELLER = -1;
@@ -15,6 +20,7 @@ public class RandomTrader extends Trader {
     private Random rand;
 
     /**
+     * Initializes RandomTraders. Initially sets the mode to balanced trading mode.
      * @param portfolios
      */
     public RandomTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
@@ -23,6 +29,13 @@ public class RandomTrader extends Trader {
         rand = new Random();
     }
 
+    /**
+     * Implements the buy method of the Trader superclass. Randomly chooses shares up to some percentage of each portfolio's
+     * totalWorth (determined by the mode they are in).
+     * @param sharePrices the HashMap of company name to share price used to make sure the trader does not spend more
+     *                    than the client has.
+     * @return The HashMap of company name to number of shares requested.
+     */
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
         if(mode == EVENTBUYER) {
@@ -55,6 +68,7 @@ public class RandomTrader extends Trader {
         }
     }
 
+    // Similar to the buy method, however only buys shares that match the event field.
     private HashMap<String, Integer> eventBuy(HashMap<String, Double> sharePrices) {
         ArrayList<String> companyNames = new ArrayList<>(sharePrices.keySet());
         HashMap<String, Integer> buying = new HashMap<>();
@@ -94,6 +108,12 @@ public class RandomTrader extends Trader {
         return buying;
     }
 
+    /**
+     * Chooses shares from each portfolio randomly to sell (up to some percentage of total shares' worth - determined
+     * by RNG and the mode they are in).
+     * @param sharePrices Unused in the RandomTrader.
+     * @return The list of shares put up for sale by this trader on the stock exchange.
+     */
     @Override
     public ArrayList<Share> sell(HashMap<String, Double> sharePrices) {
         if(mode == EVENTSELLER) {
@@ -121,7 +141,7 @@ public class RandomTrader extends Trader {
         }
     }
 
-
+    // Similar to the sell method, but only sells shares matching the event field.
     private ArrayList<Share> eventSell() {
         ArrayList<Share> toSell = new ArrayList<>();
         for (Portfolio p : portfolios) {
@@ -147,12 +167,23 @@ public class RandomTrader extends Trader {
         return toSell;
     }
 
+    /**
+     * Sets the mode to the specified mode. Used after events have ended.
+     * @param mode the integer representing the static field defining that mode.
+     */
     @Override
     public void setMode(int mode) {
         this.mode = mode;
     }
 
 
+    /**
+     * Switches modes according to the following rules:
+     * - If in balanced mode, there is a 10% chance the trader will switch to seller mode, a 20% chance they will switch
+     * to buyer mode & a 70% chance they will stay in balanced mode.
+     * - If in seller mode, there is a 40% chance they will stay in seller mode, and a 60% chance they will switch to balanced.
+     * - If in buyer mode, there is a 70% chance they will switch to balanced mode & a 30% chance they will stay in buyer mode.
+     */
     @Override
     public void switchMode() {
         int randomNextDayMode = rand.nextInt(100);
@@ -190,6 +221,12 @@ public class RandomTrader extends Trader {
         } // Else event is in progress, do not switch mode.
     }
 
+    /**
+     *
+     * @param buying
+     * @param metric
+     * @return
+     */
     private double modeSelector(boolean buying, double metric) {
         //System.out.println("metric =" + metric);
         double amount = 0;

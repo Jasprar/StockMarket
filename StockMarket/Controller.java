@@ -38,7 +38,7 @@ import static tray.animations.AnimationType.SLIDE;
  * onAction="#(MethodName)". For example <MenuItem fx:id="runSim" onAction = "#RunSimulation"></MenuItem>.
  *
  * @Author 132224
- * @Version 24/04/2017
+ * @Version 05/05/2017
  */
 
 
@@ -70,7 +70,7 @@ public class Controller{
     private int duration;
     private int count;
     private int clicked;
-    private int TABLE_REFRESH_RATE = 2000;
+    private int TABLE_REFRESH_RATE = 6000;
 
     Timer timer = new Timer();
     Simulator sim = new Simulator();
@@ -200,7 +200,7 @@ public class Controller{
         alert.showAndWait();
     }
 
-    /***
+    /**
      * Once the run simulation duration as been entered, these methods are called.
      * Commodities method displays the overall commodities values. EG: property value has
      * went down from 52% to 35%.
@@ -248,7 +248,7 @@ public class Controller{
     }
 
 
-    /***
+    /**
      * Gets called from callMethod()
      * Displays share index on a line chart. Shows the share index value per every month.
      */
@@ -278,7 +278,7 @@ public class Controller{
     }
 
 
-    /***
+    /**
      *When the user right clicks on on anchor pane with FX:ID  = "companyPane" (companyPane is the global pane for
      * Company and Client) then a choice dialog popup occurs, asking the user to Select from the choice
      * of speed. When the user selects it's speed the "TABLE_REFRESH_RATE" value gets updated and changes
@@ -336,7 +336,7 @@ public class Controller{
         }, 0, 1000);
     }
 
-    /***
+    /**
      * Populates arraylists, Company Name, Values, Price and total shares accordingly.
      * Creates a new instance of companyData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
@@ -381,6 +381,12 @@ public class Controller{
             company.setNetWorth(df.format(getNetWorth));
             companyData.add(company);
         }
+        sharePrice.clear();
+        companyValues.clear();
+        netWorth.clear();
+        companyNames.clear();
+        companyNames1.clear();
+        companyValues1.clear();
         return companyData;
     }
 
@@ -422,7 +428,7 @@ public class Controller{
         });
     }
 
-    /***
+    /**
      * Populates arraylists, Client Name, CashHolding, and totalWorth shares accordingly.
      * Creates a new instance of ClientData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
@@ -461,10 +467,13 @@ public class Controller{
             client.setWealth(df.format(getTotalWorths));
             clientData.add(client);
         }
+        clientNames.clear();
+        totalWorth.clear();
+        cashHolding.clear();
         return clientData;
     }
 
-    /***
+    /**
      * One time only popup when BackEnd tab is clicked upon, displaying the a tip message.
      * Checks if clicked < 1. If it is, then displays the message and increments clicked.
      */
@@ -486,7 +495,7 @@ public class Controller{
         });
     }
 
-    /***
+    /**
      * Uses a library from Github by PlusHaze: https://github.com/PlusHaze/TrayNotification
      * Uses the timer from the company timer, to save memory as it's not needed to have an independent timer.
      * Displays a fun fact  regarding about  stock markets.

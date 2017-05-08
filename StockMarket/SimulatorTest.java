@@ -138,7 +138,7 @@ class SimulatorTest {
         companyNames.addAll(companyNames1);
 
         for (String s : companyNames) {
-            int x = simulator.getNetWorth(s);
+            double x = simulator.getNetWorth(s);
             assertEquals(simulator.getNetWorth(s), x);
 
         }
@@ -151,7 +151,7 @@ class SimulatorTest {
         companyNames.addAll(companyNames1);
 
         for (String s : companyNames) {
-            int x = simulator.getNetWorth(s) + 1;
+            double x = simulator.getNetWorth(s) + 1;
             assertNotSame(simulator.getNetWorth(s), x, "Wealth does not match with false data ");
 
         }

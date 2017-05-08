@@ -7,9 +7,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Represents a Wolf & Gecko trader in the Trading exchange. Manages the portfolios of Justine Thyme and Norbert DaVinci.
+ * Should outperform the RandomTraders.
+ * @Author 164875 & 146803
+ * @Version 07/05/2017
+ */
 public class IntelligentTrader extends Trader {
+
     /**
-     * Initializes Intelligent traders
+     * Initializes Intelligent traders.
      * @param portfolios
      * @param allShares
      */
@@ -18,10 +25,10 @@ public class IntelligentTrader extends Trader {
     }
 
     /**
-     * Overrides the trader's buy method. If the price is going up, it will buy, or else
-     * it will not do anything for that share
-     * @param sharePrices
-     * @return A HashMap of shares it wants to buy
+     * Overrides the trader's buy method. Uses the fluctuation of the share to determine how many to buy of it.
+     * @param sharePrices The HashMap of company name to share price (used to make sure the trader doesn't buy more than
+     *                    the trader can afford).
+     * @return A HashMap of company name to number of shares it wants to buy (for all their portfolios).
      */
     @Override
     public HashMap<String, Integer> buy(HashMap<String, Double> sharePrices) {
@@ -39,9 +46,9 @@ public class IntelligentTrader extends Trader {
                         double fluctScale = ct.getFluctuation() / ct.getBuyPrice();
                         int numberToBuy = 0;
                         if(fluctScale < 0 && ct.getBuyPrice() > ct.getOriginalPrice()) {
-                            numberToBuy = (int) Math.floor((1 - fluctScale) * (amountToSpend / sharePrices.get(ct.getCompanyName()))) % 50;
+                            numberToBuy = (int) Math.floor((-fluctScale) * (amountToSpend / sharePrices.get(ct.getCompanyName()))) % 50;
                         } else if(fluctScale > 0) {
-                            numberToBuy = (int) Math.floor(fluctScale * (amountToSpend / sharePrices.get(ct.getCompanyName()))) % 50;
+                            numberToBuy = (int) Math.floor((1 - fluctScale) * (amountToSpend / sharePrices.get(ct.getCompanyName()))) % 50;
                         } else if(fluctScale == 0){
                             numberToBuy = (int) Math.floor(0.5 * (amountToSpend / sharePrices.get(ct.getCompanyName()))) % 50;
                         }
@@ -61,10 +68,11 @@ public class IntelligentTrader extends Trader {
     }
 
     /**
-     * Overrides the trader's sell method. If the price is higher than what it previously
-     * bought it at and the price is falling, sell, or else do nothing for
-     * that share
-     * @return An ArrayList of shares it wants to sell
+     * Overrides the trader's sell method. Uses the fluctuation to determine how many shares of a company to sell
+     * (i.e. if the share price is dropping, sell more & more).
+     * @param sharePrices The HashMap of company name to share prices used to determine whether the trader is selling
+     *                    too high a proportion of their total worth.
+     * @return An ArrayList of shares it wants to sell.
      */
     @Override
     public ArrayList<Share> sell(HashMap<String, Double> sharePrices) {
@@ -85,9 +93,9 @@ public class IntelligentTrader extends Trader {
                         double fluctScale = ct.getFluctuation() / ct.getBuyPrice();
                         int numberToSell = 0;
                         if(fluctScale < 0) {
-                            numberToSell = (int) Math.floor(fluctScale * (amountToEarn / sharePrices.get(ct.getCompanyName()))) % ct.getAmount();
+                            numberToSell = (int) Math.floor((1 + fluctScale) * (amountToEarn / sharePrices.get(ct.getCompanyName()))) % ct.getAmount();
                         } else if(fluctScale > 0) {
-                            numberToSell = (int) Math.floor((1 - fluctScale) * (amountToEarn / sharePrices.get(ct.getCompanyName()))) % ct.getAmount();
+                            numberToSell = (int) Math.floor((fluctScale) * (amountToEarn / sharePrices.get(ct.getCompanyName()))) % ct.getAmount();
                         } else {
                             numberToSell = (int) Math.floor(0.5 * (amountToEarn / sharePrices.get(ct.getCompanyName()))) % ct.getAmount();
                         }
@@ -105,6 +113,7 @@ public class IntelligentTrader extends Trader {
         return traderSells;
     }
 
+    // Finds one share in the specified list of shares matching the company name, removes it from the list & returns it.
     private Share findAndRemove(ArrayList<Share> shares, String companyName) {
         for(int i = 0; i < shares.size(); i++) {
             if(shares.get(i).getCompanyName().equals(companyName)) {
