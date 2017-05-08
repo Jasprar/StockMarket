@@ -257,4 +257,8 @@ public class RandomTrader extends Trader {
         return amount;
     }
 
+    @Override
+    public String toString(){
+        return "Random";
+    }
 }

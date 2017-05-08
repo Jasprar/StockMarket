@@ -54,4 +54,13 @@ public class Share {
     public String getCommodity() {
         return commodity;
     }
+
+    @Override
+    public String toString() {
+        return "Share{" +
+                "companyName='" + companyName + '\'' +
+                ", commodity='" + commodity + '\'' +
+                ", sharePrice=" + sharePrice +
+                '}';
+    }
 }
