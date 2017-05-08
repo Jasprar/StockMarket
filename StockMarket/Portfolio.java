@@ -101,7 +101,7 @@ public class Portfolio {
     }
 
     /**
-     * Deletes all shares of a company. This is used when the company goes bankrupt
+     * Deletes all shares of a company. This is used when the company goes bankrupt.
      * @param companyName
      */
     // Called when a company's share price reaches 0.
