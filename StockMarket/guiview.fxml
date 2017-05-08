@@ -127,10 +127,10 @@ ______________|_______________________
                     </content>
                 </Tab>
                 <!-- Create a new tab -->
-                <Tab fx:id="backEnd" text="Back End">
+                <Tab fx:id="backEnd" text="Back End" >
                     <content>
                         <!-- Create an Anchor Pane for the company Table -->
-                        <AnchorPane fx:id="companyPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0">
+                        <AnchorPane fx:id="companyPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="204.0" prefWidth="1019.0" >
                             <children>
                                 <!-- Create a divider between Company And client Table -->
                                 <SplitPane dividerPositions="0.39980059820538383" prefHeight="618.0" prefWidth="1199.0">
