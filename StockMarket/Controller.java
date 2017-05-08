@@ -265,7 +265,7 @@ public class Controller{
                 });
 
             }
-        }, 0, (long) 10.4166666); //Calculation needed to display every month
+        }, 1000, (long) 10.4166666); //Calculation needed to display every month
         lineChart.getData().addAll(series);
     }
 
@@ -381,12 +381,6 @@ public class Controller{
             company.setNetWorth(df.format(getNetWorth));
             companyData.add(company);
         }
-        sharePrice.clear();
-        companyValues.clear();
-        netWorth.clear();
-        companyNames.clear();
-        companyNames1.clear();
-        companyValues1.clear();
         return companyData;
     }
 
@@ -467,9 +461,6 @@ public class Controller{
             client.setWealth(df.format(getTotalWorths));
             clientData.add(client);
         }
-        clientNames.clear();
-        totalWorth.clear();
-        cashHolding.clear();
         return clientData;
     }
 
