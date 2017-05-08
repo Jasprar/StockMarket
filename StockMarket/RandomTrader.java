@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
-/**
+/**C
  * Represents a trader for a different company (one other than W and G). These traders manage all other portfolios.
  * @author 164875 and 146803
  * @version 06/05/2017

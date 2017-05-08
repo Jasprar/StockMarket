@@ -225,7 +225,7 @@ class SimulatorTest {
             System.out.println("The client has lost money!");
         }
         if(a < b) {
-            System.out.println("The clinet has gained money!");
+            System.out.println("The client has gained money!");
         }
         if(a == b){
             System.out.println("The client has lost/gained money!");

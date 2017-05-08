@@ -39,7 +39,7 @@ class PortfolioTest {
 
     @Test
     void getClientName() {
-
+        assertEquals(p.getClientName(), "Test Client");
     }
 
     @Test
