@@ -323,9 +323,25 @@ public class Controller{
 
                 if (result.isPresent()){
                     if(result.get().equals("Slow")){
-
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                     if(result.get().equals("Normal")){
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    if(result.get().equals("Fast")){
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
                     }
 
                 }
