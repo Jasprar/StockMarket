@@ -11,7 +11,8 @@ public class ClientData {
     private final StringProperty wealth;
     private final StringProperty cashHolding;
     private final StringProperty shares;
-    private final StringProperty managedBy;
+
+
 
     /**
      * Constructor. Initializes the ClientData class.
@@ -19,14 +20,12 @@ public class ClientData {
      * @param wealth
      * @param cashHolding
      * @param shares
-     * @param managedBy
      */
-    public ClientData(String client, String wealth, String cashHolding, String shares, String managedBy) {
+    public ClientData(String client, String wealth, String cashHolding, String shares) {
         this.client = new SimpleStringProperty(client);
         this.wealth = new SimpleStringProperty(wealth);
         this.cashHolding = new SimpleStringProperty(cashHolding);
         this.shares = new SimpleStringProperty(shares);
-        this.managedBy = new SimpleStringProperty(managedBy);
     }
 
     /**
@@ -94,17 +93,23 @@ public class ClientData {
         this.shares.set(shares);
     }
 
-    /**
-     * This method gets the type of trader (eg. Random trader, Intelligent trader)
-     * @return String managedBy
-     */
-    public String getManagedBy() {
-        return managedBy.get();
+
+
+    public StringProperty clientProperty() {
+        return client;
     }
 
-    /**
-     * This method sets the type of trader to be used in the GUI
-     * @param managedBy
-     */
-    public void setManagedBy(String managedBy) {this.managedBy.set(managedBy);}
+    public StringProperty wealthProperty() {
+        return wealth;
+    }
+
+    public StringProperty cashHoldingProperty() {
+        return cashHolding;
+    }
+
+    public StringProperty sharesProperty() {
+        return shares;
+    }
+
+    
 }

@@ -180,10 +180,6 @@ ______________|_______________________
                                                             <cellValueFactory> <PropertyValueFactory property="cashHolding" />
                                                             </cellValueFactory>
                                                         </TableColumn>
-                                                        <TableColumn fx:id="managedBy" prefWidth="100.0" text="Managed By">
-                                                            <cellValueFactory> <PropertyValueFactory property="managedBy" />
-                                                            </cellValueFactory>
-                                                        </TableColumn>
                                                     </columns>
                                                 </TableView>
                                             </children>

@@ -62,4 +62,38 @@ public class CompanyData {
     public void setNetWorth(String netWorth) {
         this.netWorth.set(netWorth);
     }
+
+    public String getCompanyName() {
+        return companyName.get();
+    }
+
+    public StringProperty companyNameProperty() {
+        return companyName;
+    }
+
+    public String getShareValues() {
+        return shareValues.get();
+    }
+
+    public StringProperty shareValuesProperty() {
+        return shareValues;
+    }
+
+    public String getTotalShares() {
+        return totalShares.get();
+    }
+
+    public StringProperty totalSharesProperty() {
+        return totalShares;
+    }
+
+    public String getNetWorth() {
+        return netWorth.get();
+    }
+
+    public StringProperty netWorthProperty() {
+        return netWorth;
+    }
+
+
 }
