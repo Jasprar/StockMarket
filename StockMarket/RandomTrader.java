@@ -158,23 +158,33 @@ public class RandomTrader extends Trader {
         int randomNextDayMode = rand.nextInt(100);
         switch (mode) {
             case BALANCED:
+                //System.out.println("Trader was in balanced mode. is now in:");
                 if (randomNextDayMode < 10) {
+                    //System.out.println("SELLER MODE");
                     mode = RandomTrader.SELLER;
                 } else if (randomNextDayMode >= 10 && randomNextDayMode < 80) {
+                    //System.out.println("BALANCED MODE");
                     mode = RandomTrader.BALANCED;
                 } else {
+                    //System.out.println("BUYER MODE");
                     mode = RandomTrader.BUYER;
                 }
             case SELLER:
+                //System.out.println("Trader was in seller mode. is now in:");
                 if (randomNextDayMode < 40) {
+                    //System.out.println("SELLER MODE");
                     mode = RandomTrader.SELLER;
                 } else {
+                    //System.out.println("BALANCED MODE");
                     mode = RandomTrader.BALANCED;
                 }
             case BUYER:
+                //System.out.println("Trader was in buyer mode. is now in:");
                 if (randomNextDayMode < 70) {
+                    //System.out.println("BALANCED MODE");
                     mode = RandomTrader.BALANCED;
                 } else {
+                    //System.out.println("BUYER MODE");
                     mode = RandomTrader.BUYER;
                 }
         } // Else event is in progress, do not switch mode.
