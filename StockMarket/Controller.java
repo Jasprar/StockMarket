@@ -75,13 +75,14 @@ public class Controller{
     Timer timer = new Timer();
     Simulator sim = new Simulator();
 
-
-
-
+    /**
+     * Initialises the FXML and begins running funFacts().
+     */
     @FXML
     public void initialize(){
         funFacts();
     }
+
     /**
      * Calls runSimulation on clickevent of "Run Simulation" / "Run".
      * Event created:

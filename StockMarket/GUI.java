@@ -25,12 +25,12 @@ import javafx.stage.WindowEvent;
  */
 public class GUI extends Application {
 
-    /****
+    /**
      * Connection between guiview and controller. A PrimaryStage is used (Frame) as root which loads the guiview on top of
      * the frame. Sets the title (Name of the application), the size of the GUI, sets it to not resizeable and loads the
      * icon for the GUI then shows the GUI.
-     * @param primaryStage sets the GUI
-     * @throws Exception if guiview.fxml could not be loaded
+     * @param primaryStage sets the GUI.
+     * @throws Exception if guiview.fxml could not be loaded.
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -48,6 +48,11 @@ public class GUI extends Application {
         });
         primaryStage.show();
     }
+
+    /**
+     * Launches the GUI with the parameters args.
+     * @param args passed to the GUI.
+     */
     public static void main(String[] args) {
         launch(args);
     }
