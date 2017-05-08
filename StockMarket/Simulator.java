@@ -5,13 +5,13 @@ import java.text.*;
 import java.util.*;
 
 /**
- * Represents the Stock Market & Stock Exchange, and therefore handles the buying and selling of all Shares between Traders.
+ * Represents the Stock Market and Stock Exchange, and therefore handles the buying and selling of all Shares between Traders.
  * Reads initial data about clients, companies and events and instantiates all required classes based on this data, ready
  * for the simulation to begin. Keeps track of the date, time and events that occur, and responds to these events when
  * the time is right.
  *
- * @Author 146803
- * @Version 06/05/2017
+ * @author 146803
+ * @version 06/05/2017
  */
 public class Simulator {
     private GregorianCalendar calendar;
@@ -53,9 +53,9 @@ public class Simulator {
     }
 
     /**
-     * Runs the simulation for 1 year (until 31/01/2017, 17:00) - Every 15 minutes, traders buy & sell shares & the share index is adjusted (along with
-     * share prices & net worths for companies). Skips over hours & days where the Stock Market is closed
-     * (17:00 - 09:00 Monday - Friday & all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
+     * Runs the simulation for 1 year (until 31/01/2017, 17:00) - Every 15 minutes, traders buy and sell shares and the share index is adjusted (along with
+     * share prices and net worths for companies). Skips over hours and days where the Stock Market is closed
+     * (17:00 - 09:00 Monday - Friday and all day Saturday - Sunday, Christmas Day, Boxing Day and Good Friday).
      */
     public void runSimulation() {
         //System.out.println("Running Simulation for " + duration + " minutes.");
@@ -125,7 +125,7 @@ public class Simulator {
     // Imports data from the InitialDataV2.csv file, creating the Shares, Portfolios and Traders.
     private void initialiseData() {
         ArrayList<Share> allShares = new ArrayList<>();
-        //System.out.println("Initializing clients & shares...");
+        //System.out.println("Initializing clients and shares...");
         try {
             ArrayList<Portfolio> portfolios = new ArrayList<>();
             BufferedReader br = new BufferedReader(new FileReader("InitialDataV2.csv"));
@@ -227,7 +227,7 @@ public class Simulator {
             buyTotals.put(companyName, 0);
             sellTotals.put(companyName, 0);
         }
-        // Get what everyone wants to buy & sell.
+        // Get what everyone wants to buy and sell.
         //System.out.println("Traders buy and sell...");
         int totalPutUpForSale = 0;
         for(Trader t : traders) {
@@ -473,7 +473,7 @@ public class Simulator {
     }
 
     /**
-     * Returns the time portion of the current date & time in the simulation.
+     * Returns the time portion of the current date and time in the simulation.
      * @return A string representation of the current time (HH:MM:SS).
      */
     public String getTime() {
@@ -483,7 +483,7 @@ public class Simulator {
     }
 
     /**
-     * Returns the date portion of the current date & time in the simulation.
+     * Returns the date portion of the current date and time in the simulation.
      * @return A string representation of the current date (DD-MM-YYYY).
      */
     public String getDate(){
@@ -494,7 +494,7 @@ public class Simulator {
 
     /**
      * Returns the event currently in progress (if exists).
-     * @return The event in progress at this date & time, or null if no such event exists.
+     * @return The event in progress at this date and time, or null if no such event exists.
      */
     public Event getEvent(){ return eventInProgress; }
 
@@ -521,7 +521,7 @@ public class Simulator {
     }
 
     /**
-     * Provides a list of all portfolios (clients & information relating to them) within the simulation.
+     * Provides a list of all portfolios (clients and information relating to them) within the simulation.
      * @return A list of all Portfolio instances in the simulation.
      */
     public List<Portfolio> getPortfolios(){

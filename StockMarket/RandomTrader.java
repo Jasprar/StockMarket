@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
- * Represents a trader for a different company (one other than W&G). These traders manage all other portfolios.
- * @Author 164875 & 146803
- * @Version 06/05/2017
+ * Represents a trader for a different company (one other than W and G). These traders manage all other portfolios.
+ * @author 164875 and 146803
+ * @version 06/05/2017
  */
 public class RandomTrader extends Trader {
     static final int BALANCED = 0;
@@ -21,7 +21,8 @@ public class RandomTrader extends Trader {
 
     /**
      * Initializes RandomTraders. Initially sets the mode to balanced trading mode.
-     * @param portfolios
+     * @param portfolios The portfolios this Trader manages.
+     * @param allShares All the shares in the simulation, used to initialise ClientTrackers.
      */
     public RandomTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         super(portfolios, allShares);
@@ -180,9 +181,9 @@ public class RandomTrader extends Trader {
     /**
      * Switches modes according to the following rules:
      * - If in balanced mode, there is a 10% chance the trader will switch to seller mode, a 20% chance they will switch
-     * to buyer mode & a 70% chance they will stay in balanced mode.
+     * to buyer mode and a 70% chance they will stay in balanced mode.
      * - If in seller mode, there is a 40% chance they will stay in seller mode, and a 60% chance they will switch to balanced.
-     * - If in buyer mode, there is a 70% chance they will switch to balanced mode & a 30% chance they will stay in buyer mode.
+     * - If in buyer mode, there is a 70% chance they will switch to balanced mode and a 30% chance they will stay in buyer mode.
      */
     @Override
     public void switchMode() {

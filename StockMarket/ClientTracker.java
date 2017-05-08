@@ -5,7 +5,7 @@ package StockMarket;
  * how many the client has requested this cycle, how many the client has put up for sale this cycle, the most recent buy
  * price of the share, the original price the share cost when they first bought it, and the amount of fluctuation there
  * has been (has the share price increased/decreased in the last few times the client has purchased it?).
- * @Author 164875 & 146803
+ * @Author 164875 and 146803
  * @Version 05/05/2017
  */
 public class ClientTracker {

@@ -4,9 +4,9 @@ import java.util.*;
 
 /**
  * The Trader superclass is used to combine all RandomTraders and IntelligentTraders into one neat package, so they can
- * be iterated through together & to reduce code redundancy.
- * @Author 164875 & 146803
- * @Version 04/05/2017
+ * be iterated through together and to reduce code redundancy.
+ * @author 164875 and 146803
+ * @version 04/05/2017
  */
 public abstract class Trader {
     protected ArrayList<Portfolio> portfolios;
@@ -72,9 +72,10 @@ public abstract class Trader {
     /**
      * Creates an ArrayList of Share which is passed on to simulator to calculate the number
      * of that share wanted to buy.
+     * @param sharePrices The HashMap of companyName to Share price (so the trader doesn't spend more than a portfolio has).
      * @return An ArrayList of Share that the trader wishes to sell on the Stock Exchange.
      */
-    // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
+    // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios and increment totalWorth!
     public abstract ArrayList<Share> sell(HashMap<String, Double> sharePrices);
 
     /**

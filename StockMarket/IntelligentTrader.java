@@ -8,17 +8,17 @@ import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Represents a Wolf & Gecko trader in the Trading exchange. Manages the portfolios of Justine Thyme and Norbert DaVinci.
+ * Represents a Wolf and Gecko trader in the Trading exchange. Manages the portfolios of Justine Thyme and Norbert DaVinci.
  * Should outperform the RandomTraders.
- * @Author 164875 & 146803
- * @Version 07/05/2017
+ * @author 164875 and 146803
+ * @version 07/05/2017
  */
 public class IntelligentTrader extends Trader {
 
     /**
      * Initializes Intelligent traders.
-     * @param portfolios
-     * @param allShares
+     * @param portfolios The portfolios this trader manages.
+     * @param allShares All shares in the simulation, used to initialise ClientTrackers.
      */
     public IntelligentTrader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         super(portfolios, allShares);
@@ -69,7 +69,7 @@ public class IntelligentTrader extends Trader {
 
     /**
      * Overrides the trader's sell method. Uses the fluctuation to determine how many shares of a company to sell
-     * (i.e. if the share price is dropping, sell more & more).
+     * (i.e. if the share price is dropping, sell more and more).
      * @param sharePrices The HashMap of company name to share prices used to determine whether the trader is selling
      *                    too high a proportion of their total worth.
      * @return An ArrayList of shares it wants to sell.
@@ -113,7 +113,7 @@ public class IntelligentTrader extends Trader {
         return traderSells;
     }
 
-    // Finds one share in the specified list of shares matching the company name, removes it from the list & returns it.
+    // Finds one share in the specified list of shares matching the company name, removes it from the list and returns it.
     private Share findAndRemove(ArrayList<Share> shares, String companyName) {
         for(int i = 0; i < shares.size(); i++) {
             if(shares.get(i).getCompanyName().equals(companyName)) {

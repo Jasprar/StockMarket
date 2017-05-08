@@ -7,8 +7,8 @@ import java.util.ArrayList;
  * a client is their name). The Portfolio class keeps track of the amount of cash a particular client is holding at any
  * given time and the shares that the client owns.
  *
- * @Author 146803
- * @Version 05/05/2017
+ * @author 146803
+ * @version 05/05/2017
  */
 public class Portfolio {
     private String clientName;
@@ -111,6 +111,7 @@ public class Portfolio {
     /**
      * Called when a company' share price reaches zero, removes all shares of this company from the list of Share objects
      * (as the company is worthless).
+     * @param companyName The name of the Company to remove all shares for.
      */
     public void removeAllShares(String companyName) {
         ArrayList<Share> sharesToRemove = new ArrayList<>();

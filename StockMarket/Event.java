@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Represents an event that will occur in the simulation at some date & time, including all the information required
+ * Represents an event that will occur in the simulation at some date and time, including all the information required
  * to know when this event should begin/end (and what the event actually does, e.g. makes traders BUY/SELL a particular stock).
- * @Author 146803
- * @Version 22/04/2017
+ * @author 146803
+ * @version 22/04/2017
  */
 public class Event {
     private Date startDateTime;
@@ -52,16 +52,16 @@ public class Event {
     }
 
     /**
-     * Returns the time & date at which this event will begin.
-     * @return The Date object representing the start date & time of the event.
+     * Returns the time and date at which this event will begin.
+     * @return The Date object representing the start date and time of the event.
      */
     public Date getStartDateTime() {
         return startDateTime;
     }
 
     /**
-     * Returns the time & date at which this event will stop occurring.
-     * @return The Date object representing the end date & time of the event.
+     * Returns the time and date at which this event will stop occurring.
+     * @return The Date object representing the end date and time of the event.
      */
     public Date getEndDateTime() {
         return endDateTime;

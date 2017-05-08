@@ -3,8 +3,8 @@ package StockMarket;
 /**
  * The Share class represents one share (with a share price and company / commodity names) in the stock market. When this
  * share is sold by a trader to another, it is 'physically' moved from one Portfolio to another.
- * @Author 146803
- * @Version 24/04/2017
+ * @author 146803
+ * @version 24/04/2017
  */
 public class Share {
     private String companyName;

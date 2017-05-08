@@ -37,8 +37,8 @@ import static tray.animations.AnimationType.SLIDE;
  * The @FXML above methods makes the method handle the action event. This only works if the FXML file has component of
  * onAction="#(MethodName)". For example <MenuItem fx:id="runSim" onAction = "#RunSimulation"></MenuItem>.
  *
- * @Author 132224
- * @Version 05/05/2017
+ * @author 132224
+ * @version 05/05/2017
  */
 
 
@@ -83,13 +83,14 @@ public class Controller{
         funFacts();
     }
 
-    /**
+    /*
      * Calls runSimulation on clickevent of "Run Simulation" / "Run".
      * Event created:
      * Dialogue popup, asking the user to enter the duration in minutes.
      * Runs the simulation for that certain minutes by calling sim.RunSimulation(duration).
      * Sets the buttons to disable so the user cannot run the simulation again whilst the current
      * simulation is running.
+     * @throws Exception
      */
     @FXML
     private void runSimulation() throws Exception {
@@ -120,7 +121,7 @@ public class Controller{
         runSim.setDisable(true);
     }
 
-    /**
+    /*
      * Quits the program by calling System.exit(0);. Clears all background data (Notifications) automatically.
      */
     @FXML
@@ -129,7 +130,7 @@ public class Controller{
     }
 
 
-    /**
+    /*
      * On click event from  <MenuItem fx:id="HowToUse" Title = "How to use" onAction="#howToUse"></MenuItem>.
      * Displays an information dialogue displaying how to use the simulation.
      */
@@ -144,7 +145,7 @@ public class Controller{
         alert.showAndWait();
     }
 
-    /**
+    /*
      * On click event from  <MenuItem fx:id="aboutUs" Title = "About Us" onAction="#aboutUs"></MenuItem>.
      * Displays an information dialogue displaying the history of Wolf and Gecko.
      */
@@ -162,7 +163,7 @@ public class Controller{
     }
 
 
-    /**
+    /*
      * On click event from  <MenuItem fx:id="license" Title = "License" onAction="#License"></MenuItem>.
      * Displays an information dialogue displaying the terms of the License agreement.
      */
@@ -175,7 +176,7 @@ public class Controller{
         alert.showAndWait();
     }
 
-    /**
+    /*
      * On click event from  <MenuItem fx:id="copyright" Title = "Copyright" onAction="#copyRight"></MenuItem>.
      * Displays an information dialogue displaying the terms of the copyright agreement.
      */
@@ -188,7 +189,7 @@ public class Controller{
         alert.showAndWait();
     }
 
-    /**
+    /*
      * On click event from  <MenuItem fx:id="credits" Title = "credits" onAction="#credits"></MenuItem>.
      * Displays an information dialogue displaying the credits.
      */
@@ -201,7 +202,7 @@ public class Controller{
         alert.showAndWait();
     }
 
-    /**
+    /*
      * Once the run simulation duration as been entered, these methods are called.
      * Commodities method displays the overall commodities values. EG: property value has
      * went down from 52% to 35%.
@@ -224,7 +225,7 @@ public class Controller{
          companyTable();  backEnd();
         clientTable();
     }
-    /**
+    /*
      * Gets called from callMethod()
      * Displays the current time, updates every second.
      */
@@ -249,7 +250,7 @@ public class Controller{
     }
 
 
-    /**
+    /*
      * Gets called from callMethod()
      * Displays share index on a line chart. Shows the share index value per every month.
      */
@@ -281,9 +282,9 @@ public class Controller{
 
     }
 
-    /**
+    /*
      * Increments count every time. Makes the graph worth within 1-12. IE: Jan-Dec
-     * @return (Incremental) count
+     * @return (Incremental) count.
      */
     private int counter() {
         return count++;
@@ -328,7 +329,7 @@ public class Controller{
     }
 
 
-    /**
+    /*
      * Back end tab, Company Table. Displays Company Name, Company values, Share Price, and total shares.
      * Retrieves the object from CompanyData and appends each row per every instance created.
      * Refreshes in response to the users request when right clicking to set the speed.
@@ -348,7 +349,7 @@ public class Controller{
         }, 0, 1000);
     }
 
-    /**
+    /*
      * Populates arraylists, Company Name, Values, Price and total shares accordingly.
      * Creates a new instance of companyData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
@@ -401,7 +402,7 @@ public class Controller{
         return companyData;
     }
 
-    /**
+    /*
      * Client Table. Displays Client Name, Cash holding, total worth, shares and trader type
      * Retrieves the object from ClientData and appends each object per row per when every instance is created.
      * Refreshes in response to the users request when right clicking to set the speed.
@@ -439,13 +440,13 @@ public class Controller{
         });
     }
 
-    /**
+    /*
      * Populates arraylists, Client Name, CashHolding, and totalWorth shares accordingly.
      * Creates a new instance of ClientData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
      * Sends the object.
      * Keeps repeating till ClientNames.Size() has been reached.
-     * @return
+     * @return List of ClientDatas.
      */
     private List<ClientData> clientDataList() {
       //Getting client Names and appending to list
@@ -485,7 +486,7 @@ public class Controller{
         return clientData;
     }
 
-    /**
+    /*
      * One time only popup when BackEnd tab is clicked upon, displaying the a tip message.
      * Checks if clicked < 1. If it is, then displays the message and increments clicked.
      */
@@ -507,7 +508,7 @@ public class Controller{
         });
     }
 
-    /**
+    /*
      * Uses a library from Github by PlusHaze: https://github.com/PlusHaze/TrayNotification
      * Uses the timer from the company timer, to save memory as it's not needed to have an independent timer.
      * Displays a fun fact  regarding about  stock markets.
