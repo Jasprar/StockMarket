@@ -152,4 +152,7 @@ public class Portfolio {
         return total;
     }
 
+    boolean getSellAll() {
+        return sellAll;
+    }
 }
