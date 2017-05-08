@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- *
  * Creates Graphical user interface of the stock market simulation.
  * Loads guiview.fxml which represents the view.
  * Guiview takes in Controller.java which lets the user interact with it by using Event listeners and onAction.

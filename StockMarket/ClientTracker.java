@@ -113,25 +113,57 @@ public class ClientTracker {
      * @return The number of shares of this type the client's trader put up for sale from this client's Portfolio.
      */
     public int getAmountSold() { return amountSold; }
+
+    /**
+     * Resets the amount sold this cycle to zero, so the values are correct for the next cycle.
+     */
     public void resetAmountSold() { amountSold = 0; }
+
+    /**
+     * Increments the amount of shares of this type kept in this client's portfolio by one. Called when a share is added
+     * to this client' Portfolio.
+     */
     public void incrementAmount() { amount++; }
+
+    /**
+     * Resets the amount bought to zero ready for the next cycle to begin.
+     */
     public void resetAmountBought() {
         //System.out.println("Resetting amount bought for " + clientName + "...");
         amountBought = 0;
     }
+
+    /**
+     * Increments the amount requested to be bought of this company by one. Called by the buy() method in the Trader class
+     * if one share of this type is requested.
+     */
     public void incrementAmountBought() {
         amountBought++;
     }
 
+    /**
+     * Adds this amount to the amount of shares requested to be bought this cycle. Called by buy() whenever there are
+     * multiple shares of the same type requested.
+     * @param amountBought The number of shares requested to be bought.
+     */
     public void addAmountBought(int amountBought) {
         this.amountBought += amountBought;
     }
 
+    /**
+     * Returns the number of shares requested to be bought this cycle.
+     * @return The number of shares that were requested by this client's trader for this client's Portfolio of this
+     * company.
+     */
     public int getAmountBought() {
         //System.out.println(clientName + " has bought " + amountBought + " shares of " + companyName);
         return amountBought;
     }
 
+    /**
+     * Returns the price that the client first bought this share at.
+     * @return The price (in pence) of the share of this type when a share of this company was first purchased.
+     */
     public double getOriginalPrice() {
         return originalPrice;
     }

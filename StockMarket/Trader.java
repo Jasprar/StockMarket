@@ -2,6 +2,12 @@ package StockMarket;
 
 import java.util.*;
 
+/**
+ * The Trader superclass is used to combine all RandomTraders and IntelligentTraders into one neat package, so they can
+ * be iterated through together & to reduce code redundancy.
+ * @Author 164875 & 146803
+ * @Version 04/05/2017
+ */
 public abstract class Trader {
     protected ArrayList<Portfolio> portfolios;
     protected String event; // Contains the name of the company or commodity (or "Any") that the RandomTrader has to buy/sell during an event.
@@ -12,8 +18,8 @@ public abstract class Trader {
      * pair of client and shares. Each traders has several portfolios (clients) and is
      * kept track with an ArrayList. allShares is used as an ArrayList to store all
      * shares available to be purchased.
-     * @param portfolios
-     * @param allShares
+     * @param portfolios The portfolios that this trader manages.
+     * @param allShares All the shares in the simulation, used to initialise the ClientTrackers.
      */
     public Trader(ArrayList<Portfolio> portfolios, ArrayList<Share> allShares) {
         this.portfolios = portfolios;
@@ -27,7 +33,7 @@ public abstract class Trader {
 
 
     /**
-     * This method returns the list of portfolios handled by this trader
+     * This method returns the list of portfolios handled by this trader.
      * @return An ArrayList of portfolios that are managed by this Trader.
      */
     public ArrayList<Portfolio> getPortfolios() {
@@ -35,34 +41,38 @@ public abstract class Trader {
     }
 
     /**
-     * This method is only used by the Random Trader, for more information, see RandomTrader
-     * @param mode
+     * This method is only used by the Random Trader, for more information, see RandomTrader. Required in the superclass
+     * to avoid errors when iterating through all traders.
+     * @param mode The mode to set the random trader to.
+     * @see RandomTrader
      */
     public void setMode(int mode) {
         // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader.
     }
 
     /**
-     * This method is only used by the Random Trader, for more information, see RandomTrader
+     * This method is only used by the Random Trader, for more information, see RandomTrader. Required in the superclass
+     * to avoid errors when iterating through all traders.
+     * @see RandomTrader
      */
     public void switchMode() {
         // Does nothing for IntelligentTrader (but required for iteration through Trader list), overridden in RandomTrader
     }
 
     /**
-     * Creates a Hashmap of share wanting to buy with the company name and the number of shares
-     * the trader wants to buy
-     * @param sharePrices
+     * Creates a HashMap of share wanting to buy with the company name and the number of shares
+     * the trader wants to buy.
+     * @param sharePrices A HashMap of all companies to their share prices. Used to make sure the trader does not
+     *                    spend too much.
      * @return A Hashmap of shares wanted to buy with key "company name" and value
-     * "number of shares to buy"
+     * "number of shares to buy".
      */
-    // HashMap is company name : # sought for purchase.
     public abstract HashMap<String,Integer> buy(HashMap<String, Double> sharePrices);
 
     /**
      * Creates an ArrayList of Share which is passed on to simulator to calculate the number
      * of that share wanted to buy.
-     * @return An ArrayList of Share
+     * @return An ArrayList of Share that the trader wishes to sell on the Stock Exchange.
      */
     // ArrayList is the Shares the trader wishes to sell - remember to remove them from the portfolios & increment totalWorth!
     public abstract ArrayList<Share> sell(HashMap<String, Double> sharePrices);
