@@ -55,6 +55,10 @@ public class Share {
         return commodity;
     }
 
+    /**
+     * Returns a String representation of the Share object.
+     * @return A String representation of the share object, showing companyName, commodity and sharePrice.
+     */
     @Override
     public String toString() {
         return "Share{" +

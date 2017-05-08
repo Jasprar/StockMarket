@@ -257,6 +257,10 @@ public class RandomTrader extends Trader {
         return amount;
     }
 
+    /**
+     * Overrides the toString method to allow the GUI to quickly know what type of trader this is.
+     * @return The String "Random".
+     */
     @Override
     public String toString(){
         return "Random";

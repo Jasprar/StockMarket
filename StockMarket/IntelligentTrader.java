@@ -124,6 +124,10 @@ public class IntelligentTrader extends Trader {
         return null;
     }
 
+    /**
+     * Overrides the toString method to allow the GUI to quickly know which type of trader this is.
+     * @return The String "Intelligent".
+     */
     @Override
     public String toString(){
         return "Intelligent";

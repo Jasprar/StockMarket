@@ -444,7 +444,7 @@ public class Simulator {
         }
     }
 
-    private Date getEndOfDay() {
+    Date getEndOfDay() {
         GregorianCalendar dayCal = new GregorianCalendar();
         dayCal.setTime(calendar.getTime());
         dayCal.add(dayCal.HOUR_OF_DAY, 7);
@@ -621,7 +621,7 @@ public class Simulator {
     }
 
     // Used for checking there are the same number of shares in the portfolio as there are across the simulator's numberOfShares hashmap.
-    private int totalSharesInPortfolios() {
+    int totalSharesInPortfolios() {
         int total = 0;
         for(Trader t : traders) {
             total += t.getShares();

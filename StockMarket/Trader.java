@@ -80,7 +80,7 @@ public abstract class Trader {
     /**
      * Sets the event for the random traders to switch into that mode.
      * Only used by the RandomTrader
-     * @param event
+     * @param event The String representing either the commodity type, company name or "all".
      */
     public void setEvent(String event) {
         this.event = event;
@@ -105,8 +105,8 @@ public abstract class Trader {
      * It increments the number wanted to sell as a way to track which client sold which share
      * since when the shares are returned to the trader, it is impossible to know who sold
      * which share
-     * @param shares
-     * @param clientName
+     * @param shares The ArrayList of shares being added to the Portfolio.
+     * @param clientName The String representation of the name of the client getting these shares.
      */
     private void updateTrackers(ArrayList<Share> shares, String clientName) {
         int j = 1;
@@ -132,7 +132,7 @@ public abstract class Trader {
     /**
      * This method deleted a tracker when a company is removed from the simulator
      * (bankrupt)
-     * @param companyName
+     * @param companyName The name of the (worthless) company.
      */
     public void removeTrackers(String companyName) {
         ArrayList<ClientTracker> toRemove = new ArrayList<>();
@@ -145,10 +145,10 @@ public abstract class Trader {
     }
 
     /**
-     * This method starts all trackers at the start of the simulation since clients
-     * already have shares in their portfolio (InitialDataV2.csv).
-     * @param allShares
-     * @param clientName
+     * This method starts all trackers at the start of the simulation since we need ClientTrackers for all companies
+     * (not just ones in their own portfolios).
+     * @param allShares All the shares in the simulation, as an ArrayList.
+     * @param clientName the name of the client that these trackers are being initialised for.
      */
     private void initialiseTrackers(ArrayList<Share> allShares, String clientName) {
         for(Share s : allShares) {
