@@ -109,8 +109,8 @@ public class ClientTracker {
     }
 
     /**
-     *
-     * @return
+     * Returns the amount sold by the client this cycle.
+     * @return The number of shares of this type the client's trader put up for sale from this client's Portfolio.
      */
     public int getAmountSold() { return amountSold; }
     public void resetAmountSold() { amountSold = 0; }
