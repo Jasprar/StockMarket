@@ -74,6 +74,8 @@ public class Controller{
 
     Timer timer = new Timer();
     Simulator sim = new Simulator();
+    XYChart.Series series = new XYChart.Series();
+
 
     /**
      * Initialises the FXML and begins running funFacts().
@@ -220,7 +222,7 @@ public class Controller{
      * funFacts, a window tray notification displaying fun facts about stock markets  at random times.
      */
     private void callMethod() {
-        speedControl();  currentTime(); graph();
+        speedControl();  currentTime(); graph(); removeOldValues();
            backEnd();     clientTable();
         companyTable();
     }
@@ -254,7 +256,6 @@ public class Controller{
      * Displays share index on a line chart. Shows the share index value per every month.
      */
     private void graph() {
-        XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
         x.setLabel("Per 15 Minute Cycle");
         y.setLabel("Share Index");
@@ -266,9 +267,17 @@ public class Controller{
                 });
 
             }
-        }, 0, (long) 10.25); //Calculation needed to display every month
+        }, 0, (long) 20);
         lineChart.getData().addAll(series);
 
+
+
+    }
+
+    /***
+     * Removes old values from the graph (Uses first in first out system automatically)
+     */
+    private void removeOldValues(){
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -277,8 +286,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 1); //Calculation needed to display every month
-
+        }, 0, 40);
     }
 
     /*
