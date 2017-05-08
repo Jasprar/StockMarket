@@ -167,8 +167,8 @@ public abstract class Trader {
     }
 
     /**
-     * This method gets the shares of all portfolios and returns the total number
-     * @return Integer of all shares handled by the trader
+     * This method gets the shares of all portfolios and returns the total number.
+     * @return Integer of all shares handled by the trader.
      */
     public int getShares() {
         int total = 0;
@@ -181,10 +181,10 @@ public abstract class Trader {
     /**
      * This method returns shares unable to be sold from demand being lower than the supply
      * It splits the the shares proportionally to how many the client wanted to sell and then
-     * adds them back to the portfolio
-     * @param shares
-     * @param companyName
-     * @param sellTotal
+     * adds them back to the correct portfolio
+     * @param shares The shares being added back to the trader (to be split up per-portfolio here).
+     * @param companyName The name of the company (as shares are returned per-company).
+     * @param sellTotal The total number of shares put up for sale of this company (to work out proportions).
      */
     public void returnShares(ArrayList<Share> shares, String companyName, int sellTotal) {
         //System.out.println("Returning Shares...");
@@ -226,11 +226,11 @@ public abstract class Trader {
     }
 
     /**
-     * This method adds shares wanted to buy from the client into their profolio
+     * This method adds shares wanted to buy from the client into their Portfolio
      * proportionally to how many of each client wanted to buy that share.
-     * @param shares
-     * @param companyName
-     * @param buyTotal
+     * @param shares the shares to be added to the Portfolios.
+     * @param companyName The name of the company (as the shares are added per-company)
+     * @param buyTotal The total number of shares for this company requested to be bought by all traders this cycle.
      */
     public void addNewShares(ArrayList<Share> shares, String companyName, int buyTotal) {
         //System.out.println("Adding shares of " + companyName);
@@ -272,14 +272,10 @@ public abstract class Trader {
         }
     }
 
-    /**
+    /*
      * This private method is only used in this class. It adds the shares to the portfolio
      * with a proportional amount to how many they wanted to buy compared to other clients
-     * who wanted to buy also handled by this trader
-     * @param shares
-     * @param companyName
-     * @param amountForEachPortfolio
-     * @return
+     * who wanted to buy also handled by this trader.
      */
     private ArrayList<Share> addShares(ArrayList<Share> shares, String companyName, HashMap<Portfolio, Integer> amountForEachPortfolio) {
         int i = 0;
