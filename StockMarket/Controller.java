@@ -198,8 +198,8 @@ public class Controller{
     private void callMethod() {
         speedControl();  currentTime(); graph();
          companyTable();  backEnd(); funFacts();
+        clientTable();
     }
-
     /**
      * Gets called from callMethod()
      * Displays the current time, updates every second.
@@ -232,7 +232,7 @@ public class Controller{
     private void graph() {
         XYChart.Series series = new XYChart.Series();
         series.setName("Share Index");
-        x.setLabel("Number of Cycles");
+        x.setLabel("Per 15 Minute Cycle");
         y.setLabel("Share Index");
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -242,7 +242,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 50); //Calculation needed to display every month
+        }, 0, (long) 10.4166666); //Calculation needed to display every month
         lineChart.getData().addAll(series);
     }
 
@@ -309,14 +309,9 @@ public class Controller{
                         companyDataTableView.getItems().add(s);
                     }
 
-                    clientDataTableView.getItems().clear();
-                    for (ClientData s : clientDataList()) { //Needs to be changed to global timer
-                        clientDataTableView.getItems().add(s);
-                    }
-
                 });
             }
-        }, 0, 1000);
+        }, 0, (long)10.416666);
     }
 
     /***
@@ -356,15 +351,52 @@ public class Controller{
             String getNames = companyNames.get(i);
             Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
             int getTotalShares = companyValues.get(i);
-            int getNetWorth = netWorth.get(i);
+          //  int getNetWorth = netWorth.get(i);
             CompanyData company = new CompanyData("Test","test","test","test");//Creating a object  per row
             company.setCompanyName(getNames); //Adds the 'i'th element to the table.
             company.setShareValues(df.format(getSharePrices));
             company.setTotalShares(df.format(getTotalShares));
-            company.setNetWorth(df.format(getNetWorth));
+          //  company.setNetWorth(df.format(getNetWorth));
             companyData.add(company);
         }
         return companyData;
+    }
+
+    /**
+     * Client Table. Displays Client Name, Cash holding, total worth, shares and trader type
+     * Retrieves the object from ClientData and appends each object per row per when every instance is created.
+     * Refreshes in response to the users request when right clicking to set the speed.
+     */
+    private void clientTable() {
+
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    clientDataTableView.getItems().clear();
+                    for (ClientData s : clientDataList()) { //Needs to be changed to global timer
+                        clientDataTableView.getItems().add(s);
+                    }
+                });
+            }
+
+        }, 0, TABLE_REFRESH_RATE);
+
+
+        Tooltip tooltip = new Tooltip(); //Lets us create a hover message
+        tooltip.setText("\nDouble click to sell stock\n");
+        clientDataTableView.setTooltip(tooltip);
+
+        clientDataTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
+                    ClientData clientData = clientDataTableView.getSelectionModel().getSelectedItem();
+                    sim.leaveSimulation(clientData.getClient());
+                }
+            }
+        });
     }
 
     /***
@@ -393,14 +425,21 @@ public class Controller{
         DecimalFormat df = new DecimalFormat("#");
         df.setMaximumFractionDigits(0);
 
+
+        ArrayList<String> traders = new ArrayList<>();
+        traders.add(String.valueOf(sim.getTraders()));
+
+        System.out.println("Trader type" + traders);
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
             Double getCashHoldings = cashHolding.get(i);
             Double getTotalWorths = totalWorth.get(i);
+        //    String traderType = traders.get(i);
             ClientData client = new ClientData("Test", "test", "test","3","Random");//Creating a object  per row
             client.setClient(getClientNames);
             client.setCashHolding(df.format(getCashHoldings));
             client.setWealth(df.format(getTotalWorths));
+       //     client.setManagedBy(traderType);
             clientData.add(client);
         }
         return clientData;
