@@ -266,7 +266,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 1000); //Calculation needed to display every month
+        }, 0, (long) 10.25); //Calculation needed to display every month
         lineChart.getData().addAll(series);
 
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -277,7 +277,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 500); //Calculation needed to display every month
+        }, 0, 1); //Calculation needed to display every month
 
     }
 
@@ -314,14 +314,11 @@ public class Controller{
 
                 if (result.isPresent()){
                     if(result.get().equals("Slow")){
-                        this.TABLE_REFRESH_RATE = 3000;
+
                     }
                     if(result.get().equals("Normal")){
-                        this.TABLE_REFRESH_RATE = 2000;
                     }
-                    if(result.get().equals("Fast")){
-                        this.TABLE_REFRESH_RATE = 1000;
-                    }
+
                 }
             }
         });
@@ -449,8 +446,8 @@ public class Controller{
 
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
-            Double getCashHoldings = cashHolding.get(i)/100;
-            Double getTotalWorths = totalWorth.get(i)/100;
+            Double getCashHoldings = cashHolding.get(i);
+            Double getTotalWorths = totalWorth.get(i);
             ClientData client = new ClientData("Test", "test", "test","3");//Creating a object  per row
             client.setClient(getClientNames);
             client.setCashHolding(df.format(getCashHoldings));
