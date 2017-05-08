@@ -138,7 +138,7 @@ class SimulatorTest {
         companyNames.addAll(companyNames1);
 
         for (String s : companyNames) {
-            double x = simulator.getNetWorth(s);
+            int x = (int) simulator.getNetWorth(s);
             assertEquals(simulator.getNetWorth(s), x);
 
         }
@@ -151,7 +151,7 @@ class SimulatorTest {
         companyNames.addAll(companyNames1);
 
         for (String s : companyNames) {
-            double x = simulator.getNetWorth(s) + 1;
+            int x = (int) (simulator.getNetWorth(s) + 1);
             assertNotSame(simulator.getNetWorth(s), x, "Wealth does not match with false data ");
 
         }
@@ -171,13 +171,75 @@ class SimulatorTest {
 
 
     }
-
     @Test
     void getCashHolding() {
         List<Double> cashHolding = new ArrayList<>();
         cashHolding.addAll(simulator.getCashHolding());
-
-        assertSame(cashHolding, 100000);
+        List<Double> sampleCashHoldingData = new ArrayList<>();
+        sampleCashHoldingData.add(1.0E7);
+        sampleCashHoldingData.add(5000000.0);
+        sampleCashHoldingData.add(1.0E7);
+        sampleCashHoldingData.add(1.0E7);
+        sampleCashHoldingData.add(1.0E7);
+        sampleCashHoldingData.add(1.0E7);
+        sampleCashHoldingData.add(5000000.0);
+        sampleCashHoldingData.add(5000000.0);
+        sampleCashHoldingData.add(5000000.0);
+        sampleCashHoldingData.add(5000000.0);
+        assertEquals(cashHolding,sampleCashHoldingData );
     }
+
+    @Test
+    void checkIsEndOFDay(){
+
+        assertEquals(simulator.getEndOfDay(),"Mon Jan 02 16:00:00 GMT 2017");
+    }
+    @Test
+    void getPortfolios(){
+
+        System.out.println(simulator.getPortfolios());
+    }
+
+
+
+    @Test
+    void testTotalSharesInPortfolio(){
+        assertEquals(simulator.totalSharesInPortfolios(),640188);
+    }
+
+    @Test
+    void testTotalSharesInCompany(){
+        System.out.println(simulator.totalSharesForCompanies());
+        assertEquals(simulator.totalSharesInPortfolios(),640188);
+    }
+
+
+    @Test
+    void testTraders(){
+      //  ArrayList traders = new ArrayList<>();
+       // traders.add("StockMarket.Simulator@1e67b872");
+        //assertEquals(simulator,traders);
+    }
+
+    @Test
+    void testIfClientMakingMoney(){
+        ArrayList clientPoor = new ArrayList();
+        clientPoor.addAll(simulator.getTotalWorth());
+
+        double a = Double.parseDouble(String.valueOf(clientPoor.get(0)));
+        double b = Double.parseDouble(String.valueOf(clientPoor.get(clientPoor.size()-1)));
+
+        if(a > b ){
+            System.out.println("The client has lost money!");
+        }
+        if(a < b) {
+            System.out.println("The clinet has gained money!");
+        }
+        if(a == b){
+            System.out.println("The client has lost/gained money!");
+        }
+
+    }
+
 
 }

@@ -124,4 +124,9 @@ public class IntelligentTrader extends Trader {
         return null;
     }
 
+    @Override
+    public String toString(){
+        return "Intelligent";
+    }
+
 }
