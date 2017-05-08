@@ -213,14 +213,6 @@ class SimulatorTest {
         assertEquals(simulator.totalSharesInPortfolios(),640188);
     }
 
-
-    @Test
-    void testTraders(){
-      //  ArrayList traders = new ArrayList<>();
-       // traders.add("StockMarket.Simulator@1e67b872");
-        //assertEquals(simulator,traders);
-    }
-
     @Test
     void testIfClientMakingMoney(){
         ArrayList clientPoor = new ArrayList();
@@ -240,6 +232,7 @@ class SimulatorTest {
         }
 
     }
+
 
 
 }

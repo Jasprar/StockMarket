@@ -220,10 +220,9 @@ public class Controller{
      * funFacts, a window tray notification displaying fun facts about stock markets  at random times.
      */
     private void callMethod() {
-
         speedControl();  currentTime(); graph();
-         companyTable();  backEnd();
-        clientTable();
+           backEnd();     clientTable();
+        companyTable();
     }
     /*
      * Gets called from callMethod()
@@ -409,8 +408,6 @@ public class Controller{
      */
     @FXML
     private void clientTable() {
-
-
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -418,26 +415,12 @@ public class Controller{
                     clientDataTableView.getItems().clear();
                     for (ClientData s : clientDataList()) { //Needs to be changed to global timer
                         clientDataTableView.getItems().add(s);
+
                     }
                 });
             }
 
-        }, 0, TABLE_REFRESH_RATE);
-
-
-        Tooltip tooltip = new Tooltip(); //Lets us create a hover message
-        tooltip.setText("\nDouble click to sell stock\n");
-        clientDataTableView.setTooltip(tooltip);
-
-        clientDataTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(event.isPrimaryButtonDown() && event.getClickCount() == 2){
-                    ClientData clientData = clientDataTableView.getSelectionModel().getSelectedItem();
-                    sim.leaveSimulation(clientData.getClient());
-                }
-            }
-        });
+        }, 10, 1000);
     }
 
     /*
@@ -448,31 +431,26 @@ public class Controller{
      * Keeps repeating till ClientNames.Size() has been reached.
      * @return List of ClientDatas.
      */
+    @FXML
     private List<ClientData> clientDataList() {
-      //Getting client Names and appending to list
         List<String> clientNames = new ArrayList<>();
         clientNames.addAll(sim.getClientNames());
-        //Getting Cash holding and appending to list
+
+
         List<Double> cashHolding = new ArrayList<>();
         cashHolding.addAll(sim.getCashHolding());
 
-        //Getting total worth and appending to list
         List<Double> totalWorth = new ArrayList<>(); //Wealth
         totalWorth.addAll(sim.getTotalWorth());
-        //System.out.println(totalWorth);
-
 
         List<ClientData> clientData = new ArrayList<>();
         DecimalFormat df = new DecimalFormat("#");
         df.setMaximumFractionDigits(0);
 
-
-
-        //System.out.println("Trader type" + traders);
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
-            Double getCashHoldings = cashHolding.get(i);
-            Double getTotalWorths = totalWorth.get(i);
+            Double getCashHoldings = cashHolding.get(i)/100;
+            Double getTotalWorths = totalWorth.get(i)/100;
             ClientData client = new ClientData("Test", "test", "test","3");//Creating a object  per row
             client.setClient(getClientNames);
             client.setCashHolding(df.format(getCashHoldings));
@@ -482,7 +460,6 @@ public class Controller{
         clientNames.clear();
         cashHolding.clear();
         totalWorth.clear();
-
         return clientData;
     }
 
