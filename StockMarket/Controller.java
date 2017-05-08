@@ -2,6 +2,7 @@ package StockMarket;
 
 
 import javafx.application.Platform;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.*;
 import javafx.event.Event;
@@ -20,6 +21,8 @@ import tray.notification.TrayNotification;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 import static tray.animations.AnimationType.POPUP;
 import static tray.animations.AnimationType.SLIDE;
@@ -35,7 +38,7 @@ import static tray.animations.AnimationType.SLIDE;
  * onAction="#(MethodName)". For example <MenuItem fx:id="runSim" onAction = "#RunSimulation"></MenuItem>.
  *
  * @Author 132224
- * @Version 24/04/2017
+ * @Version 05/05/2017
  */
 
 
@@ -74,6 +77,11 @@ public class Controller{
 
 
 
+
+    @FXML
+    public void initialize(){
+        funFacts();
+    }
     /**
      * Calls runSimulation on clickevent of "Run Simulation" / "Run".
      * Event created:
@@ -84,14 +92,28 @@ public class Controller{
      */
     @FXML
     private void runSimulation() throws Exception {
-        Task task = new Task<Void>() {
+        Service<Void> service = new Service<Void>() {
             @Override
-            public Void call() {
-                sim.runSimulation(); //Calls runSimulation in a seperate thread, exits thread once runSimulation is finished.
-                return null;
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        //Background work
+                        final CountDownLatch latch = new CountDownLatch(1);
+                                try{
+                                    sim.runSimulation();
+                                }finally{
+                                    latch.countDown();
+                                }
+
+                        latch.await();
+                        //Keep with the background work
+                        return null;
+                    }
+                };
             }
         };
-        new Thread(task).start();
+        service.start();
         callMethod();
         runButton.setVisible(false);
         runSim.setDisable(true);
@@ -178,7 +200,7 @@ public class Controller{
         alert.showAndWait();
     }
 
-    /***
+    /**
      * Once the run simulation duration as been entered, these methods are called.
      * Commodities method displays the overall commodities values. EG: property value has
      * went down from 52% to 35%.
@@ -196,8 +218,9 @@ public class Controller{
      * funFacts, a window tray notification displaying fun facts about stock markets  at random times.
      */
     private void callMethod() {
+
         speedControl();  currentTime(); graph();
-         companyTable();  backEnd(); //funFacts();
+         companyTable();  backEnd();
         clientTable();
     }
     /**
@@ -225,7 +248,7 @@ public class Controller{
     }
 
 
-    /***
+    /**
      * Gets called from callMethod()
      * Displays share index on a line chart. Shows the share index value per every month.
      */
@@ -242,8 +265,19 @@ public class Controller{
                 });
 
             }
-        }, 0, (long) 10.4166666); //Calculation needed to display every month
+        }, 0, 1000); //Calculation needed to display every month
         lineChart.getData().addAll(series);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    series.getData().removeAll(lineChart.getData());
+                });
+
+            }
+        }, 0, 500); //Calculation needed to display every month
+
     }
 
     /**
@@ -255,7 +289,7 @@ public class Controller{
     }
 
 
-    /***
+    /**
      *When the user right clicks on on anchor pane with FX:ID  = "companyPane" (companyPane is the global pane for
      * Company and Client) then a choice dialog popup occurs, asking the user to Select from the choice
      * of speed. When the user selects it's speed the "TABLE_REFRESH_RATE" value gets updated and changes
@@ -303,7 +337,6 @@ public class Controller{
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    //funFacts();
                     companyDataTableView.getItems().clear();
                     for(CompanyData s: companyDataList()){
                         companyDataTableView.getItems().add(s);
@@ -314,7 +347,7 @@ public class Controller{
         }, 0, 1000);
     }
 
-    /***
+    /**
      * Populates arraylists, Company Name, Values, Price and total shares accordingly.
      * Creates a new instance of companyData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
@@ -324,13 +357,9 @@ public class Controller{
      */
     private List<CompanyData> companyDataList(){
         List<String> companyNames = new ArrayList<>();
-        try {
-            Set<String> companyNames1 = sim.getCompanyNames();
-            companyNames.addAll(companyNames1); //Get the <set> company tables and it to a list
-            System.out.println("Company Names " + companyNames);
-        } catch (NullPointerException e) {
-            System.out.println("Company Name is null");
-        }
+        Set<String> companyNames1 =  sim.getCompanyNames();
+        companyNames.addAll(companyNames1); //Get the <set> company tables and it to a list
+
 
         List<Integer> netWorth = new ArrayList<>();
 
@@ -342,7 +371,7 @@ public class Controller{
         for(String s: companyNames) {
             sharePrice.add(sim.getSharePrice(s)); //ERROR HERE: Trying to populate the networth arraylist by iterating through
             //each company name and call getSharePrice and getNetWorth
-            netWorth.add(sim.getNetWorth(s));
+           netWorth.add((int) sim.getNetWorth(s));
         }
 
 
@@ -355,14 +384,19 @@ public class Controller{
             String getNames = companyNames.get(i);
             Double getSharePrices = Double.valueOf(String.format("%.2f",sharePrice.get(i)));
             int getTotalShares = companyValues.get(i);
-          //  int getNetWorth = netWorth.get(i);
+            int getNetWorth = netWorth.get(i);
             CompanyData company = new CompanyData("Test","test","test","test");//Creating a object  per row
             company.setCompanyName(getNames); //Adds the 'i'th element to the table.
             company.setShareValues(df.format(getSharePrices));
             company.setTotalShares(df.format(getTotalShares));
-            //company.setNetWorth(df.format(getNetWorth));
+            company.setNetWorth(df.format(getNetWorth));
             companyData.add(company);
         }
+
+        sharePrice.clear();
+        netWorth.clear();
+        companyNames.clear();
+
         return companyData;
     }
 
@@ -371,6 +405,7 @@ public class Controller{
      * Retrieves the object from ClientData and appends each object per row per when every instance is created.
      * Refreshes in response to the users request when right clicking to set the speed.
      */
+    @FXML
     private void clientTable() {
 
 
@@ -403,7 +438,7 @@ public class Controller{
         });
     }
 
-    /***
+    /**
      * Populates arraylists, Client Name, CashHolding, and totalWorth shares accordingly.
      * Creates a new instance of ClientData by calling the object and filling in 'dummy data'.
      * Overrites the dummy data for the first elements in the arraylists.
@@ -412,7 +447,7 @@ public class Controller{
      * @return
      */
     private List<ClientData> clientDataList() {
-        //Getting client Names and appending to list
+      //Getting client Names and appending to list
         List<String> clientNames = new ArrayList<>();
         clientNames.addAll(sim.getClientNames());
         //Getting Cash holding and appending to list
@@ -422,7 +457,7 @@ public class Controller{
         //Getting total worth and appending to list
         List<Double> totalWorth = new ArrayList<>(); //Wealth
         totalWorth.addAll(sim.getTotalWorth());
-        System.out.println(totalWorth);
+        //System.out.println(totalWorth);
 
 
         List<ClientData> clientData = new ArrayList<>();
@@ -430,26 +465,26 @@ public class Controller{
         df.setMaximumFractionDigits(0);
 
 
-        ArrayList<String> traders = new ArrayList<>();
-        traders.add(String.valueOf(sim.getTraders()));
 
-        System.out.println("Trader type" + traders);
+        //System.out.println("Trader type" + traders);
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
             Double getCashHoldings = cashHolding.get(i);
             Double getTotalWorths = totalWorth.get(i);
-        //    String traderType = traders.get(i);
-            ClientData client = new ClientData("Test", "test", "test","3","Random");//Creating a object  per row
+            ClientData client = new ClientData("Test", "test", "test","3");//Creating a object  per row
             client.setClient(getClientNames);
             client.setCashHolding(df.format(getCashHoldings));
             client.setWealth(df.format(getTotalWorths));
-       //     client.setManagedBy(traderType);
             clientData.add(client);
         }
+        clientNames.clear();
+        cashHolding.clear();
+        totalWorth.clear();
+
         return clientData;
     }
 
-    /***
+    /**
      * One time only popup when BackEnd tab is clicked upon, displaying the a tip message.
      * Checks if clicked < 1. If it is, then displays the message and increments clicked.
      */
@@ -470,60 +505,26 @@ public class Controller{
             }
         });
     }
-/*
-    /***
+
+    /**
      * Uses a library from Github by PlusHaze: https://github.com/PlusHaze/TrayNotification
      * Uses the timer from the company timer, to save memory as it's not needed to have an independent timer.
      * Displays a fun fact  regarding about  stock markets.
      * A user may never get a popup notification, but the chances of that is low.
      *
-     *
+     */
     private void funFacts() {
         TrayNotification tray = new TrayNotification();
         tray.setRectangleFill(Paint.valueOf("Black"));
-        tray.setAnimationType(SLIDE);
+        tray.setAnimationType(POPUP);
         Image whatsAppImg = new Image("StockMarket/img/lightbulb.png");
         tray.setImage(whatsAppImg);
-        Random ran = new Random();
-        int x = ran.nextInt(100) + 1;;
-        switch (x) {
-            case 14:
-                tray.setMessage("When the net total worth of a market  rises over time") ;
-                tray.setTitle("FACT - Bull Market is...");
-                tray.showAndDismiss(Duration.seconds(7));
-                tray.showAndWait();
+        tray.setMessage("When the net total worth of a market  rises over time") ;
+        tray.setTitle("Welcome! FUN FACT A - Bull Market is...");
+        tray.showAndDismiss(Duration.seconds(7));
+        tray.showAndWait();
 
-                break;
-            case 51:
-                tray.setMessage("When the net total worth of a market falls over time.");
-                tray.setTitle("FACT - Bear Market is...");
-                tray.showAndDismiss(Duration.seconds(7));
-                tray.showAndWait();
-                break;
-            case 39: tray.setMessage("consists of a set of traded companies, trading exchanges and traders.");
-                tray.setTitle("FACT - A Stock Market...");
-                tray.showAndDismiss(Duration.seconds(7));
-                tray.showAndWait();
-                break;
-            case 74:
-                tray.setMessage("The first stock tickers and ticker tapes\n were used in 1867");
-                tray.setTitle("FUN FACT");
-                tray.showAndDismiss(Duration.seconds(7));
-                tray.showAndWait();
-                break;
-            case 15:
-                tray.setMessage("has a history of more than 300 years! ");
-                tray.setTitle("FUN FACT - London Stock Exchange ");
-                tray.showAndDismiss(Duration.seconds(7));
-                tray.showAndWait();
-                break;
-            case 6:
-                tray.setMessage("Stock market is called 股市,\n which translates to “the stock market.”!");
-                tray.setTitle("FUN FACT - In china  ");
-                tray.showAndDismiss(Duration.seconds(7));
-                tray.showAndWait();
-                break;
-        }
+
     }
-    */
+
 }
