@@ -4,7 +4,9 @@ import javafx.beans.property.*;
 
 
 /**
- * Created by shahs on 27/04/2017.
+ * Used by the GUI and Controller to keep track of one Company (for the table in the 'back end' of the GUI).
+ * @Author 132224
+ * @Version 04/05/2017
  */
 public class CompanyData {
 

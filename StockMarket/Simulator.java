@@ -122,6 +122,7 @@ public class Simulator {
         }
     }
 
+    // Imports data from the InitialDataV2.csv file, creating the Shares, Portfolios and Traders.
     private void initialiseData() {
         ArrayList<Share> allShares = new ArrayList<>();
         //System.out.println("Initializing clients & shares...");
@@ -195,6 +196,7 @@ public class Simulator {
         }
     }
 
+    // Creates the events from the ExternalEventsData.csv file.
     private void initialiseEvents() {
         //System.out.println("Initializing events...");
         try {
@@ -425,8 +427,11 @@ public class Simulator {
         return null;
     }
 
-    /* Does not actually remove all shares for a client, but sets the boolean sellAll in their portfolio to true, alerting
-     * their trader that they must attempt to sell all those shares every cycle. */
+    /**
+     *  Does not actually remove all shares for a client, but sets the boolean sellAll in their portfolio to true, alerting
+     * their trader that they must attempt to sell all those shares every cycle.
+     * @param clientName the client that wishes to leave.
+     */
     public void leaveSimulation(String clientName) {
         //System.out.println(clientName + " wishes to leave the simulation.");
         for(Trader t : traders) {
@@ -461,19 +466,10 @@ public class Simulator {
     /**
      * Given the name of a company, returns its share price.
      * @param companyName An (exact) string representation of a company's name.
-     * @return The share price of the company, or -1 if the company does not exist.
+     * @return The share price of the company.
      */
     public double getSharePrice(String companyName) {
-        for(Trader t : traders) {
-            for(Portfolio p : t.getPortfolios()) {
-                for(Share s: p.getShares()) {
-                    if(s.getCompanyName().equals(companyName)) {
-                        return s.getSharePrice();
-                    }
-                }
-            }
-        }
-        return -1; // An error has occurred if this step is reached - no share matched companyName.
+        return sharePrices.get(companyName);
     }
 
     /**
@@ -624,14 +620,19 @@ public class Simulator {
         return total;
     }
 
-    public int totalSharesInPortfolios() {
+    // Used for checking there are the same number of shares in the portfolio as there are across the simulator's numberOfShares hashmap.
+    private int totalSharesInPortfolios() {
         int total = 0;
         for(Trader t : traders) {
             total += t.getShares();
         }
         return total;
     }
-    
+
+    /**
+     * Returns the list of all traders in the simulator.
+     * @return The ArrayList of Trader objects.
+     */
     public ArrayList<Trader> getTraders() {
         return traders;
     }

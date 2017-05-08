@@ -70,11 +70,7 @@ public class Portfolio {
      * @return double totalWorth
      */
     public double getTotalWorth() {
-        double totalWorth = cashHolding;
-        for(Share s : shares) {
-            totalWorth += s.getSharePrice();
-        }
-        return totalWorth;
+        return cashHolding + getSharesTotal();
     }
 
     /**

@@ -3,7 +3,9 @@ package StockMarket;
 import javafx.beans.property.*;
 
 /**
- * Created by shahs on 27/04/2017.
+ * Used by the GUI and Controller to keep track of one Client (for the table in the 'back end' of the GUI).
+ * @Author 132224
+ * @Version 04/05/2017
  */
 public class ClientData {
 
@@ -16,12 +18,11 @@ public class ClientData {
 
     /**
      * Constructor. Initializes the ClientData class.
-     * @param client
-     * @param wealth
-     * @param cashHolding
-     * @param shares
-     */
-    public ClientData(String client, String wealth, String cashHolding, String shares) {
+     * @param client clientName.
+     * @param wealth totalWealth.
+     * @param cashHolding cashHolding.
+     * @param shares number of shares.
+     */public ClientData(String client, String wealth, String cashHolding, String shares) {
         this.client = new SimpleStringProperty(client);
         this.wealth = new SimpleStringProperty(wealth);
         this.cashHolding = new SimpleStringProperty(cashHolding);
@@ -29,24 +30,24 @@ public class ClientData {
     }
 
     /**
-     * This method gets the client name
-     * @return String client
+     * This method gets the client name.
+     * @return String representation of client's name.
      */
     public String getClient() {
         return client.get();
     }
 
     /**
-     * This method sets the client name to be used in the GUI
-     * @param PFClient
+     * This method sets the client name to be used in the GUI.
+     * @param PFClient The string to set the client StringProperty to.
      */
     public void setClient(String PFClient) {
         this.client.set(PFClient);
     }
 
     /**
-     * This method gets the wealth of a client
-     * @return String wealth
+     * This method gets the wealth of a client.
+     * @return String representing the wealth of the client.
      */
     public String getWealth() {
         return wealth.get();
@@ -54,59 +55,74 @@ public class ClientData {
 
     /**
      * This method sets the wealth of the client into a variable to be used
-     * in the GUI
-     * @param wealth
+     * in the GUI.
+     * @param wealth The string representation of the wealth of the client to set the wealth to.
      */
     public void setWealth(String wealth) {
         this.wealth.set(wealth);
     }
 
     /**
-     * This method gets the cash the client is currently holding
-     * @return String cashHolding
+     * This method gets the cash the client is currently holding.
+     * @return The string representation of the client's cash holding.
      */
     public String getCashHolding() {
         return cashHolding.get();
     }
 
     /**
-     * This method sets the cash holding to be used in the GUI
-     * @param PFCashHolding
+     * This method sets the cash holding to be used in the GUI.
+     * @param PFCashHolding The cashHolding (as a String) to set the cashHolding StringProperty to.
      */
     public void setCashHolding(String PFCashHolding) {
         this.cashHolding.set(PFCashHolding);
     }
 
     /**
-     * This method gets the shares of the client
-     * @return String shares
+     * This method gets the shares of the client.
+     * @return String representation of the shares.
      */
     public String getShares() {
         return shares.get();
     }
 
     /**
-     * This method sets the shares of the client to be used in the GUI
-     * @param shares
+     * This method sets the shares of the client to be used in the GUI.
+     * @param shares The String representation to set shares to.
      */
     public void setShares(String shares) {
         this.shares.set(shares);
     }
 
 
-
+    /**
+     * Returns the client StringProperty.
+     * @return The StringProperty representing the client name.
+     */
     public StringProperty clientProperty() {
         return client;
     }
 
+    /**
+     * Returns the wealth StringProperty.
+     * @return The StringProperty representing the wealth.
+     */
     public StringProperty wealthProperty() {
         return wealth;
     }
 
+    /**
+     * Returns the cash holding StringProperty.
+     * @return The StringProperty representing the amount of cash the client has.
+     */
     public StringProperty cashHoldingProperty() {
         return cashHolding;
     }
 
+    /**
+     * Returns the shares StringProperty.
+     * @return The StringProperty representing the shares the client has.
+     */
     public StringProperty sharesProperty() {
         return shares;
     }
