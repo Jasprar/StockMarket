@@ -265,8 +265,19 @@ public class Controller{
                 });
 
             }
-        }, 1000, (long) 10.4166666); //Calculation needed to display every month
+        }, 0, 1000); //Calculation needed to display every month
         lineChart.getData().addAll(series);
+
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    series.getData().removeAll(lineChart.getData());
+                });
+
+            }
+        }, 0, 500); //Calculation needed to display every month
+
     }
 
     /**
@@ -381,6 +392,11 @@ public class Controller{
             company.setNetWorth(df.format(getNetWorth));
             companyData.add(company);
         }
+
+        sharePrice.clear();
+        netWorth.clear();
+        companyNames.clear();
+
         return companyData;
     }
 
@@ -431,7 +447,7 @@ public class Controller{
      * @return
      */
     private List<ClientData> clientDataList() {
-        //Getting client Names and appending to list
+      //Getting client Names and appending to list
         List<String> clientNames = new ArrayList<>();
         clientNames.addAll(sim.getClientNames());
         //Getting Cash holding and appending to list
@@ -461,6 +477,10 @@ public class Controller{
             client.setWealth(df.format(getTotalWorths));
             clientData.add(client);
         }
+        clientNames.clear();
+        cashHolding.clear();
+        totalWorth.clear();
+
         return clientData;
     }
 
