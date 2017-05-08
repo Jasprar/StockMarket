@@ -235,6 +235,8 @@ public class Controller{
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                DecimalFormat df = new DecimalFormat("#");
+                df.setMaximumFractionDigits(2);
                 Platform.runLater(() -> {
                     timeEntry.setText(sim.getTime()); //Gets the current time
                     dateEntry.setText(sim.getDate()); //Gets the date
@@ -242,7 +244,7 @@ public class Controller{
                     if (sim.getEvent() == null) eventEntry.setText("");
                     else eventEntry.setText(String.valueOf(sim.getEvent().getMessage()));
                     eventEntry.setWrapText(true);
-                    String share = Double.toString(sim.getShareIndex()); //Gets the share index
+                    String share = Double.toString(Double.parseDouble(df.format(sim.getShareIndex()))); //Gets the share index
                     shareEntry.setText(share + "p");
 
 
@@ -397,11 +399,9 @@ public class Controller{
            netWorth.add((int) sim.getNetWorth(s));
         }
 
-
-
         List<CompanyData> companyData = new ArrayList<>();
         DecimalFormat df = new DecimalFormat("#");
-        df.setMaximumFractionDigits(0);
+        df.setMaximumFractionDigits(2);
 
         for(int i = 0; i < companyNames.size(); i++){ //Passes the 'i'th element to a variable
             String getNames = companyNames.get(i);
@@ -467,7 +467,7 @@ public class Controller{
 
         List<ClientData> clientData = new ArrayList<>();
         DecimalFormat df = new DecimalFormat("#");
-        df.setMaximumFractionDigits(0);
+        df.setMaximumFractionDigits(2);
 
         for(int i = 0; i < clientNames.size(); i++) {
             String getClientNames = clientNames.get(i);
@@ -524,8 +524,5 @@ public class Controller{
         tray.setTitle("Welcome! FUN FACT A - Bull Market is...");
         tray.showAndDismiss(Duration.seconds(7));
         tray.showAndWait();
-
-
     }
-
 }
