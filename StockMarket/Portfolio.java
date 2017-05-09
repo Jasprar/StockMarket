@@ -52,13 +52,10 @@ public class Portfolio {
      * @param shares The List of Share objects to be added to the Portfolio.
      */
     public void addShares(ArrayList<Share> shares) {
-        //System.out.println(shares.size() + " shares added to " + clientName + ".");
         this.shares.addAll(shares);
         for(Share s : shares) {
-            //System.out.println(s.getCompanyName() + " has a share price of " + s.getSharePrice());
             addCashHolding(-s.getSharePrice());
         }
-        //System.out.println(clientName + "'s cash now = " + cashHolding);
         if(cashHolding < 0) {
             // Should not occur. Was mostly used in testing, but better safe than sorry.
             System.err.println("Houston, We have a problem: " + clientName + ": " + cashHolding);

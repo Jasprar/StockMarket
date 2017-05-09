@@ -399,7 +399,6 @@ public class Simulator {
 
     // excess will be negative when Supply > Demand.
     private void changeSharePrice(String companyName, int excess) {
-        //System.out.println("Changing the share price for " + companyName + ", using an excess of " + excess);
         double newSharePrice = sharePrices.get(companyName) + (((double)excess / (double)numberOfShares.get(companyName)) * sharePrices.get(companyName));
         sharePrices.put(companyName, newSharePrice);
         for(Trader t : traders) {
