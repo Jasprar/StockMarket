@@ -250,7 +250,7 @@ public class Controller{
 
                 });
             }
-        }, 0, 1000);
+        }, 0, 10);
     }
 
 
@@ -267,10 +267,11 @@ public class Controller{
             public void run() {
                 Platform.runLater(() -> {
                     series.getData().add(new XYChart.Data<>(counter(), sim.getShareIndex()));
+                    series.getData().removeAll(lineChart.getData());
                 });
 
             }
-        }, 0, (long) 20);
+        }, 0, 500);
         lineChart.getData().addAll(series);
 
 
@@ -442,7 +443,7 @@ public class Controller{
                 });
             }
 
-        }, 10, 1000);
+        }, 10, 3000);
     }
 
     /*
@@ -518,8 +519,6 @@ public class Controller{
         TrayNotification tray = new TrayNotification();
         tray.setRectangleFill(Paint.valueOf("Black"));
         tray.setAnimationType(POPUP);
-        Image whatsAppImg = new Image("StockMarket/img/lightbulb.png");
-        tray.setImage(whatsAppImg);
         tray.setMessage("When the net total worth of a market  rises over time") ;
         tray.setTitle("Welcome! FUN FACT A - Bull Market is...");
         tray.showAndDismiss(Duration.seconds(7));
