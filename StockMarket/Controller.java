@@ -271,7 +271,7 @@ public class Controller{
                 });
 
             }
-        }, 0, 500);
+        }, 0, (long) 10.66667);
         lineChart.getData().addAll(series);
 
 
